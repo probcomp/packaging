@@ -63,15 +63,13 @@ clean ()
 trap clean EXIT HUP INT TERM
 
 # Parse arguments.
-pycrap=no
 dryrun=no
 objdir=
 debdir=.
 repo=
 tag=
-while getopts O:Pd:nr:t: flag; do
+while getopts O:d:nr:t: flag; do
     case $flag in
-        P)      pycrap=yes;;
         n)      dryrun=yes;;
         O)      objdir=$OPTARG;;
         d)      debdir=$OPTARG;;
@@ -130,32 +128,13 @@ tmpdir=
 cleanfile tmpdir
 tmpdir=`mktemp -d -p "${TMPDIR:-/tmp}" probcomp-build.XXXXXX`
 
-# Determine whether we have to do Python sdist crap.
-if [ "x$pycrap" = xyes ]; then
-    # Check out the repository, run `python setup.py sdist', and
-    # extract the resulting source distribution.
-    git -C "$repo" archive --format=tar -- "$tag" \
-    | (
-        set -Ceu
-        cd -- "$tmpdir"
-        mkdir pycrap
-        cd pycrap
-        tar xf -
-        python setup.py sdist
-        fullname=`python setup.py --fullname | tail -1`
-        cd dist
-        gunzip -c < "${fullname}.tar.gz" | tar xf -
-        mv -- "$fullname" "${tmpdir}/${pkg_ver}"
-    )
-else
-    # Just check out the repository.
-    git -C "$repo" archive --format=tar --prefix="${pkg_ver}/" -- "$tag" \
-    | (
-        set -Ceu
-        cd -- "$tmpdir"
-        tar xf -
-    )
-fi
+# Check out the repository.
+git -C "$repo" archive --format=tar --prefix="${pkg_ver}/" -- "$tag" \
+| (
+    set -Ceu
+    cd -- "$tmpdir"
+    tar xf -
+)
 
 # Create a debian directory in the source.
 (
