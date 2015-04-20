@@ -101,6 +101,17 @@ if [ ! -f changelog ]; then
     exit 1
 fi
 
+# Make sure the objdir exists.
+case $objdir in
+    */*)
+        objdirp=${objdir%/*}
+        objdirn=${objdir##*/}
+        (set -Ceu && cd -- "$objdirp" && mkdir -p -- "$objdirn")
+        ;;
+    *)
+        mkdir -p -- "$objdir"
+esac
+
 # Grab the name and version and assemble some filenames.
 pkg=`dpkg-parsechangelog --file changelog --show-field source`
 debversion=`dpkg-parsechangelog --file changelog --show-field version`
