@@ -134,32 +134,23 @@ tmpdir=`mktemp -d -p "${TMPDIR:-/tmp}" probcomp-build.XXXXXX`
 if [ "x$pycrap" = xyes ]; then
     # Check out the repository, run `python setup.py sdist', and
     # extract the resulting source distribution.
-    (
-        set -Ceu
-        cd -- "$repo"
-        git archive --format=tar -- "$tag"
-    ) | (
+    git -C "$repo" archive --format=tar -- "$tag" \
+    | (
         set -Ceu
         cd -- "$tmpdir"
         mkdir pycrap
-        (
-            set -Ceu
-            cd pycrap
-            tar xf -
-            python setup.py sdist
-            fullname=`python setup.py --fullname | tail -1`
-            cd dist
-            gunzip -c < "${fullname}.tar.gz" | tar xf -
-            mv -- "$fullname" "${tmpdir}/${pkg_ver}"
-        )
+        cd pycrap
+        tar xf -
+        python setup.py sdist
+        fullname=`python setup.py --fullname | tail -1`
+        cd dist
+        gunzip -c < "${fullname}.tar.gz" | tar xf -
+        mv -- "$fullname" "${tmpdir}/${pkg_ver}"
     )
 else
     # Just check out the repository.
-    (
-        set -Ceu
-        cd -- "$repo"
-        git archive --format=tar --prefix="${pkg_ver}/" -- "$tag"
-    ) | (
+    git -C "$repo" archive --format=tar --prefix="${pkg_ver}/" -- "$tag" \
+    | (
         set -Ceu
         cd -- "$tmpdir"
         tar xf -
