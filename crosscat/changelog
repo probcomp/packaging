@@ -1,6 +1,6 @@
-crosscat (0.1.6) trusty; urgency=medium
+crosscat (0.1.6-1) trusty; urgency=medium
 
-  * Minor Build system fixes.
+  * Minor build system fixes.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Fri, 17 Apr 2015 21:37:04 +0000
 
