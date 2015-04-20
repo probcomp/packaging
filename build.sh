@@ -123,7 +123,8 @@ pkg_tgz="${pkg}_${version}.orig.tar.gz"
 if [ -z "$tag" ]; then
     tag="v${version}"
 fi
-if ! git check-ref-format "$tag"; then
+if ! git -C "$repo" rev-parse --quiet --verify --revs-only "$tag" >/dev/null
+then
     printf >&2 '%s: no such tag: %s\n' "${0##*/}" "$tag"
     exit 1
 fi
