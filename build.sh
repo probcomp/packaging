@@ -8,6 +8,7 @@ usage ()
     printf >&2 'Usage: %s' "${0##*/}"
     printf >&2 ' [-Pn]'
     printf >&2 ' [-O <objdir>]'
+    printf >&2 ' [-d <debdir>]'
     printf >&2 ' [-r <repo>]'
     printf >&2 ' [-t <tag>]'
     printf >&2 '\n'
@@ -65,13 +66,15 @@ trap clean EXIT HUP INT TERM
 pycrap=no
 dryrun=no
 objdir=
+debdir=.
 repo=
 tag=
-while getopts O:Pnr:t: flag; do
+while getopts O:Pd:nr:t: flag; do
     case $flag in
         P)      pycrap=yes;;
         n)      dryrun=yes;;
         O)      objdir=$OPTARG;;
+        d)      debdir=$OPTARG;;
         r)      repo=$OPTARG;;
         t)      tag=$OPTARG;;
         \?)     usage 1;;
@@ -95,9 +98,9 @@ if [ -z "$repo" ]; then
 fi
 
 # Make sure we look like we're in a sane environment.
-if [ ! -f changelog ]; then
+if [ ! -f "${debdir}/changelog" ]; then
     printf >&2 '%s: missing changelog\n' "${0##*/}"
-    printf >&2 '%s: (make sure to run in debian/ directory\n' "${0##*/}"
+    printf >&2 '%s: wrong -d <debdir>?\n' "${0##*/}"
     exit 1
 fi
 
@@ -113,8 +116,9 @@ case $objdir in
 esac
 
 # Grab the name and version and assemble some filenames.
-pkg=`dpkg-parsechangelog --file changelog --show-field source`
-debversion=`dpkg-parsechangelog --file changelog --show-field version`
+pkg=`dpkg-parsechangelog --file "${debdir}/changelog" --show-field source`
+debversion=`dpkg-parsechangelog --file "${debdir}/changelog" \
+    --show-field version`
 version="${debversion%-*}"
 pkg_ver="${pkg}-${version}"
 pkg_tgz="${pkg}_${version}.orig.tar.gz"
@@ -171,8 +175,11 @@ else
 fi
 
 # Create a debian directory in the source.
-tar cf - . \
-| (
+(
+    set -Ceu
+    cd -- "$debdir"
+    tar cf - .
+) | (
     set -Ceu
     cd -- "$tmpdir"
     mkdir "./${pkg_ver}/debian"
