@@ -185,6 +185,7 @@ tar cf - . \
 
 # Create a build dependencies package.
 (
+    set -Ceu
     cd -- "$tmpdir"
     run mk-build-deps "./${pkg_ver}/debian/control"
 )
@@ -195,6 +196,7 @@ cleanpkg builddep
 
 # Install the build dependencies package install any dependencies.
 (
+    set -Ceu
     cd -- "$tmpdir"
     run sudo sh -c 'dpkg -i "$1" || :' -- "./${builddep}_${debversion}_all.deb"
     run sudo apt-get install --fix-broken --yes
@@ -202,6 +204,7 @@ cleanpkg builddep
 
 # Finally, build the package.
 (
+    set -Ceu
     cd -- "$tmpdir"
     cd "./${pkg_ver}"
     run debuild -uc -us
