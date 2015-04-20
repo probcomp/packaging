@@ -9,7 +9,7 @@ usage ()
     printf >&2 ' [-Pn]'
     printf >&2 ' [-O <objdir>]'
     printf >&2 ' [-r <repo>]'
-    printf >&2 ' [-t tag>]'
+    printf >&2 ' [-t <tag>]'
     printf >&2 '\n'
     exit ${1+"$@"}
 }
