@@ -105,15 +105,7 @@ if [ ! -f "${debdir}/changelog" ]; then
 fi
 
 # Make sure the objdir exists.
-case $objdir in
-    */*)
-        objdirp=${objdir%/*}
-        objdirn=${objdir##*/}
-        (set -Ceu && cd -- "$objdirp" && mkdir -p -- "$objdirn")
-        ;;
-    *)
-        mkdir -p -- "$objdir"
-esac
+[ -d "$objdir" ] || mkdir -- "$objdir"
 
 # Grab the name and version and assemble some filenames.
 pkg=`dpkg-parsechangelog --file "${debdir}/changelog" --show-field source`
