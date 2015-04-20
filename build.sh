@@ -218,5 +218,6 @@ cleanpkg builddep
     run debuild -uc -us
 )
 
-# And stash it away.
+# And stash it and its build dependencies away.
+run mv -- "${tmpdir}/${builddep}_${debversion}_"* "${objdir}/."
 run mv -- "${tmpdir}/${pkg}_${debversion}_"* "${objdir}/."
