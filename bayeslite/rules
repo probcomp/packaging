@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with python2 --buildsystem=python_distutils
+
+# XXX Kludge for lemonade-generated parser.  This should be integrated
+# into the normal setup.py clean target, but Python distutils is a
+# *!&*@$!& idiotic steaming pile.
+clean:
+	-dh $@ --with python2 --buildsystem=python_distutils
+	-rm -f ./src/grammar.out
+	-rm -f ./src/grammar.py
