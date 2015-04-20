@@ -1,4 +1,10 @@
-venture (20141125-1) UNRELEASED; urgency=medium
+venture (20150420) trusty; urgency=medium
+
+  * New snapshot.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 20 Apr 2015 22:24:56 +0000
+
+venture (20141125-1) trusty; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
 
