@@ -7,6 +7,6 @@
 # into the normal setup.py clean target, but Python distutils is a
 # *!&*@$!& idiotic steaming pile.
 clean:
-	dh $@ --with python2 --buildsystem=python_distutils
-	rm -f ./python/lib/parser/church_prime/grammar.out
-	rm -f ./python/lib/parser/church_prime/grammar.py
+	-dh $@ --with python2 --buildsystem=python_distutils
+	-rm -f ./python/lib/parser/church_prime/grammar.out
+	-rm -f ./python/lib/parser/church_prime/grammar.py
