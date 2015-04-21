@@ -141,7 +141,8 @@ git -C "$repo" archive --format=tar --prefix="${pkg_ver}/" -- "$tag" \
     tar xf -
 )
 
-# Create a debian directory in the source.
+# Create a debian directory in the source and make the .orig.tar.gz
+# tarball.
 (
     set -Ceu
     cd -- "$debdir"
