@@ -12,6 +12,7 @@ X-Python-Version: >= 2.6
 Package: bayeslite
 Architecture: any
 Depends: ${misc:Depends}, ${python:Depends}
+Recommends: crosscat
 Description: SQL with generative models and Bayesian inference.
 	Bayeslite is a BQL database built on sqlite3.  BQL is SQL
 	extended with generative models and with estimations and
