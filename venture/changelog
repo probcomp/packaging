@@ -1,10 +1,10 @@
-venture (20150420-1) trusty; urgency=medium
+venture (0.2.dev20150420-1) trusty; urgency=medium
 
   * New snapshot.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 20 Apr 2015 22:24:56 +0000
 
-venture (20141125-1) trusty; urgency=medium
+venture (0.2.dev20141125-1) trusty; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
 
