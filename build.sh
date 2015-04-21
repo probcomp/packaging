@@ -79,19 +79,24 @@ while getopts O:d:nr:t: flag; do
     esac
 done
 shift $((OPTIND - 1))
+errors=0
 
 # No more arguments allowed.
 if [ $# -ne 0 ]; then
-    usage 1
+    errors=$((errors + 1))
 fi
 
 # Make sure the requisite arguments were specified.
 if [ -z "$objdir" ]; then
     printf >&2 '%s: specify -O <objdir>\n' "${0##*/}"
-    usage 1
+    errors=$((errors + 1))
 fi
 if [ -z "$repo" ]; then
     printf >&2 '%s: specify -r <repo>\n' "${0##*/}"
+    errors=$((errors + 1))
+fi
+
+if [ $errors -gt 0 ]; then
     usage 1
 fi
 
