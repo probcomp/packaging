@@ -1,3 +1,10 @@
+crosscat (0.1.8-1) trusty; urgency=medium
+
+  * Eliminate dependency on scipy outside tests.
+  * More build system fixes.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 22 Apr 2015 22:04:46 +0000
+
 crosscat (0.1.6-1) trusty; urgency=medium
 
   * Minor build system fixes.
