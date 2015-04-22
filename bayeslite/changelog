@@ -1,3 +1,9 @@
+bayeslite (0.1.dev20150422-1) trusty; urgency=medium
+
+  * Eliminate dependency on scipy.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 22 Apr 2015 22:08:41 +0000
+
 bayeslite (0.1.dev20150420-1) trusty; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
