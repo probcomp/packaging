@@ -1,11 +1,11 @@
-Index: 20150420/python/lib/engine/engine.py
+Index: venture/python/lib/engine/engine.py
 ===================================================================
---- 20150420.orig/python/lib/engine/engine.py	2015-04-20 20:30:21.572369349 +0000
-+++ 20150420/python/lib/engine/engine.py	2015-04-20 20:30:38.760368512 +0000
-@@ -14,7 +14,7 @@
- #
+--- venture.orig/python/lib/engine/engine.py	2015-07-14 18:16:20.029334741 +0000
++++ venture/python/lib/engine/engine.py	2015-07-14 18:16:26.145334975 +0000
+@@ -15,7 +15,7 @@
  # You should have received a copy of the GNU General Public License
  # along with Venture.  If not, see <http://www.gnu.org/licenses/>.
+ import threading
 -import dill
 +import cPickle as dill
  import time
