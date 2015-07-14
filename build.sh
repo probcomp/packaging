@@ -6,7 +6,7 @@ usage ()
 {
 
     printf >&2 'Usage: %s' "${0##*/}"
-    printf >&2 ' [-Pn]'
+    printf >&2 ' [-n]'
     printf >&2 ' [-O <objdir>]'
     printf >&2 ' [-d <debdir>]'
     printf >&2 ' [-r <repo>]'
