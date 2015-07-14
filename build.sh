@@ -5,14 +5,33 @@ set -Ceu
 usage ()
 {
 
-    printf >&2 'Usage: %s' "${0##*/}"
-    printf >&2 ' [-n]'
-    printf >&2 ' [-O <objdir>]'
-    printf >&2 ' [-d <debdir>]'
-    printf >&2 ' [-r <repo>]'
-    printf >&2 ' [-t <tag>]'
-    printf >&2 '\n'
+    printf 'Usage: %s' "${0##*/}"
+    printf ' [-n]'
+    printf ' [-O <objdir>]'
+    printf ' [-d <debdir>]'
+    printf ' [-r <repo>]'
+    printf ' [-t <tag>]'
+    printf '\n'
+}
+
+usage_exit ()
+{
+
+    usage >&2
     exit ${1+"$@"}
+}
+
+help ()
+{
+
+    usage
+    printf '\n'
+    printf '  -n                dry run\n'
+    printf '  -O <objdir>       build <objdir>/foo_1.23.amd64.deb\n'
+    printf '  -d <debdir>       use <debdir>/control, default is .\n'
+    printf '  -r <repo>         build from Git repository <repo>\n'
+    printf '  -t <tag>          build from Git tag <tag>\n'
+    exit
 }
 
 run ()
@@ -68,14 +87,15 @@ objdir=
 debdir=.
 repo=
 tag=
-while getopts O:d:nr:t: flag; do
+while getopts O:d:hnr:t: flag; do
     case $flag in
         n)      dryrun=yes;;
         O)      objdir=$OPTARG;;
         d)      debdir=$OPTARG;;
+        h)      help; exit;;
         r)      repo=$OPTARG;;
         t)      tag=$OPTARG;;
-        \?)     usage 1;;
+        \?)     usage_exit 1;;
     esac
 done
 shift $((OPTIND - 1))
@@ -97,7 +117,7 @@ if [ -z "$repo" ]; then
 fi
 
 if [ $errors -gt 0 ]; then
-    usage 1
+    usage_exit 1
 fi
 
 # Make sure we look like we're in a sane environment.
