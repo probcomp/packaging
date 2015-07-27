@@ -127,9 +127,6 @@ if [ ! -f "${debdir}/changelog" ]; then
     exit 1
 fi
 
-# Make sure the objdir exists.
-[ -d "$objdir" ] || mkdir -- "$objdir"
-
 # Grab the name and version and assemble some filenames.
 pkg=`dpkg-parsechangelog --file "${debdir}/changelog" --show-field source`
 debversion=`dpkg-parsechangelog --file "${debdir}/changelog" \
@@ -148,6 +145,9 @@ then
     exit 1
 fi
 printf '# # Tag: %s\n' "$tag"
+
+# Make sure the objdir exists.
+[ -d "$objdir" ] || run mkdir -- "$objdir"
 
 # Make a temporary directory, clean on exit.
 tmpdir=
