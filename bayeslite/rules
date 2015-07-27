@@ -10,3 +10,4 @@ clean:
 	-dh $@ --with python2 --buildsystem=python_distutils
 	-rm -f ./src/grammar.out
 	-rm -f ./src/grammar.py
+	-rm -f ./src/version.py

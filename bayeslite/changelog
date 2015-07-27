@@ -1,3 +1,9 @@
+bayeslite (0.1.dev20150727-1) trusty; urgency=medium
+
+  * Too many changes to list.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 27 Jul 2015 15:12:00 +0000
+
 bayeslite (0.1.dev20150422-1) trusty; urgency=medium
 
   * Eliminate dependency on scipy.
