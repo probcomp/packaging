@@ -147,6 +147,7 @@ then
     printf >&2 '%s: no such tag: %s\n' "${0##*/}" "$tag"
     exit 1
 fi
+printf '# # Tag: %s\n' "$tag"
 
 # Make a temporary directory, clean on exit.
 tmpdir=
