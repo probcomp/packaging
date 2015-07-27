@@ -1,3 +1,16 @@
+crosscat (0.1.18-1) trusty; urgency=medium
+
+  * Fix draws from categorical samples (Github issue #26).
+  * Add check.sh script.
+  * Fix attempt to clear maps by calling clear, not empty (Github issue #29).
+  * Fix log_linspace arithmetic.
+  * Reduce dependency on boost a little.
+  * New impute/confidence algorithm.
+  * Make (single-threaded) Crosscat deterministic.
+  * Fix normalization of CRP alpha grid.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 27 Jul 2015 15:19:37 +0000
+
 crosscat (0.1.8-1) trusty; urgency=medium
 
   * Eliminate dependency on scipy outside tests.
