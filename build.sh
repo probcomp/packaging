@@ -38,7 +38,7 @@ run ()
 {
     echo -n '#'
     for x in "$@"; do
-        if ! expr "x$x" : '^x[-=./a-z0-9A-Z0-9]*$' >/dev/null; then
+        if ! expr "x$x" : '^x[-_=./a-z0-9A-Z0-9]*$' >/dev/null; then
             x="'$(printf '%s' "$x" | sed -e "s/'/'\"'\"'/g")'"
         fi
         echo -n '' "$x"
