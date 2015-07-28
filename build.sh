@@ -210,3 +210,8 @@ cleanpkg builddep
 # And stash it and its build dependencies away.
 run mv -- "${tmpdir}/${builddep}_${debversion}_"* "${objdir}/."
 run mv -- "${tmpdir}/${pkg}_${debversion}_"* "${objdir}/."
+
+# Stash the source package too.
+run mv -- "${tmpdir}/${pkg}_${debversion}.debian.tar.gz" "${objdir}/."
+run mv -- "${tmpdir}/${pkg}_${debversion}.dsc" "${objdir}/."
+run mv -- "${tmpdir}/${pkg}_${version}.orig.tar.gz" "${objdir}/."
