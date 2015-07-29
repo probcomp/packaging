@@ -10,3 +10,5 @@ clean:
 	-dh $@ --with python2 --buildsystem=python_distutils
 	-rm -f ./python/lib/parser/church_prime/grammar.out
 	-rm -f ./python/lib/parser/church_prime/grammar.py
+	-rm -f ./python/lib/parser/venture_script/grammar.out
+	-rm -f ./python/lib/parser/venture_script/grammar.py
