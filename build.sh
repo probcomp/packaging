@@ -154,30 +154,18 @@ tmpdir=
 cleanfile tmpdir
 tmpdir=`mktemp -d -p "${TMPDIR:-/tmp}" probcomp-build.XXXXXX`
 
-# Check out the repository.
+# Check out the repository into the .orig.tar.gz tarball.
 git -C "$repo" archive --format=tar --prefix="${pkg_ver}/" -- "$tag" \
+| gzip -c -n > "${tmpdir}/${pkg_tgz}"
+
+# Extract the tarball and create the Debian directory.
+tar -C "$debdir" -c -f - . \
 | (
     set -Ceu
     cd -- "$tmpdir"
-    tar xf -
-)
-
-# Create a debian directory in the source and make the .orig.tar.gz
-# tarball.
-(
-    set -Ceu
-    cd -- "$debdir"
-    tar cf - .
-) | (
-    set -Ceu
-    cd -- "$tmpdir"
+    gunzip -c < "./${pkg_tgz}" | tar xf -
     mkdir "./${pkg_ver}/debian"
-    (
-        set -Ceu
-        cd "./${pkg_ver}/debian"
-        tar xf -
-    )
-    tar cf - -- "$pkg_ver" | gzip -c > "$pkg_tgz"
+    tar -C "./${pkg_ver}/debian" -x -f -
 )
 
 # Create a build dependencies package.
