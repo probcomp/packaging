@@ -1,1 +1,26 @@
 Debian packaging for the MIT Probabilistic Computing Project.
+
+Usage: build.sh [-n] [-O <objdir>] [-d <debdir>] [-r <repo>] [-t <tag>]
+
+  -n                dry run
+  -O <objdir>       build <objdir>/foo_1.23.amd64.deb
+  -d <debdir>       use <debdir>/control, default is .
+  -r <repo>         build from Git repository <repo>
+  -t <tag>          build from Git tag <tag>
+
+The build.sh script will use sudo to install build dependencies.
+Running in a chroot, e.g. by integrating it with pbuilder, is left as
+an exercise for the reader.
+
+Example:
+
+% ./build.sh -O obj -d venture -r /home/me/venture -t release-0.4.1-rc-6
+
+(The tag is necessary in this case because Venture does not follow the
+`v<version>' pattern, e.g. v0.4.1-rc-6, for naming tags, which the
+other repositories do.)
+
+The tag must match what is in <debdir>/changelog; if not, update the
+latter before building.
+
+The resulting .deb package will go in obj/.
