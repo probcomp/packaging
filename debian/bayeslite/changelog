@@ -1,3 +1,9 @@
+bayeslite (0.1.rc6-2) trusty; urgency=medium
+
+  * Fix crosscat dependency in Debian packaging.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 19:59:01 +0000
+
 bayeslite (0.1.rc6-1) trusty; urgency=medium
 
   * Fix indexing errors in conditional probability in Crosscat.
