@@ -1,3 +1,20 @@
+crosscat (0.1.28-1) trusty; urgency=medium
+
+  * Update package metadata.
+  * Note numpy in setup_requires.
+  * Report version in crosscat.__version__.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 15:43:15 +0000
+
+crosscat (0.1.26-1) trusty; urgency=medium
+
+  * Fix various minor bugs.
+  * Fix automatic tests.
+  * Fix conditional probability calculations.
+  * Implement forced dependent/independent column relations.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 16 Sep 2015 14:29:08 +0000
+
 crosscat (0.1.18-1) trusty; urgency=medium
 
   * Fix draws from categorical samples (Github issue #26).

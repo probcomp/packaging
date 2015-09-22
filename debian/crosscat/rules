@@ -2,3 +2,10 @@
 
 %:
 	dh $@ --with python2 --buildsystem=python_distutils
+
+# XXX Kludge for version.py.  This should be integrated into the
+# normal setup.py clean target, but Python distutils is a *!&*@$!&
+# idiotic steaming pile.
+clean:
+	-dh $@ --with python2 --buildsystem=python_distutils
+	-rm -f ./crosscat/version.py
