@@ -1,3 +1,15 @@
+bayeslite (0.1.rc6-1) trusty; urgency=medium
+
+  * Fix indexing errors in conditional probability in Crosscat.
+  * Fix analysis iteration accounting in Crosscat.
+  * Minor documentation changes.
+  * Make test suite runnable with `python setup.py test'.
+  * Miscellaneous other bug fixes.
+  * Tweak development versioning scheme.
+  * Fill MANIFEST.in with everything for Python sdists.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 16:21:30 +0000
+
 bayeslite (0.1.rc1-1) trusty; urgency=medium
 
   * Too many changes to list.
