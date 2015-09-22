@@ -1,10 +1,16 @@
-bayeslite (0.1.rc6-2) trusty; urgency=medium
+bayeslite (0.1-1) trusty; urgency=medium
+
+  * First release.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 22:00:27 +0000
+
+bayeslite (0.1~rc6-2) trusty; urgency=medium
 
   * Fix crosscat dependency in Debian packaging.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 19:59:01 +0000
 
-bayeslite (0.1.rc6-1) trusty; urgency=medium
+bayeslite (0.1~rc6-1) trusty; urgency=medium
 
   * Fix indexing errors in conditional probability in Crosscat.
   * Fix analysis iteration accounting in Crosscat.
@@ -16,31 +22,31 @@ bayeslite (0.1.rc6-1) trusty; urgency=medium
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 16:21:30 +0000
 
-bayeslite (0.1.rc1-1) trusty; urgency=medium
+bayeslite (0.1~rc1-1) trusty; urgency=medium
 
   * Too many changes to list.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 16 Sep 2015 14:41:31 +0000
 
-bayeslite (0.1.dev20150727-2) trusty; urgency=medium
+bayeslite (0.1~dev20150727-2) trusty; urgency=medium
 
   * Add build dependency on python-pytest.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Jul 2015 18:59:14 +0000
 
-bayeslite (0.1.dev20150727-1) trusty; urgency=medium
+bayeslite (0.1~dev20150727-1) trusty; urgency=medium
 
   * Too many changes to list.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 27 Jul 2015 15:12:00 +0000
 
-bayeslite (0.1.dev20150422-1) trusty; urgency=medium
+bayeslite (0.1~dev20150422-1) trusty; urgency=medium
 
   * Eliminate dependency on scipy.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 22 Apr 2015 22:08:41 +0000
 
-bayeslite (0.1.dev20150420-1) trusty; urgency=medium
+bayeslite (0.1~dev20150420-1) trusty; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
 
