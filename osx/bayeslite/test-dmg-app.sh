@@ -24,6 +24,10 @@ set -x
 host=pcg-osx-test.mit.edu
 hpath=/Users/build/homebrew/bin
 
+# TODO(gremio): Test that the .app works correctly if copied from the readonly volume to a
+# local directory with spaces and an apostrophe, and mixed case.
+# badchar_dir="/Users/test/This account's temp"
+
 # Build the dmg
 # =============
 
