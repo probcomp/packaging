@@ -28,6 +28,21 @@ hpath=/Users/build/homebrew/bin
 # local directory with spaces and an apostrophe, and mixed case.
 # badchar_dir="/Users/test/This account's temp"
 
+lockfile=/scratch/dmgs/lock
+while [ -e $lockfile ]; do
+    sleep 60
+    if [ -e $lockfile ]; then
+        set +e
+        pid=`cat $lockfile | sed 's/[^0-9]//g'`
+        running=`/bin/ps -p $pid | grep ^$pid`
+        if [ -z "$running" ]; then
+            /bin/rm -f $lockfile
+        fi
+        set -e
+    fi
+done
+echo $$ > $lockfile
+
 # Build the dmg
 # =============
 
@@ -67,6 +82,9 @@ ssh test@$host "killall python2.7"
 ssh test@$host "killall Terminal"
 ssh test@$host "hdiutil detach /Volumes/Bayeslite"
 
+# Others can go ahead now:
+/bin/rm -f $lockfile
+
 # Check the output
 # ================
 # The last two lines (tail -2) after the egrep should be:
@@ -75,6 +93,7 @@ ssh test@$host "hdiutil detach /Volumes/Bayeslite"
 # or similar, perhaps with different numbers.
 # uniq -c counts those. If the result starts with 2, then they were the same, which is good.
 # If they're not the same, the set -e at the top should crash this, and make Jenkins fail.
-egrep '^(In|Out)' $outfile | tail -2 | sed 's/[^0-9]//g' | uniq -c | sed 's/ //g' | egrep '^2[0-9][0-9]'
+egrep '^(In|Out).?\[[0-9][0-9]*\]:' $outfile | tail -2 | sed 's/[^0-9]//g' | uniq -c | sed 's/ //g' | egrep '^2[0-9][0-9]'
+
 
 set +x
