@@ -34,9 +34,11 @@ while [ -e $lockfile ]; do
     if [ -e $lockfile ]; then
         set +e
         pid=`cat $lockfile | sed 's/[^0-9]//g'`
-        running=`/bin/ps -p $pid | grep ^$pid`
-        if [ -z "$running" ]; then
-            /bin/rm -f $lockfile
+        if [ -n "$pid" ]; then
+            running=`/bin/ps -p $pid | grep $pid`
+            if [ -z "$running" ]; then
+                /bin/rm -f $lockfile
+            fi
         fi
         set -e
     fi
