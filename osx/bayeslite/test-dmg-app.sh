@@ -75,6 +75,6 @@ ssh test@$host "hdiutil detach /Volumes/Bayeslite"
 # or similar, perhaps with different numbers.
 # uniq -c counts those. If the result starts with 2, then they were the same, which is good.
 # If they're not the same, the set -e at the top should crash this, and make Jenkins fail.
-egrep '^(In|Out)' $outfile | tail -2 | sed 's/[^0-9]//g' | uniq -c | sed 's/ //g' | grep ^2
+egrep '^(In|Out)' $outfile | tail -2 | sed 's/[^0-9]//g' | uniq -c | sed 's/ //g' | grep '^2[0-9][0-9]'
 
 set +x
