@@ -131,7 +131,8 @@ run('virtualenv %s' % (shellquote(VENV_DIR),))
 os.chdir(VENV_DIR)
 def venv_run(cmd):
   print cmd
-  subprocess.check_call('source %s/bin/activate; %s' % (VENV_DIR, cmd))
+  subprocess.check_call('source %s/bin/activate; %s' % (VENV_DIR, cmd),
+                        shell=True)
 
 # Preprocessing
 # =============
