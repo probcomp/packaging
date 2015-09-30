@@ -62,7 +62,7 @@ print "Building in", BUILD_DIR
 
 def run(cmd):
   print cmd
-  assert not os.system(cmd)
+  subprocess.check_call(cmd, shell=True)
 
 def outputof(cmd, **kwargs):
   print cmd
