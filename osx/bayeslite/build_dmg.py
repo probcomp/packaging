@@ -264,6 +264,7 @@ with open(launchsh_path, "w") as launchsh:
   launchsh.write(LAUNCHER)
 run("chmod +x %s" % (shellquote(launchsh_path),))
 run("mv -f %s %s" % (shellquote(VENV_DIR), shellquote(MACOS_PATH)))
+VENV_DIR = os.path.join(MACOS_PATH, "venv")
 
 # Basic sanity check.
 test_dir = tempfile.mkdtemp('bayeslite-test')
