@@ -87,7 +87,8 @@ def run_tests(name):
   clean_for_test()
   run("scp %s test@%s:" % (os.path.join(SCRATCH, name), HOST))
   test_run("hdiutil attach '%s'" % (name,))
-  bname = re.sub(r'.app$', '', name)
+  bname = re.sub(r'\.dmg$', '', name)
+  assert bname != name
   read_only_result = get_app_output(
     "/Volumes/Bayeslite/%s.app" % bname,
     os.path.join(SCRATCH, name + ".read-only.out"))
