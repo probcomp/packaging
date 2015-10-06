@@ -77,12 +77,29 @@ ssh test@$host "osascript check-safari.scpt" > $outfile
 
 # Clean up
 # ========
-ssh build@$host "/bin/rm -f Desktop/Bayeslite*.dmg"
 ssh test@$host "osascript -e 'tell application \"Safari\" to close every window'"
 ssh test@$host "killall Safari"
 ssh test@$host "killall python2.7"
 ssh test@$host "killall Terminal"
+
+weirdcharsdir="~/Desktop/Apo's trõpηe"
+
+ssh test@$host "cp -R /Volumes/Bayeslite/$bname.app '$weirdcharsdir/'"
 ssh test@$host "hdiutil detach /Volumes/Bayeslite"
+ssh build@$host "/bin/rm -f Desktop/Bayeslite*.dmg"
+ssh test@$host "open '$weirdcharsdir/$bname.app'"
+sleep 45
+ssh test@$host "osascript -e 'tell application \"Safari\" to activate'"
+scp check-safari.scpt test@$host:
+weird_outfile=/scratch/dmgs/$name-weirdchars.out
+ssh test@$host "osascript check-safari.scpt" > $weird_outfile
+# $outfile now has the fully executed Satellites.ipynb contents (or however far they got).
+
+# Final cleanup
+ssh test@$host "osascript -e 'tell application \"Safari\" to close every window'"
+ssh test@$host "killall Safari"
+ssh test@$host "killall python2.7"
+ssh test@$host "killall Terminal"
 
 # Others can go ahead now:
 /bin/rm -f $lockfile
@@ -96,6 +113,7 @@ ssh test@$host "hdiutil detach /Volumes/Bayeslite"
 # uniq -c counts those. If the result starts with 2, then they were the same, which is good.
 # If they're not the same, the set -e at the top should crash this, and make Jenkins fail.
 egrep '^(In|Out).?\[[0-9][0-9]*\]:' $outfile | tail -2 | sed 's/[^0-9]//g' | uniq -c | sed 's/ //g' | egrep '^2[0-9][0-9]'
+egrep '^(In|Out).?\[[0-9][0-9]*\]:' $weird_outfile | tail -2 | sed 's/[^0-9]//g' | uniq -c | sed 's/ //g' | egrep '^2[0-9][0-9]'
 
 
 set +x
