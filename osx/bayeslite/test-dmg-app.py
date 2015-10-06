@@ -79,7 +79,7 @@ def get_app_output(app_location, output_path):
   time.sleep(45)
   test_run("osascript -e 'tell application \"Safari\" to activate'")
   result = test_outputof("osascript check-safari.scpt")
-  with(output_path, "w") as outfile:
+  with open(output_path, "w") as outfile:
     outfile.write(result)
   return result
 
@@ -107,13 +107,13 @@ def check_result(name, contents):
   opened = None
   count = 0
   for line in contents:
-    match = line.search(r'^In\s*\[(\d+)\]:')
+    match = line.search(r'^In\s*\[([\d*]+)\]:')
     if match:
       assert opened is None, name
       opened = match.group(0)
       count += 1
     else:
-      match = line.search(r'^Out\s*\[(\d)\]:')
+      match = line.search(r'^Out\s*\[([\d*]+)\]:')
       if match:
         assert opened == match.group(0), name
         opened = None
