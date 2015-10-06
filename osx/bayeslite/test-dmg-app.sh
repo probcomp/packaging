@@ -82,12 +82,12 @@ ssh test@$host "killall Safari"
 ssh test@$host "killall python2.7"
 ssh test@$host "killall Terminal"
 
-weirdcharsdir="~/Desktop/Apo's trõpηe"
+weirdcharsdir="~/Desktop/Apo's 1\" trõpηe"
 
-ssh test@$host "cp -R /Volumes/Bayeslite/$bname.app '$weirdcharsdir/'"
+ssh test@$host "cp -R /Volumes/Bayeslite/$bname.app \"$weirdcharsdir/\""
 ssh test@$host "hdiutil detach /Volumes/Bayeslite"
 ssh build@$host "/bin/rm -f Desktop/Bayeslite*.dmg"
-ssh test@$host "open '$weirdcharsdir/$bname.app'"
+ssh test@$host "open \"$weirdcharsdir/$bname.app\""
 sleep 45
 ssh test@$host "osascript -e 'tell application \"Safari\" to activate'"
 scp check-safari.scpt test@$host:

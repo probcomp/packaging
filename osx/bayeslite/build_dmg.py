@@ -39,56 +39,37 @@ PEG = {  # None means head.
   }
 PAUSE_TO_MODIFY = False
 
-import distutils.spawn
+import distutils.spawn  # pylint: disable=import-error
 import errno
 import os
 import os.path
-root = os.path.dirname(os.path.abspath(__file__))
-here = os.getcwd()
-import subprocess
 import time
 import tempfile
-
-START_TIME = time.time()
-
 try:
   from setuptools import setup
 except ImportError:
-  from distutils.core import setup
+  from distutils.core import setup # pylint: disable=import-error
 
-BUILD_DIR = tempfile.mkdtemp(prefix='BayesLite-app-')
-os.chdir(BUILD_DIR)
-print "Building in", BUILD_DIR
+from build_utils import run, outputof, venv_run, shellquote
 
-def run(cmd):
-  print cmd
-  subprocess.check_call(cmd, shell=True)
+def check_python():
+  # Do not specify --python to virtualenv, bc eg python27 is a 32-bit version
+  # that will produce a .app that osx will not open.
+  # You get errors like:
+  #    You can’t open the application “...” because PowerPC applications are no
+  #    longer supported.
+  # Or less helpfully:
+  #    The application “...” can’t be opened.
+  # and when investigating:
+  #    lipo: can't figure out the architecture type of: ...
+  # Instead, use the built-in python by not specifying anything, and get fine
+  # results.
+  # Rather than merely praying that the built-in python is
+  # language-compatible, let's check.
+  pyver = outputof('python --version 2>&1', shell=True)
+  assert "Python 2.7" == pyver[:10]
 
-def outputof(cmd, **kwargs):
-  print cmd
-  output = subprocess.check_output(cmd, **kwargs)
-  print "OUTPUT:", output
-  return output
-
-def shellquote(s):
-  """Return `s`, quoted appropriately for use in a shell script."""
-  return "'" + s.replace("'", "'\\''") + "'"
-
-# Do not specify --python to virtualenv, bc eg python27 is a 32-bit version that
-# will produce a .app that osx will not open.
-# You get errors like:
-#  You can’t open the application “...” because PowerPC applications are no longer supported.
-# Or less helpfully:
-#  The application “...” can’t be opened.
-# and when investigating:
-#  lipo: can't figure out the architecture type of: ...
-# Instead, use the built-in python by not specifying anything, and get fine results.
-# Rather than merely praying that the built-in python is language-compatible, let's check.
-PYVER = outputof('python --version 2>&1', shell=True)
-assert "Python 2.7" == PYVER[:10]
-
-
-def get_version(project_dir):
+def get_project_version(project_dir):
   here = os.getcwd()
   with open(os.path.join(project_dir, 'VERSION'), 'rU') as f:
     version = f.readline().strip()
@@ -107,112 +88,94 @@ def get_version(project_dir):
       version = desc[1:].strip()
   return version
 
-VERSION = ''
-for project in GIT_REPOS:
-  print "Checking out", project
-  run("git clone https://github.com/probcomp/%s.git %s"
-      % (project, os.path.join(BUILD_DIR, project)))
-  if PEG[project]:
-    repodir = os.path.join(BUILD_DIR, project)
-    branch = PEG[project]
-    run('cd -- %s && git checkout %s' %
-        (shellquote(repodir), shellquote(branch)))
-  if os.path.exists(os.path.join(project, 'VERSION')):
-    project_version = get_version(project)
-    if project_version:
-      VERSION += "-" + project[:5] + project_version
-      print "Project", project, "version is", project_version
+def composite_version(build_dir):
+  composite = ''
+  for project in GIT_REPOS:
+    print "Checking out", project
+    run("git clone https://github.com/probcomp/%s.git %s"
+        % (project, os.path.join(build_dir, project)))
+    if PEG[project]:
+      repodir = os.path.join(build_dir, project)
+      branch = PEG[project]
+      run('cd -- %s && git checkout %s' %
+          (shellquote(repodir), shellquote(branch)))
+    if os.path.exists(os.path.join(project, 'VERSION')):
+      project_version = get_project_version(project)
+      if project_version:
+        composite += "-" + project[:5] + project_version
+        print "Project", project, "version is", project_version
+  return composite
 
-VENV_DIR=os.path.join(BUILD_DIR, "venv")
+def do_pre_installs(unused_build_dir, venv_dir):
+  print "Deps for CrossCat"
+  boost_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    outputof("locate -l 1 boost/random/mersenne_twister.hpp", shell=True)))))
+  assert os.path.exists(boost_dir), \
+    ("We need boost headers already installed for CrossCat: %s" % (boost_dir,))
+  os.environ["BOOST_ROOT"] = boost_dir
+  # If we don't install cython and numpy, crosscat's setup tries and fails:
+  venv_run(venv_dir, "pip install cython")
+  venv_run(venv_dir, "pip install numpy")
 
-# Do not specify --python version here. See explanation where we fail fast above.
-run('virtualenv %s' % (shellquote(VENV_DIR),))
+def do_main_installs(build_dir, venv_dir):
+  for project in GIT_REPOS:
+    reqfile = os.path.join(build_dir, project, "requirements.txt")
+    if os.path.exists(reqfile):
+      print "Installing dependencies for", project
+      venv_run(venv_dir, "pip install -r %s" % (shellquote(reqfile),))
+    setupfile = os.path.join(build_dir, project, "setup.py")
+    if os.path.exists(setupfile):
+      print "Installing", project, "into", build_dir
+      repodir = os.path.join(build_dir, project)
+      venv_run(venv_dir, "cd -- %s && pip install ." % (shellquote(repodir),))
 
-os.chdir(VENV_DIR)
-def venv_run(cmd):
-  print cmd
-  subprocess.check_call('source %s/bin/activate; %s' % (VENV_DIR, cmd),
-                        shell=True)
+def do_post_installs(unused_build_dir, venv_dir):
+  # This app's only other dependency:
+  venv_run(venv_dir, "pip install 'ipython[notebook]' runipy")
+  venv_run(venv_dir, 'virtualenv --relocatable %s' % (shellquote(venv_dir),))
+  # Sadly, that doesn't actually fix the most critical file, the activate script
 
-# Preprocessing
-# =============
-print "Deps for CrossCat"
-LIBBOOST_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-  outputof("locate -l 1 boost/random/mersenne_twister.hpp", shell=True)))))
-assert os.path.exists(LIBBOOST_DIR), \
-  ("We need boost headers already installed for CrossCat: %s" % (LIBBOOST_DIR,))
-os.environ["BOOST_ROOT"] = LIBBOOST_DIR
-venv_run("pip install cython")  # If we don't, crosscat's setup tries and fails.
-venv_run("pip install numpy")
+def make_venv_truly_relocatable(venv_dir):
+  relocable = '''VIRTUAL_ENV=$(dirname -- "$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" && pwd )")\n'''
+  new_activate = tempfile.NamedTemporaryFile(delete=False)
+  old_activate_path = os.path.join(venv_dir, "bin", "activate")
+  with open(old_activate_path, "r") as old_activate:
+    for line in old_activate:
+      if line[:len("VIRTUAL_ENV=")] == "VIRTUAL_ENV=":
+        new_activate.write(relocable)
+      else:
+        new_activate.write(line)
+  new_activate.close()
+  run("mv %s %s" %
+      (shellquote(new_activate.name), shellquote(old_activate_path)))
+  # Also, we are hard linking to the python that we were built with,
+  # which may be different than the python that we want the client to
+  # execute. Let's just assume that on the client, we want to use the
+  # generic /System/Library py2.7, rather than a special one.
+  sys_python = "/System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+  python_dylib_link = os.path.join(venv_dir, ".Python")
+  run("ln -fs %s %s" % (shellquote(sys_python), shellquote(python_dylib_link)))
 
-BUILD_EXAMPLES = os.path.join(BUILD_DIR, "examples")
-run("mkdir -p %s" % (shellquote(BUILD_EXAMPLES),))
+  # And we still have a copy of python that my otherwise reference its
+  # own dependencies, rather than relying on the built-in python. So
+  # remove that.
+  #
+  # XXX Actually, this doesn't work at all -- it altogether defeats the
+  # mechanism by which Python discovers what should be in sys.path for a
+  # virtualenv.
+  #
+  # If it really turns out to be necessary to do this, we can replace
+  # the $VENV_DIR/bin/python by the following two-line shell script:
+  #
+  #       #!/bin/bash
+  #       exec -a "$0" /usr/bin/python2.7 ${1+"$@"}
+  #
+  #run("rm -f %s" % (shellquote(os.path.join(venv_dir, "bin", "python")),))
+  #run("ln -s /usr/bin/python2.7 %s" %
+  #    (shellquote(os.path.join(venv_dir, "bin", "python")),))
 
-# Main installs
-# =============
-for project in GIT_REPOS:
-  reqfile = os.path.join(BUILD_DIR, project, "requirements.txt")
-  if os.path.exists(reqfile):
-    print "Installing dependencies for", project
-    venv_run("pip install -r %s" % (shellquote(reqfile),))
-  setupfile = os.path.join(BUILD_DIR, project, "setup.py")
-  if os.path.exists(setupfile):
-    print "Installing", project, "into", BUILD_DIR
-    repodir = os.path.join(BUILD_DIR, project)
-    venv_run("cd -- %s && pip install ." % (shellquote(repodir),))
-
-# Postprocessing
-# ==============
-# This app's only other dependency:
-venv_run("pip install 'ipython[notebook]' runipy")
-
-print "Ready to start packaging the app!"
-venv_run('virtualenv --relocatable %s' % (shellquote(VENV_DIR),))
-# Sadly, that doesn't actually fix the most critical file, the activate script.
-relocable = '''VIRTUAL_ENV=$(dirname -- "$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" && pwd )")\n'''
-new_activate = tempfile.NamedTemporaryFile(delete=False)
-old_activate_path = os.path.join(VENV_DIR, "bin", "activate")
-with open(old_activate_path, "r") as old_activate:
-  for line in old_activate:
-    if line[:len("VIRTUAL_ENV=")] == "VIRTUAL_ENV=":
-      new_activate.write(relocable)
-    else:
-      new_activate.write(line)
-new_activate.close()
-run("mv %s %s" %
-    (shellquote(new_activate.name), shellquote(old_activate_path)))
-# Also, we are hard linking to the python that we were built with, which may be different
-# than the python that we want the client to execute. Let's just assume that on the client,
-# we want to use the generic /System/Library py2.7, rather than a special one.
-PYTHON_DYLIB_LINK = os.path.join(VENV_DIR, ".Python")
-run("ln -fs /System/Library/Frameworks/Python.framework/Versions/2.7/Python %s" %
-    (shellquote(PYTHON_DYLIB_LINK),))
-# And we still have a copy of python that my otherwise reference its
-# own dependencies, rather than relying on the built-in python. So
-# remove that.
-#
-# XXX Actually, this doesn't work at all -- it altogether defeats the
-# mechanism by which Python discovers what should be in sys.path for a
-# virtualenv.
-#
-# If it really turns out to be necessary to do this, we can replace
-# the $VENV_DIR/bin/python by the following two-line shell script:
-#
-#       #!/bin/bash
-#       exec -a "$0" /usr/bin/python2.7 ${1+"$@"}
-#
-#run("rm -f %s" % (shellquote(os.path.join(VENV_DIR, "bin", "python")),))
-#run("ln -s /usr/bin/python2.7 %s" %
-#    (shellquote(os.path.join(VENV_DIR, "bin", "python")),))
-
-NAME="Bayeslite%s" % (VERSION,)
-DIST_DIR = os.path.join(BUILD_DIR, "dmgroot")
-MACOS_PATH = os.path.join(DIST_DIR, NAME + ".app", "Contents", "MacOS")
-os.makedirs(MACOS_PATH)
-run("/bin/cp -r %s %s/" % (shellquote(BUILD_EXAMPLES), shellquote(MACOS_PATH)))
-run("/bin/ln -s /Applications %s" % (shellquote(DIST_DIR),))
-
-STARTER = '''#!/bin/bash
+def make_starter_script(macos_path):
+  starter_script = '''#!/bin/bash
 
 set -e
 wd=`dirname -- "$0"`
@@ -230,7 +193,7 @@ unset PYTHONPATH
 source "$activate"
 export DYLD_LIBRARY_PATH="$ldpath"
 
-# Copy the examples to someplace writeable:
+# Download and run the examples in someplace writeable:
 if [ -d "$HOME/Documents/$NAME" ]; then
     cd -- "$HOME/Documents/$NAME" && "$wd/venv/bin/bayesdb-demo" launch
 else
@@ -238,13 +201,13 @@ else
     cd -- "$HOME/Documents/$NAME" && "$wd/venv/bin/bayesdb-demo"
 fi
 '''
+  startsh_path = os.path.join(macos_path, "start.sh")
+  with open(startsh_path, "w") as startsh:
+    startsh.write(starter_script)
+  run("chmod +x %s" % (shellquote(startsh_path),))
 
-startsh_path = os.path.join(MACOS_PATH, "start.sh")
-with open(startsh_path, "w") as startsh:
-  startsh.write(STARTER)
-run("chmod +x %s" % (shellquote(startsh_path),))
-
-LAUNCHER = '''#!/bin/bash
+def make_launcher_script(macos_path, name):
+  launcher_script = '''#!/bin/bash
 
 wd=`dirname -- "$0"`
 cd -- "$wd"
@@ -259,33 +222,73 @@ osascript -e '
 ' -- "$wd"
 '''
 
-launchsh_path = os.path.join(MACOS_PATH, NAME)  # Must be the same as NAME in MACOS_PATH
-with open(launchsh_path, "w") as launchsh:
-  launchsh.write(LAUNCHER)
-run("chmod +x %s" % (shellquote(launchsh_path),))
-run("mv -f %s %s" % (shellquote(VENV_DIR), shellquote(MACOS_PATH)))
-VENV_DIR = os.path.join(MACOS_PATH, "venv")
+  launchsh_path = os.path.join(macos_path, name)
+  with open(launchsh_path, "w") as launchsh:
+    launchsh.write(launcher_script)
+  run("chmod +x %s" % (shellquote(launchsh_path),))
 
-# Basic sanity check.
-test_dir = tempfile.mkdtemp('bayeslite-test')
-try:
-  venv_run("cd -- %s && bayesdb-demo fetch" % (shellquote(test_dir),))
-  venv_run("cd -- %s && runipy Satellites.ipynb" % (shellquote(test_dir),))
-finally:
-  run("rm -rf -- %s" % (shellquote(test_dir),))
+def wrap_as_macos_dir(build_dir, name):
+  """Return the dmg root dir inside build_dir, and within that the MacOs dir."""
+  dist_dir = os.path.join(build_dir, "dmgroot")
+  macos_path = os.path.join(dist_dir, name + ".app", "Contents", "MacOS")
+  os.makedirs(macos_path)
+  run("/bin/ln -s /Applications %s" % (shellquote(dist_dir),))
+  make_starter_script(macos_path)
+  make_launcher_script(macos_path, name)
+  return dist_dir, macos_path
 
-if PAUSE_TO_MODIFY:
-  print "Pausing to let you modify %s before packaging it up." % (MACOS_PATH,)
-  os.system('read -s -n 1 -p "Press any key to continue..."')
+def basic_sanity_check(venv_dir):
+  test_dir = tempfile.mkdtemp('bayeslite-test')
+  try:
+    venv_run(venv_dir,
+             "cd -- %s && bayesdb-demo fetch" % (shellquote(test_dir),))
+    venv_run(venv_dir,
+             "cd -- %s && runipy Satellites.ipynb" % (shellquote(test_dir),))
+  finally:
+    run("rm -rf -- %s" % (shellquote(test_dir),))
 
-DMG_PATH = os.path.join(os.environ['HOME'], 'Desktop', '%s.dmg' % (NAME,))
-naming_attempt = 0
-while os.path.exists(DMG_PATH):
-  naming_attempt += 1
-  DMG_PATH = os.path.join(os.environ['HOME'], 'Desktop',
-                          "%s (%d).dmg" % (NAME, naming_attempt))
-run("hdiutil create -volname Bayeslite -format UDBZ -size 1g -srcfolder %s %s"
-    % (shellquote(DIST_DIR), shellquote(DMG_PATH)))
-run("/bin/rm -fr %s" % (shellquote(BUILD_DIR),))
+def pause_to_modify(macos_path):
+  if PAUSE_TO_MODIFY:
+    print "Pausing to let you modify %s before packaging it up." % (macos_path,)
+    os.system('read -s -n 1 -p "Press any key to continue..."')
 
-print "Done. %d seconds elapsed" % (time.time() - START_TIME,)
+def make_dmg_on_desktop(dist_dir, name):
+  dmg_path = os.path.join(os.environ['HOME'], 'Desktop', '%s.dmg' % (name,))
+  naming_attempt = 0
+  while os.path.exists(dmg_path):
+    naming_attempt += 1
+    dmg_path = os.path.join(os.environ['HOME'], 'Desktop',
+                            "%s (%d).dmg" % (name, naming_attempt))
+  run("hdiutil create -volname Bayeslite -format UDBZ -size 1g -srcfolder %s %s"
+      % (shellquote(dist_dir), shellquote(dmg_path)))
+
+def main():
+  start_time = time.time()
+  check_python()
+
+  build_dir = tempfile.mkdtemp(prefix='BayesLite-app-')
+  os.chdir(build_dir)
+  print "Building in", build_dir
+
+  version = composite_version(build_dir)
+  venv_dir = os.path.join(build_dir, "venv")
+  run('virtualenv %s' % (shellquote(venv_dir),))
+
+  do_pre_installs(build_dir, venv_dir)
+  do_main_installs(build_dir, venv_dir)
+  do_post_installs(build_dir, venv_dir)
+  make_venv_truly_relocatable(venv_dir)
+
+  name="Bayeslite%s" % (version,)
+  (dist_dir, macos_dir) = wrap_as_macos_dir(build_dir, name)
+  run("mv -f %s %s" % (shellquote(venv_dir), shellquote(macos_dir)))
+  venv_dir = os.path.join(macos_dir, "venv")
+
+  basic_sanity_check(venv_dir)
+  pause_to_modify(macos_dir)
+  make_dmg_on_desktop(dist_dir, name)
+  run("/bin/rm -fr %s" % (shellquote(build_dir),))
+  print "Done. %d seconds elapsed" % (time.time() - start_time,)
+
+if __name__ == "__main__":
+    main()
