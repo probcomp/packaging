@@ -1,9 +1,10 @@
+from __future__ import print_function
 import os
 import subprocess
 import sys
 
-def echo(*message):
-  print >>sys.stderr, *message
+def echo(*args):
+  print(*args, file=sys.stderr)
 
 def run(cmd):
   echo(cmd)
