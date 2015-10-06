@@ -94,8 +94,9 @@ def run_tests(name):
     os.path.join(SCRATCH, name + ".read-only.out"))
   clean_for_test(eject=False)
   weirdcharsdir = u"~/Desktop/Apo's 1\" trõpηe"
-  test_run("cp -R /Volumes/Bayeslite/%s.app %s/" %
-           (bname, shellquote(weirdcharsdir)))
+  test_run("mkdir -p %s" % shellquote(weirdcharsdir))
+  test_run("cp -R /Volumes/Bayeslite/%s.app %s/%s.app" %
+           (bname, shellquote(weirdcharsdir), bname))
   test_run("hdiutil detach /Volumes/Bayeslite")
   weirdchars_result = get_app_output(
     os.path.join(weirdcharsdir, bname + ".app"),
