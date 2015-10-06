@@ -12,7 +12,7 @@ def run(cmd):
 
 def outputof(cmd, **kwargs):
   echo(cmd)
-  output = subprocess.check_output(cmd, stderr=sys.stderr, **kwargs)
+  output = subprocess.check_output(cmd, stderr=sys.stderr, shell=True, **kwargs)
   echo("OUTPUT:", output)
   return output
 
