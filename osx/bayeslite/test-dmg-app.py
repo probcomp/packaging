@@ -20,6 +20,7 @@
 # 8. test@ is configured to Allow Applications from Anywhere (System Preferences > Security)
 # 9. test@'s Safari is configured to allow popups. (Safari > Preferences > Security)
 
+import re
 import os
 import time
 from build_utils import run, shellquote, outputof
@@ -35,7 +36,7 @@ def wait_for_lock():
     if os.path.exists(LOCKFILE):
       with open(LOCKFILE, "r") as lockfile:
         contents = lockfile.read()
-      pid = contents.sub(r'\D', '')
+      pid = re.sub(r'\D', '', contents)
       if not os.path.exists('/proc/' + pid):
         break  # That process is no longer running. Break the lock.
   with open(LOCKFILE, "w") as lockfile:
@@ -84,7 +85,7 @@ def run_tests(name):
   clean_for_test()
   run("scp %s test@%s:" % (os.path.join(SCRATCH, name), HOST))
   test_run("hdiutil attach '%s'" % (name,))
-  bname = name.sub(r'.app$', '')
+  bname = re.sub(r'.app$', '', name)
   read_only_result = get_app_output(
     "/Volumes/Bayeslite/%s.app" % bname,
     os.path.join(SCRATCH, name + ".read-only.out"))
