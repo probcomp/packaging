@@ -42,7 +42,7 @@ PAUSE_TO_MODIFY = False
 import distutils.spawn  # pylint: disable=import-error
 import errno
 import os
-import os.path
+import sys
 import time
 import tempfile
 try:
@@ -91,7 +91,7 @@ def get_project_version(project_dir):
 def composite_version(build_dir):
   composite = ''
   for project in GIT_REPOS:
-    print "Checking out", project
+    print >>sys.stderr, "Checking out", project
     run("git clone https://github.com/probcomp/%s.git %s"
         % (project, os.path.join(build_dir, project)))
     if PEG[project]:
@@ -103,11 +103,11 @@ def composite_version(build_dir):
       project_version = get_project_version(project)
       if project_version:
         composite += "-" + project[:5] + project_version
-        print "Project", project, "version is", project_version
+        print >>sys.stderr, "Project", project, "version is", project_version
   return composite
 
 def do_pre_installs(unused_build_dir, venv_dir):
-  print "Deps for CrossCat"
+  print >>sys.stderr, "Deps for CrossCat"
   boost_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     outputof("locate -l 1 boost/random/mersenne_twister.hpp", shell=True)))))
   assert os.path.exists(boost_dir), \
@@ -121,11 +121,11 @@ def do_main_installs(build_dir, venv_dir):
   for project in GIT_REPOS:
     reqfile = os.path.join(build_dir, project, "requirements.txt")
     if os.path.exists(reqfile):
-      print "Installing dependencies for", project
+      print >>sys.stderr, "Installing dependencies for", project
       venv_run(venv_dir, "pip install -r %s" % (shellquote(reqfile),))
     setupfile = os.path.join(build_dir, project, "setup.py")
     if os.path.exists(setupfile):
-      print "Installing", project, "into", build_dir
+      print >>sys.stderr, "Installing", project, "into", build_dir
       repodir = os.path.join(build_dir, project)
       venv_run(venv_dir, "cd -- %s && pip install ." % (shellquote(repodir),))
 
@@ -248,8 +248,9 @@ def basic_sanity_check(venv_dir):
     run("rm -rf -- %s" % (shellquote(test_dir),))
 
 def pause_to_modify(macos_path):
-  if PAUSE_TO_MODIFY:
-    print "Pausing to let you modify %s before packaging it up." % (macos_path,)
+  if PAUSE_TO_MODIFY and sys.__stdin__.isatty():
+    print >>sys.stderr, ("Pausing to let you modify %s before packaging it up."
+                         % (macos_path,))
     os.system('read -s -n 1 -p "Press any key to continue..."')
 
 def make_dmg_on_desktop(dist_dir, name):
@@ -268,7 +269,7 @@ def main():
 
   build_dir = tempfile.mkdtemp(prefix='BayesLite-app-')
   os.chdir(build_dir)
-  print "Building in", build_dir
+  print >>sys.stderr, "Building in", build_dir
 
   version = composite_version(build_dir)
   venv_dir = os.path.join(build_dir, "venv")
@@ -288,7 +289,7 @@ def main():
   pause_to_modify(macos_dir)
   make_dmg_on_desktop(dist_dir, name)
   run("/bin/rm -fr %s" % (shellquote(build_dir),))
-  print "Done. %d seconds elapsed" % (time.time() - start_time,)
+  print >>sys.stderr, "Done. %d seconds elapsed" % (time.time() - start_time,)
 
 if __name__ == "__main__":
     main()
