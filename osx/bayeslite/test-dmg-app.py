@@ -1,3 +1,5 @@
+# coding=utf-8
+
 # This is intended to be run by Jenkins on probcomp.
 
 # Setup includes:  (everything as build@ except where probcomp$ or test$ are specified)
