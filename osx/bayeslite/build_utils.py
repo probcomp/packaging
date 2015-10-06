@@ -8,7 +8,7 @@ def run(cmd):
 
 def outputof(cmd, **kwargs):
   print >>sys.stderr, cmd
-  output = subprocess.check_output(cmd, **kwargs, stderr=sys.stderr)
+  output = subprocess.check_output(cmd, stderr=sys.stderr, **kwargs)
   print "OUTPUT:", output
   return output
 
