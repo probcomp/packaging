@@ -22,9 +22,8 @@
 
 import re
 import os
-import sys
 import time
-from build_utils import run, shellquote, outputof
+from build_utils import run, shellquote, outputof, echo
 
 HOST = "pcg-osx-test.mit.edu"
 HPATH = "/Users/build/homebrew/bin"
@@ -33,14 +32,14 @@ LOCKFILE = os.path.join(SCRATCH, "lock")
 
 def wait_for_lock():
   while os.path.exists(LOCKFILE):
-    print >>sys.stderr, "Waiting for lock", LOCKFILE
+    echo("Waiting for lock", LOCKFILE)
     time.sleep(60)
     if os.path.exists(LOCKFILE):
       with open(LOCKFILE, "r") as lockfile:
         contents = lockfile.read()
       pid = re.sub(r'\D', '', contents)
       if not pid or not os.path.exists('/proc/' + pid):
-        print >>sys.stderr, "Breaking lock", LOCKFILE
+        echo("Breaking lock", LOCKFILE)
         break  # That process is no longer running. Break the lock.
   with open(LOCKFILE, "w") as lockfile:
     lockfile.write(str(os.getpid()))
@@ -49,20 +48,20 @@ def wait_for_lock():
     assert os.getpid() == int(lockfile.read())
 
 def build_run(cmd):
-  run("ssh build@%s '%s'" % (HOST, shellquote(cmd)))
+  run("ssh build@%s %s" % (HOST, shellquote(cmd)))
 def build_output(cmd):
-  return outputof("ssh build@%s '%s'" % (HOST, shellquote(cmd)))
+  return outputof("ssh build@%s %s" % (HOST, shellquote(cmd)))
 def test_run(cmd):
-  run("ssh test@%s '%s'" % (HOST, shellquote(cmd)))
+  run("ssh test@%s %s" % (HOST, shellquote(cmd)))
 def test_output(cmd):
-  return outputof("ssh test@%s '%s'" % (HOST, shellquote(cmd)))
+  return outputof("ssh test@%s %s" % (HOST, shellquote(cmd)))
 
 def build_dmg():
   run("scp build_dmg.py build_utils.py build@%s:" % (HOST,))
   build_run('PATH="%s:\\$PATH" python build_dmg.py' % (HPATH,))
   run("scp build@%s:Desktop/Bayeslite*.dmg %s" % (HOST, SCRATCH))
   name = build_output("cd Desktop && ls -t Bayeslite*.dmg | tail -1")
-  print "NAME:", name
+  echo("NAME:", name)
   return name
 
 def clean_for_test(eject=True):
@@ -94,7 +93,7 @@ def run_tests(name):
     os.path.join(SCRATCH, name + ".read-only.out"))
   clean_for_test(eject=False)
   weirdcharsdir = u"~/Desktop/Apo's 1\" trõpηe"
-  test_run("cp -R /Volumes/Bayeslite/%s.app '%s/'" %
+  test_run("cp -R /Volumes/Bayeslite/%s.app %s/" %
            (bname, shellquote(weirdcharsdir)))
   test_run("hdiutil detach /Volumes/Bayeslite")
   weirdchars_result = get_app_output(

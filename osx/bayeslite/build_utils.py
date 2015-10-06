@@ -2,19 +2,22 @@ import os
 import subprocess
 import sys
 
+def echo(*message):
+  print >>sys.stderr, *message
+
 def run(cmd):
-  print >>sys.stderr, cmd
+  echo(cmd)
   subprocess.check_call(cmd, shell=True, stderr=sys.stderr)
 
 def outputof(cmd, **kwargs):
-  print >>sys.stderr, cmd
+  echo(cmd)
   output = subprocess.check_output(cmd, stderr=sys.stderr, **kwargs)
-  print "OUTPUT:", output
+  echo("OUTPUT:", output)
   return output
 
 def venv_run(venv_dir, cmd):
   os.chdir(venv_dir)
-  print >>sys.stderr, cmd
+  echo(cmd)
   subprocess.check_call('source %s/bin/activate; %s' % (venv_dir, cmd),
                         shell=True, stderr=sys.stderr)
 
