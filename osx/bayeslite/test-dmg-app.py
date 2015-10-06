@@ -49,18 +49,18 @@ def wait_for_lock():
 
 def build_run(cmd):
   run("ssh build@%s %s" % (HOST, shellquote(cmd)))
-def build_output(cmd):
+def build_outputof(cmd):
   return outputof("ssh build@%s %s" % (HOST, shellquote(cmd)))
 def test_run(cmd):
   run("ssh test@%s %s" % (HOST, shellquote(cmd)))
-def test_output(cmd):
+def test_outputof(cmd):
   return outputof("ssh test@%s %s" % (HOST, shellquote(cmd)))
 
 def build_dmg():
   run("scp build_dmg.py build_utils.py build@%s:" % (HOST,))
   build_run('PATH="%s:\\$PATH" python build_dmg.py' % (HPATH,))
   run("scp build@%s:Desktop/Bayeslite*.dmg %s" % (HOST, SCRATCH))
-  name = build_output("cd Desktop && ls -t Bayeslite*.dmg | tail -1")
+  name = build_outputof("cd Desktop && ls -t Bayeslite*.dmg | tail -1").strip()
   echo("NAME:", name)
   return name
 
@@ -78,7 +78,7 @@ def get_app_output(app_location, output_path):
   test_run("open '%s'" % (app_location,))
   time.sleep(45)
   test_run("osascript -e 'tell application \"Safari\" to activate'")
-  result = test_output("osascript check-safari.scpt")
+  result = test_outputof("osascript check-safari.scpt")
   with(output_path, "w") as outfile:
     outfile.write(result)
   return result
@@ -120,7 +120,8 @@ def check_result(name, contents):
   assert count > 10, name
 
 def debug_skip_build():
-  return outputof("ls -t %s | tail -1" % (os.path.join(SCRATCH, "*.dmg")))
+  return outputof("ls -t %s | tail -1" %
+                  (os.path.join(SCRATCH, "*.dmg"))).strip()
 
 def main():
   wait_for_lock()
