@@ -119,11 +119,14 @@ def check_result(name, contents):
   assert opened is None, name
   assert count > 10, name
 
+def debug_skip_build():
+  return outputof("ls -t %s | tail -1" % (os.path.join(SCRATCH, "*.dmg")))
+
 def main():
   wait_for_lock()
   (ro, wc) = (None, None)
   try:
-    name = build_dmg()
+    name = debug_skip_build()  # build_dmg()
     (ro, wc) = run_tests(name)
   finally:
     os.remove(LOCKFILE)
