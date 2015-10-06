@@ -126,3 +126,6 @@ def main():
     os.remove(LOCKFILE)
   check_result("read-only", ro)
   check_result("weird-chars", wc)
+
+if __name__ == "__main__":
+  main()
