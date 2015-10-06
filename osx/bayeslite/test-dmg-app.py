@@ -22,6 +22,7 @@
 
 import re
 import os
+import sys
 import time
 from build_utils import run, shellquote, outputof
 
@@ -32,12 +33,14 @@ LOCKFILE = os.path.join(SCRATCH, "lock")
 
 def wait_for_lock():
   while os.path.exists(LOCKFILE):
+    print >>sys.stderr, "Waiting for lock", LOCKFILE
     time.sleep(60)
     if os.path.exists(LOCKFILE):
       with open(LOCKFILE, "r") as lockfile:
         contents = lockfile.read()
       pid = re.sub(r'\D', '', contents)
       if not os.path.exists('/proc/' + pid):
+        print >>sys.stderr, "Breaking lock", LOCKFILE
         break  # That process is no longer running. Break the lock.
   with open(LOCKFILE, "w") as lockfile:
     lockfile.write(str(os.getpid()))
@@ -90,9 +93,9 @@ def run_tests(name):
     "/Volumes/Bayeslite/%s.app" % bname,
     os.path.join(SCRATCH, name + ".read-only.out"))
   clean_for_test(eject=False)
-  weirdcharsdir = "~/Desktop/Apo's 1\" trõpηe".decode('utf-8')
+  weirdcharsdir = u"~/Desktop/Apo's 1\" trõpηe"
   test_run("cp -R /Volumes/Bayeslite/%s.app '%s/'" %
-           (bname, shellquote(weirdcharsdir.encode('utf-8'))))
+           (bname, shellquote(weirdcharsdir)))
   test_run("hdiutil detach /Volumes/Bayeslite")
   weirdchars_result = get_app_output(
     os.path.join(weirdcharsdir, bname + ".app"),
