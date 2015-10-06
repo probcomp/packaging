@@ -120,8 +120,7 @@ def check_result(name, contents):
   assert count > 10, name
 
 def debug_skip_build():
-  return outputof("ls -t %s | tail -1" %
-                  (os.path.join(SCRATCH, "*.dmg"))).strip()
+  return outputof("cd %s && ls -t %s | tail -1" % (SCRATCH, "*.dmg")).strip()
 
 def main():
   wait_for_lock()
