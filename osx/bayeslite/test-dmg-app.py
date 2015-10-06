@@ -58,7 +58,7 @@ def test_output(cmd):
   return outputof("ssh test@%s '%s'" % (HOST, shellquote(cmd)))
 
 def build_dmg():
-  run("scp build_dmg.py build@%s:" % (HOST,))
+  run("scp build_dmg.py build_utils.py build@%s:" % (HOST,))
   build_run('PATH="%s:\\$PATH" python build_dmg.py' % (HPATH,))
   run("scp build@%s:Desktop/Bayeslite*.dmg %s" % (HOST, SCRATCH))
   name = build_output("cd Desktop && ls -t Bayeslite*.dmg | tail -1")
