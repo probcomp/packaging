@@ -40,7 +40,7 @@ def wait_for_lock():
       if not os.path.exists('/proc/' + pid):
         break  # That process is no longer running. Break the lock.
   with open(LOCKFILE, "w") as lockfile:
-    lockfile.write(os.getpid())
+    lockfile.write(str(os.getpid()))
   assert os.path.exists(LOCKFILE)
   with open(LOCKFILE, "r") as lockfile:
     assert os.getpid() == int(lockfile.read())
