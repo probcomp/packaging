@@ -37,6 +37,7 @@ def check_app(app_location, output_path):
 
 def run_tests(name):
   clean_for_test()
+  run("hdiutil detach /Volumes/Bayeslite || true")
   run("hdiutil attach '/Users/test/Desktop/%s'" % (name,))
   bname = re.sub(r'\.dmg$', '', name)
   assert bname != name
