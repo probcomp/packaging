@@ -28,7 +28,7 @@ def check_app(app_location, output_path):
     count = check_result(app_location, result)
     elapsed = time.time() - start_time
     echo("%d seconds elapsed." % (elapsed,))
-    assert elapsed < 600
+    assert elapsed < 1200
   echo("That took less than %d wall-clock seconds" % (elapsed,))
   with open(output_path, "w") as outfile:
     outfile.write(result)
