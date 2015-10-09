@@ -34,8 +34,8 @@
 GIT_REPOS = ['crosscat', 'bayeslite', 'bdbcontrib']
 PEG = {  # None means head.
   'crosscat': None,
-  'bdbcontrib': None,
-  'bayeslite': None
+  'bdbcontrib': 'sessions',
+  'bayeslite': 'sessions',
   }
 PAUSE_TO_MODIFY = False
 
@@ -50,7 +50,7 @@ try:
 except ImportError:
   from distutils.core import setup # pylint: disable=import-error
 
-from build_utils import run, outputof, venv_run, shellquote, echo
+from shell_utils import run, outputof, venv_run, shellquote, echo
 
 def check_python():
   # Do not specify --python to virtualenv, bc eg python27 is a 32-bit version
@@ -66,7 +66,7 @@ def check_python():
   # results.
   # Rather than merely praying that the built-in python is
   # language-compatible, let's check.
-  pyver = outputof('python --version 2>&1', shell=True)
+  pyver = outputof('python --version 2>&1')
   assert "Python 2.7" == pyver[:10]
 
 def get_project_version(project_dir):
@@ -109,9 +109,10 @@ def composite_version(build_dir):
 def do_pre_installs(unused_build_dir, venv_dir):
   echo("Deps for CrossCat")
   boost_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-    outputof("locate -l 1 boost/random/mersenne_twister.hpp", shell=True)))))
+    outputof("locate boost/random/mersenne_twister.hpp | grep include | head -1")))))
   assert os.path.exists(boost_dir), \
     ("We need boost headers already installed for CrossCat: %s" % (boost_dir,))
+  echo("BOOST_ROOT=%s" % boost_dir)
   os.environ["BOOST_ROOT"] = boost_dir
   # If we don't install cython and numpy, crosscat's setup tries and fails:
   venv_run(venv_dir, "pip install cython")

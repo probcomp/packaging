@@ -1,5 +1,3 @@
-# coding=utf-8
-
 # This is intended to be run by Jenkins on probcomp.
 
 # Setup includes:  (everything as build@ except where probcomp$ or test$ are specified)
@@ -23,7 +21,7 @@
 import re
 import os
 import time
-from build_utils import run, shellquote, outputof, echo
+from shell_utils import run, shellquote, outputof, echo
 
 HOST = "pcg-osx-test.mit.edu"
 HPATH = "/Users/build/homebrew/bin"
@@ -53,8 +51,6 @@ def build_outputof(cmd):
   return outputof("ssh build@%s %s" % (HOST, shellquote(cmd)))
 def test_run(cmd):
   run("ssh test@%s %s" % (HOST, shellquote(cmd)))
-def test_outputof(cmd):
-  return outputof("ssh test@%s %s" % (HOST, shellquote(cmd)))
 
 def build_dmg():
   run("scp build_dmg.py build_utils.py build@%s:" % (HOST,))
@@ -64,76 +60,21 @@ def build_dmg():
   echo("NAME:", name)
   return name
 
-def clean_for_test(eject=True):
-  test_run("osascript -e 'tell application \"Safari\" to close every window'" +
-           " || true")
-  test_run("killall Safari || true")
-  test_run("killall python2.7 || true")
-  test_run("killall Terminal || true")
-  if eject:
-    test_run("hdiutil detach /Volumes/Bayeslite || true")
-    build_run("/bin/rm -f Desktop/Bayeslite*.dmg")
-
-def get_app_output(app_location, output_path):
-  test_run("open '%s'" % (app_location,))
-  time.sleep(45)
-  test_run("osascript -e 'tell application \"Safari\" to activate'")
-  result = test_outputof("osascript check-safari.scpt")
-  with open(output_path, "w") as outfile:
-    outfile.write(result)
-  return result
-
-def run_tests(name):
-  clean_for_test()
-  run("scp %s test@%s:" % (os.path.join(SCRATCH, name), HOST))
-  test_run("hdiutil attach '%s'" % (name,))
-  bname = re.sub(r'\.dmg$', '', name)
-  assert bname != name
-  read_only_result = get_app_output(
-    "/Volumes/Bayeslite/%s.app" % bname,
-    os.path.join(SCRATCH, name + ".read-only.out"))
-  clean_for_test(eject=False)
-  weirdcharsdir = u"~/Desktop/Apo's 1\" trõpηe"
-  test_run("mkdir -p %s" % shellquote(weirdcharsdir))
-  test_run("cp -R /Volumes/Bayeslite/%s.app %s/%s.app" %
-           (bname, shellquote(weirdcharsdir), bname))
-  test_run("hdiutil detach /Volumes/Bayeslite")
-  weirdchars_result = get_app_output(
-    os.path.join(weirdcharsdir, bname + ".app"),
-    os.path.join(SCRATCH, name + ".weirdchars.out"))
-  clean_for_test()
-  return (read_only_result, weirdchars_result)
-
-def check_result(name, contents):
-  opened = None
-  count = 0
-  for line in contents:
-    match = line.search(r'^In\s*\[([\d*]+)\]:')
-    if match:
-      assert opened is None, name
-      opened = match.group(0)
-      count += 1
-    else:
-      match = line.search(r'^Out\s*\[([\d*]+)\]:')
-      if match:
-        assert opened == match.group(0), name
-        opened = None
-  assert opened is None, name
-  assert count > 10, name
-
 def debug_skip_build():
   return outputof("cd %s && ls -t %s | tail -1" % (SCRATCH, "*.dmg")).strip()
 
+def test_dmg(name):
+  run("scp *.scpt shell_utils.py test_dmg.py %s test@%s:Desktop/" %
+      (os.path.join(SCRATCH, name), HOST))
+  test_run("python Desktop/test_dmg.py %s" % name)
+
 def main():
   wait_for_lock()
-  (ro, wc) = (None, None)
   try:
-    name = debug_skip_build()  # build_dmg()
-    (ro, wc) = run_tests(name)
+    name = build_dmg()
+    test_dmg(name)
   finally:
     os.remove(LOCKFILE)
-  check_result("read-only", ro)
-  check_result("weird-chars", wc)
 
 if __name__ == "__main__":
   main()

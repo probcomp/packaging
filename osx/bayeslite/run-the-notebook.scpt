@@ -16,7 +16,4 @@ tell application "Safari"
     return thePage
   end if
   do JavaScript "IPython.notebook.execute_all_cells();" in current tab of the first window
-  delay 240
-  set thePage to the text of current tab of the first window
-  return thePage
 end tell
