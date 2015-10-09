@@ -270,6 +270,7 @@ def main():
   build_dir = tempfile.mkdtemp(prefix='BayesLite-app-')
   os.chdir(build_dir)
   echo("Building in", build_dir)
+  echo("PATH is", os.environ["PATH"])
 
   version = composite_version(build_dir)
   venv_dir = os.path.join(build_dir, "venv")
