@@ -32,11 +32,16 @@
 # Requires virtualenv pre-installed.
 # Requires read access to the listed git repos.
 GIT_REPOS = ['crosscat', 'bayeslite', 'bdbcontrib']
+
+# Usually None; if specified, use it instead of version strings for components.
+NAMED_VERSION = None
+
 PEG = {  # None means head.
   'crosscat': None,
-  'bdbcontrib': 'sessions',
-  'bayeslite': 'sessions',
+  'bayeslite': None,
+  'bdbcontrib': None,
   }
+
 PAUSE_TO_MODIFY = False
 
 import distutils.spawn  # pylint: disable=import-error
@@ -273,6 +278,8 @@ def main():
   echo("PATH is", os.environ["PATH"])
 
   version = composite_version(build_dir)
+  if NAMED_VERSION is not None:
+      version = "-" + NAMED_VERSION
   venv_dir = os.path.join(build_dir, "venv")
   run('virtualenv %s' % (shellquote(venv_dir),))
 
