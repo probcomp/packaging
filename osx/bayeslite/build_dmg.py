@@ -38,8 +38,8 @@ NAMED_VERSION = None
 
 PEG = {  # None means head.
   'crosscat': None,
-  'bayeslite': None,
-  'bdbcontrib': None,
+  'bayeslite': NAMED_VERSION,
+  'bdbcontrib': NAMED_VERSION,
   }
 
 PAUSE_TO_MODIFY = False

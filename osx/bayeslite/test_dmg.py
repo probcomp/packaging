@@ -11,9 +11,13 @@ def clean_for_test():
   run("killall Safari || true")
   run("killall python2.7 || true")
   run("killall Terminal || true")
+  run("/bin/ls /Users/test/Desktop/")
   run("/bin/rm -fr /Users/test/Desktop/Apo*y || true")
+  run("/bin/ls /Users/test/Documents/")
+  run("/bin/rm -fr /Users/test/Documents/* || true")
 
 def check_app(app_location, output_path):
+  print "check_app(%r, %r)" % (app_location, output_path)
   run("open %s" % (shellquote(app_location),))
   time.sleep(45)
   run("osascript -e 'tell application \"Safari\" to activate'")
@@ -31,6 +35,7 @@ def check_app(app_location, output_path):
     assert elapsed < 1200
   echo("That took less than %d wall-clock seconds" % (elapsed,))
   with open(output_path, "w") as outfile:
+    print "Writing result [%r] for [%r]." % (output_path, app_location)
     outfile.write(result)
   assert count and count > 10, "%s\n%s" % (app_location, result)
   return result
@@ -56,6 +61,7 @@ def run_tests(name):
   clean_for_test()
 
 def check_result(name, contents):
+  print "check_result(%r, ...)" % (name)
   opened = None
   count = 0
   for line in contents.split('\n'):
