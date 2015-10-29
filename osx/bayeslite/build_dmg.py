@@ -75,23 +75,12 @@ def check_python():
   assert "Python 2.7" == pyver[:10]
 
 def get_project_version(project_dir):
-  here = os.getcwd()
-  with open(os.path.join(project_dir, 'VERSION'), 'rU') as f:
-    version = f.readline().strip()
-
-  # Append the Git commit id if this is a development version.
-  if version.endswith('+'):
-    tag = 'v' + version[:-1]
-    try:
-      os.chdir(project_dir)
-      desc = outputof(['git', 'describe', '--dirty', '--match', tag])
-      os.chdir(here)
-    except Exception:
-      version += 'unknown'
-    else:
-      assert desc.startswith(tag)
-      version = desc[1:].strip()
-  return version
+  qpd = shellquote(project_dir)
+  # Some setup.py's print crap first (e.g., our parser generation
+  # kludge because setuptools has no notion of dependencies), so use
+  # `tail -1' to skip everything but the last line.
+  script = 'cd %s && python setup.py --version | tail -1' % (qpd,)
+  return outputof(script).strip()
 
 def composite_version(build_dir):
   composite = ''
