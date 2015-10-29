@@ -4,16 +4,21 @@ end if
 
 tell application "Safari"
   activate
+  do shell script "echo osa: Activated Safari."
   set thePage to the text of current tab of the first window
   if thePage does not contain "Satellites" then
+    do shell script "echo osa: Failed to open ipython?"
     return thePage
   end if
   set theScript to "document.getElementsByClassName('item_link')[0].children[0].click();"
   do JavaScript theScript in current tab of first window
+  do shell script "echo osa: Waiting for the notebook to open."
   delay 3
   set thePage to the text of current tab of the first window
   if thePage does not contain "Union of Concerned Scientists" then
+    do shell script "echo osa: Failed to open the notebook."
     return thePage
   end if
   do JavaScript "IPython.notebook.execute_all_cells();" in current tab of the first window
 end tell
+do shell script "echo osa: Opened and sent run command to the notebook."

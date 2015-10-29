@@ -58,6 +58,7 @@ def build_dmg():
   run("scp build@%s:Desktop/Bayeslite*.dmg %s" % (HOST, SCRATCH))
   name = build_outputof("cd Desktop && ls -t Bayeslite*.dmg | tail -1").strip()
   echo("NAME:", name)
+  build_run("/bin/rm -f Desktop/Bayeslite*.dmg")
   return name
 
 def debug_skip_build():
