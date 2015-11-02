@@ -281,7 +281,9 @@ def main():
   if NAMED_VERSION is not None:
       version = "-" + NAMED_VERSION
   venv_dir = os.path.join(build_dir, "venv")
-  run('virtualenv %s' % (shellquote(venv_dir),))
+  lib_dir = "/Users/build/homebrew/lib/python2.7/site-packages/"
+  run('PYTHONPATH=%s virtualenv %s' %
+      (shellquote(lib_dir), shellquote(venv_dir)))
 
   do_pre_installs(build_dir, venv_dir)
   do_main_installs(build_dir, venv_dir)
