@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 
 #   Copyright (c) 2010-2014, MIT Probabilistic Computing Project
 #
@@ -50,6 +51,7 @@ import os
 import sys
 import time
 import tempfile
+import traceback
 try:
   from setuptools import setup
 except ImportError:
@@ -87,6 +89,7 @@ def get_project_version(project_dir):
       desc = outputof(['git', 'describe', '--dirty', '--match', tag])
       os.chdir(here)
     except Exception:
+      traceback.print_exc()
       version += 'unknown'
     else:
       assert desc.startswith(tag)
@@ -249,7 +252,8 @@ def basic_sanity_check(venv_dir):
     venv_run(venv_dir,
              "cd -- %s && bayesdb-demo fetch" % (shellquote(test_dir),))
     venv_run(venv_dir,
-             "cd -- %s && runipy Satellites.ipynb" % (shellquote(test_dir),))
+             "cd -- %s && MPLBACKEND=pdf runipy Satellites.ipynb" %
+             (shellquote(test_dir),))
   finally:
     run("rm -rf -- %s" % (shellquote(test_dir),))
 
