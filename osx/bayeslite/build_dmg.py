@@ -201,6 +201,7 @@ unset PYTHONPATH
 
 source "$activate"
 export DYLD_LIBRARY_PATH="$ldpath"
+export MPLBACKEND=pdf
 
 # Download and run the examples in someplace writeable:
 if [ -d "$HOME/Documents/$NAME" ]; then
