@@ -196,6 +196,12 @@ NAME=`basename -- "$(dirname -- "$(dirname -- "$wd")")" .app`
 activate="$wd/venv/bin/activate"
 ldpath="$wd/lib"
 
+# App was prompting people to accept xcode license to use git.
+# No actual need for ipynotebook to check git, so disable it
+# just within the app (per bayeslite/issues/139)
+printf '#!/bin/sh\nexit 1\n' > $wd/venv/bin/git
+chmod +x $wd/venv/bin/git
+
 # Clear any user's PYTHONPATH setting, which may interfere with what
 # we need.
 unset PYTHONPATH
