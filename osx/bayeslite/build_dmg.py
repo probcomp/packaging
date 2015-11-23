@@ -117,7 +117,8 @@ def composite_version(build_dir):
 def do_pre_installs(unused_build_dir, venv_dir):
   echo("Deps for CrossCat")
   boost_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-    outputof("locate boost/random/mersenne_twister.hpp | grep include | head -1")))))
+    outputof("mdfind -name mersenne_twister.hpp | "  # no -path option.
+             "grep include/boost/random/mersenne_twister.hpp | head -1")))))
   assert os.path.exists(boost_dir), \
     ("We need boost headers already installed for CrossCat: %s" % (boost_dir,))
   echo("BOOST_ROOT=%s" % boost_dir)
