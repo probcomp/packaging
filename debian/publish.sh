@@ -25,6 +25,8 @@ help ()
 
     usage
     printf '\n'
+    printf '  -h                show help\n'
+    printf '  -n                dry run\n'
     printf '  -O <objdir>       publish <objdir>/foo_1.23.amd64.deb\n'
     printf '  -b <basedir>      base of repository to publish to\n'
     printf '  -c <codename>     codename of OS release, e.g. `trusty'\''\n'

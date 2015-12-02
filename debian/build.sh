@@ -26,6 +26,7 @@ help ()
 
     usage
     printf '\n'
+    printf '  -h                show help\n'
     printf '  -n                dry run\n'
     printf '  -O <objdir>       build <objdir>/foo_1.23.amd64.deb\n'
     printf '  -d <debdir>       use <debdir>/control, default is .\n'
