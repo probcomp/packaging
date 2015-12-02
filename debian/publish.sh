@@ -6,7 +6,7 @@ usage ()
 {
 
     printf 'Usage: %s' "${0##*/}"
-    printf ' [-n]'
+    printf ' [-hn]'
     printf ' [-O <objdir>]'
     printf ' [-b <basedir>]'
     printf ' [-c <codename>]'
