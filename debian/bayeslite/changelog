@@ -13,7 +13,7 @@ bayeslite (0.1.3-1) trusty; urgency=medium
     * ieee_exp makes inf on overflow rather than python's default to raise.
     * Misc i/o, parser, sql, lint, copyright date, doc, and setup fixes.
 
- -- Gregory A Marton <gremio@acm.org>  Fri Nov 13 21:20:25 EST 2015
+ -- Gregory A Marton <gremio@acm.org>  Fri, 13 Nov 2015 21:20:25 -0500
 
 bayeslite (0.1.1-1) trusty; urgency=medium
 
@@ -27,7 +27,7 @@ bayeslite (0.1.1-1) trusty; urgency=medium
     * Run long-running tests only in continuous integration by default.
     * Enable multiprocess tests
 
- -- Gregory A Marton <gremio@acm.org>  Tue Oct 13 22:25:36 2015
+ -- Gregory A Marton <gremio@acm.org>  Tue, 13 Oct 2015 22:25:36 -0400
 
 bayeslite (0.1-1) trusty; urgency=medium
 
