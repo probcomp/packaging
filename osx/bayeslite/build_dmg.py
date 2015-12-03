@@ -78,23 +78,11 @@ def check_python():
 
 def get_project_version(project_dir):
   here = os.getcwd()
-  with open(os.path.join(project_dir, 'VERSION'), 'rU') as f:
-    version = f.readline().strip()
-
-  # Append the Git commit id if this is a development version.
-  if version.endswith('+'):
-    tag = 'v' + version[:-1]
-    try:
-      os.chdir(project_dir)
-      desc = outputof(['git', 'describe', '--dirty', '--match', tag])
-      os.chdir(here)
-    except Exception:
-      traceback.print_exc()
-      version += 'unknown'
-    else:
-      assert desc.startswith(tag)
-      version = desc[1:].strip()
-  return version
+  try:
+    os.chdir(project_dir)
+    return outputof('python setup.py --version')
+  finally:
+    os.chdir(here)
 
 def composite_version(build_dir):
   composite = ''
