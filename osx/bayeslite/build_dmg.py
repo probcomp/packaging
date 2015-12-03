@@ -80,7 +80,8 @@ def get_project_version(project_dir):
   here = os.getcwd()
   try:
     os.chdir(project_dir)
-    return outputof('python setup.py --version')
+    line = outputof('python setup.py --version')
+    return line.rstrip()        # Omit trailing newline.
   finally:
     os.chdir(here)
 
