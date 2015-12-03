@@ -90,7 +90,7 @@ def composite_version(build_dir):
   for project in GIT_REPOS:
     echo("Checking out", project)
     run("git clone https://github.com/probcomp/%s.git %s"
-        % (project, os.path.join(build_dir, project)))
+        % (shellquote(project), shellquote(os.path.join(build_dir, project))))
     if PEG[project]:
       repodir = os.path.join(build_dir, project)
       branch = PEG[project]
@@ -110,7 +110,7 @@ def do_pre_installs(unused_build_dir, venv_dir):
              "grep include/boost/random/mersenne_twister.hpp | head -1")))))
   assert os.path.exists(boost_dir), \
     ("We need boost headers already installed for CrossCat: %s" % (boost_dir,))
-  echo("BOOST_ROOT=%s" % boost_dir)
+  echo("BOOST_ROOT=%s" % (shellquote(boost_dir),))
   os.environ["BOOST_ROOT"] = boost_dir
   # If we don't install cython and numpy, crosscat's setup tries and fails:
   venv_run(venv_dir, "pip install cython")
