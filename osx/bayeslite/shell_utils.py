@@ -23,8 +23,9 @@ def outputof(cmd, **kwargs):
 def venv_run(venv_dir, cmd):
   os.chdir(venv_dir)
   echo(cmd)
-  subprocess.check_call('source %s/bin/activate; %s' % (venv_dir, cmd),
-                        shell=True, stderr=sys.stderr)
+  subprocess.check_call(
+    'source %s/bin/activate; %s' % (shellquote(venv_dir), cmd),
+    shell=True, stderr=sys.stderr)
 
 def shellquote(s):
   """Return `s`, quoted appropriately for execution by a shell."""
