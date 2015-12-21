@@ -49,8 +49,10 @@ import distutils.spawn  # pylint: disable=import-error
 import errno
 import os
 import sys
+import stat
 import time
 import tempfile
+import textwrap
 import traceback
 try:
   from setuptools import setup
@@ -145,6 +147,19 @@ def do_post_installs(unused_build_dir, venv_dir):
   venv_run(venv_dir, 'virtualenv --relocatable %s' % (shellquote(venv_dir),))
   # Sadly, that doesn't actually fix the most critical file, the activate script
 
+  # App was prompting people to accept xcode license to use git.
+  # No actual need for ipynotebook to check git, so disable it
+  # just within the app (per bayeslite/issues/139)
+  gitfile = os.path.join(venv_dir, "bin/git")
+  with open(gitfile, "w") as gitf:
+      gitf.write(textwrap.dedent("""#!/bin/sh
+         exit 1  # It is an error for bayeslite to try to use git.
+         """))
+  os.chmod(gitfile, # Make executable by everyone.
+           os.stat(gitfile).st_mode | stat.S_IXUSR | stat.S_IXGRP |
+           stat.S_IXOTH)
+
+
 def make_venv_truly_relocatable(venv_dir):
   relocable = '''VIRTUAL_ENV=$(dirname -- "$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" && pwd )")\n'''
   new_activate = tempfile.NamedTemporaryFile(delete=False)
@@ -195,12 +210,6 @@ NAME=`basename -- "$(dirname -- "$(dirname -- "$wd")")" .app`
 
 activate="$wd/venv/bin/activate"
 ldpath="$wd/lib"
-
-# App was prompting people to accept xcode license to use git.
-# No actual need for ipynotebook to check git, so disable it
-# just within the app (per bayeslite/issues/139)
-printf '#!/bin/sh\nexit 1\n' > $wd/venv/bin/git
-chmod +x $wd/venv/bin/git
 
 # Clear any user's PYTHONPATH setting, which may interfere with what
 # we need.
