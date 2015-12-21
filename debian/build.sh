@@ -6,7 +6,7 @@ usage ()
 {
 
     printf 'Usage: %s' "${0##*/}"
-    printf ' [-n]'
+    printf ' [-hn]'
     printf ' [-O <objdir>]'
     printf ' [-d <debdir>]'
     printf ' [-r <repo>]'
@@ -26,6 +26,7 @@ help ()
 
     usage
     printf '\n'
+    printf '  -h                show help\n'
     printf '  -n                dry run\n'
     printf '  -O <objdir>       build <objdir>/foo_1.23.amd64.deb\n'
     printf '  -d <debdir>       use <debdir>/control, default is .\n'

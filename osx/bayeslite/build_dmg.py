@@ -80,30 +80,19 @@ def check_python():
 
 def get_project_version(project_dir):
   here = os.getcwd()
-  with open(os.path.join(project_dir, 'VERSION'), 'rU') as f:
-    version = f.readline().strip()
-
-  # Append the Git commit id if this is a development version.
-  if version.endswith('+'):
-    tag = 'v' + version[:-1]
-    try:
-      os.chdir(project_dir)
-      desc = outputof(['git', 'describe', '--dirty', '--match', tag])
-      os.chdir(here)
-    except Exception:
-      traceback.print_exc()
-      version += 'unknown'
-    else:
-      assert desc.startswith(tag)
-      version = desc[1:].strip()
-  return version
+  try:
+    os.chdir(project_dir)
+    line = outputof('python setup.py --version')
+    return line.rstrip()        # Omit trailing newline.
+  finally:
+    os.chdir(here)
 
 def composite_version(build_dir):
   composite = ''
   for project in GIT_REPOS:
     echo("Checking out", project)
     run("git clone https://github.com/probcomp/%s.git %s"
-        % (project, os.path.join(build_dir, project)))
+        % (shellquote(project), shellquote(os.path.join(build_dir, project))))
     if PEG[project]:
       repodir = os.path.join(build_dir, project)
       branch = PEG[project]
@@ -123,7 +112,7 @@ def do_pre_installs(unused_build_dir, venv_dir):
              "grep include/boost/random/mersenne_twister.hpp | head -1")))))
   assert os.path.exists(boost_dir), \
     ("We need boost headers already installed for CrossCat: %s" % (boost_dir,))
-  echo("BOOST_ROOT=%s" % boost_dir)
+  echo("BOOST_ROOT=%s" % (shellquote(boost_dir),))
   os.environ["BOOST_ROOT"] = boost_dir
   # If we don't install cython and numpy, crosscat's setup tries and fails:
   venv_run(venv_dir, "pip install cython")
