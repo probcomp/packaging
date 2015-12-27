@@ -9,16 +9,18 @@ RUN         apt-get install -y cython \
 	    	    	    python2.7-dev \
 	    	    	    python-matplotlib \
 			    python-pandas \
-			    python-pip \
-			    python-scipy
+			    python-pip
 
-# crosscat expects numpy and cython installed before it gets built, it
-# doesn't manage to get the dependencies right.
+# Install scipy from source because sklearn-pandas needs it to come in that way.
+RUN	    apt-get build-dep -y python-scipy
+RUN	    pip install scipy
+
 RUN	    pip install crosscat
-RUN         pip install bayeslite bdbcontrib
+RUN         pip install bayeslite
+RUN	    pip install bdbcontrib
 
 WORKDIR /baysedb
 EXPOSE 8888
 
-CMD	bayesdb-demo
+CMD	bayesdb-demo fetch && ipython notebook --ip=0.0.0.0
 
