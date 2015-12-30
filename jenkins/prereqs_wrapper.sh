@@ -31,7 +31,7 @@ fi
 . $venv_dir/bin/activate
 WORKSPACE=$HOME/workspace
 
-pythenvs=
+pythenvs="PYTHONPATH=$venv_dir/lib/python2.7/site-packages:${PYTHONPATH:-}"
 while [ -n "$1" ]; do
     if [ "crosscat" == "$1" ]; then
 	pythenvs="$pythenvs $WORKSPACE/crosscat-tests/pythenv.sh"
