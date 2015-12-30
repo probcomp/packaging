@@ -32,6 +32,7 @@ fi
 WORKSPACE=$HOME/workspace
 
 pythenvs="PYTHONPATH=$venv_dir/lib/python2.7/site-packages:${PYTHONPATH:-}"
+pythenvs="${pythenvs%:}"  # Remove any trailing colon.
 while [ -n "$1" ]; do
     if [ "crosscat" == "$1" ]; then
 	pythenvs="$pythenvs $WORKSPACE/crosscat-tests/pythenv.sh"
@@ -47,5 +48,5 @@ while [ -n "$1" ]; do
     shift
 done
 
-$pythenvs $*
+eval $pythenvs $*
 
