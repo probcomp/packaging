@@ -1,0 +1,15 @@
+Jenkins on probcomp-4 expects this script to be in ~jenkins/prereqs_wrapper.sh
+so installation means copying it there.
+
+Jenkins also expects the result of build-venv to be in
+0.1.3-prereqs-venv, and the pip-install jenkins job tests that
+build-venv plus pip installs works and tests pass with the v0.1.3 tag.
+
+Most jenkins shell execution scripts should look something like:
+
+  set -eux
+  /var/lib/jenkins/prereqs_wrapper.sh crosscat bayeslite-apsw bayeslite bdbcontrib ./check.sh tests
+
+The effect of that is to ensure that we're using the environment that
+build-venv built, with each of the mentioned dependencies being at
+head instead.
