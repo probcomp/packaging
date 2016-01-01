@@ -115,8 +115,12 @@ def do_pre_installs(unused_build_dir, venv_dir):
   echo("BOOST_ROOT=%s" % (shellquote(boost_dir),))
   os.environ["BOOST_ROOT"] = boost_dir
   # If we don't install cython and numpy, crosscat's setup tries and fails:
-  venv_run(venv_dir, "pip install cython")
-  venv_run(venv_dir, "pip install numpy")
+  venv_run(venv_dir, "pip install --no-cache-dir "
+           "cython numpy==1.8.2 matplotlib==1.4.3 scipy")
+  venv_run(venv_dir, "pip install --no-cache-dir bayeslite-apsw "
+           "--install-option=\"fetch\" --install-option=\"--sqlite\" "
+           "--install-option=\"--version=3.9.2\"")
+  # TODO: Auto-sync with packaging/jenkins/prereqs_wrapper.sh or similar.
 
 def do_main_installs(build_dir, venv_dir):
   for project in GIT_REPOS:
