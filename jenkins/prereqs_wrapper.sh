@@ -12,6 +12,9 @@ export PS1="Needed for venv activate."
 set -eux
 
 if [ "build-venv" == "$1" ]; then
+  echo "Building a virtual env at [$1]"
+  echo "NOTE that this venv cannot be made relocatable (.so files), "
+  echo "so be sure to build it in its final resting place."
   if [ -n "$2" ]; then
     venv_dir=$2
   fi
@@ -31,8 +34,7 @@ fi
 . $venv_dir/bin/activate
 WORKSPACE=$HOME/workspace
 
-pythenvs="PYTHONPATH=$venv_dir/lib/python2.7/site-packages:${PYTHONPATH:-}"
-pythenvs="${pythenvs%:}"  # Remove any trailing colon.
+pythenvs=
 while [ -n "$1" ]; do
     if [ "crosscat" == "$1" ]; then
 	pythenvs="$pythenvs $WORKSPACE/crosscat-tests/pythenv.sh"
