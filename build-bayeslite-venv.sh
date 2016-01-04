@@ -34,7 +34,7 @@ echo ""
 echo "Next steps:"
 echo "  source $venv_dir/bin/activate"
 echo "Then you can run the demo:"
-echo "  (mkdir bdb-demo; cd bdb-demo; bdb-demo)"
+echo "  (mkdir bayesdb-demo; cd bayesdb-demo; bayesdb-demo)"
 echo "Or start a notebook, and import bayeslite or bdbcontrib."
 echo
 echo "NOTE: This new virtualenv will not work if you move or rename it."
