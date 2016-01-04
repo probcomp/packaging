@@ -13,7 +13,20 @@ fi
 
 venv_dir=$1
 
-echo "Building a virtual env at [$1]"
+if [ -z "`python -V | grep ' 2.7'`" ]; then
+    echo "Although we've started on the Python 3 path, BayesDB is not yet"
+    echo "Python 3 compatible. Please use a Python 2.7 instead."
+    exit 1
+fi
+
+if [ -z "`which virtualenv`" ]; then
+    echo "We need pip and virtualenv already installed."
+    echo "See https://pip.pypa.io/en/stable/installing/ for pip."
+    echo "Once you have that, 'pip install virtualenv' should work."
+    exit 1
+fi
+
+echo "Building a virtualenv directory at [$1]"
 
 virtualenv $venv_dir
 export PS1="Virtualenv activate needs a PS1 (prompt string) to munge."
