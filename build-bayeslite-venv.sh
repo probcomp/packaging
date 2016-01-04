@@ -13,7 +13,7 @@ fi
 
 venv_dir=$1
 
-if [ -z "`python -V | grep ' 2.7'`" ]; then
+if [ -z "`python -V 2>&1 | grep ' 2.7'`" ]; then
     echo "Although we've started on the Python 3 path, BayesDB is not yet"
     echo "Python 3 compatible. Please use a Python 2.7 instead."
     exit 1
