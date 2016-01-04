@@ -1,18 +1,5 @@
 #!/bin/bash
 
-set -eu
-
-if [ -z "$1" -o -d "$1" ]; then
-    echo "Usage: $0 new_venv_dir"
-    echo "That new virtualenv directory cannot already exist. It will be built."
-    echo "You must already have python2.7, pip, and virtualenv."
-    echo "The new virtualenv will not be relocatable (or renameable), "
-    echo "  so put it where you will want it now."
-    exit 1
-fi
-
-venv_dir=$1
-
 if [ -z "`python -V 2>&1 | grep ' 2.7'`" ]; then
     echo "Although we've started on the Python 3 path, BayesDB is not yet"
     echo "Python 3 compatible. Please use a Python 2.7 instead."
@@ -26,8 +13,19 @@ if [ -z "`which virtualenv`" ]; then
     exit 1
 fi
 
+if [ -z "$1" -o -d "$1" ]; then
+    echo "Usage: $0 new_venv_dir"
+    echo "That new virtualenv directory cannot already exist. It will be built."
+    echo "You must already have python2.7, pip, and virtualenv."
+    echo "The new virtualenv will not be relocatable (or renameable), "
+    echo "  so put it where you will want it now."
+    exit 1
+fi
+venv_dir=$1
+
 echo "Building a virtualenv directory at [$1]"
 
+set -eu
 virtualenv $venv_dir
 export PS1="Virtualenv activate needs a PS1 (prompt string) to munge."
 . $venv_dir/bin/activate
