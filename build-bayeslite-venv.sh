@@ -16,7 +16,6 @@ fi
 if [ -z "$1" -o -d "$1" ]; then
     echo "Usage: $0 new_venv_dir"
     echo "That new virtualenv directory cannot already exist. It will be built."
-    echo "You must already have python2.7, pip, and virtualenv."
     echo "The new virtualenv will not be relocatable (or renameable), "
     echo "  so put it where you will want it now."
     exit 1
