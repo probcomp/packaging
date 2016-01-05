@@ -5,7 +5,7 @@
 #   but use bayeslite and bdbcontrib at HEAD when running ./check.sh args
 #   Include a venv directory before your command to use that venv.
 HOME=/var/lib/jenkins
-venv_dir="$HOME/0.1.3-prereqs-venv"
+venv_dir="$HOME/prereqs-venv"
 
 set -eux
 
