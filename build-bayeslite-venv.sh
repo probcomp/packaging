@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ -z "`python -V 2>&1 | grep ' 2.7'`" ]; then
-    echo "Although we've started on the Python 3 path, BayesDB is not yet"
-    echo "Python 3 compatible. Please use a Python 2.7 instead."
-    exit 1
-fi
-
 if [ -z "`which virtualenv`" ]; then
     echo "We need pip and virtualenv already installed."
     echo "See https://pip.pypa.io/en/stable/installing/ for pip."
@@ -13,19 +7,29 @@ if [ -z "`which virtualenv`" ]; then
     exit 1
 fi
 
-if [ -z "$1" -o -d "$1" ]; then
-    echo "Usage: $0 new_venv_dir"
-    echo "That new virtualenv directory cannot already exist. It will be built."
-    echo "The new virtualenv will not be relocatable (or renameable), "
-    echo "  so put it where you will want it now."
-    exit 1
-fi
 venv_dir=$1
 
-echo "Building a virtualenv directory at [$1]"
+if [ -d "$venv_dir" -a ! -r "$venv_dir/bin/activate" ]; then
+    echo "$venv_dir exists, but does not seem to be a virtualenv."
+    echo "  Please choose a different path, move it out of the way, or"
+    echo "  create it with virtualenv."
+    exit 1
+fi
+
+if [ ! -d "$venv_dir" ]; then
+    echo "Building a virtualenv directory at [$1]"
+    virtualenv $venv_dir
+fi
+
+if [ -z "`$venv_dir/bin/python -V 2>&1 | grep ' 2.7'`" ]; then
+    echo "Although we've started to look at Python 3, BayesDB is not yet"
+    echo "Python 3 compatible. Please use a Python 2.7 instead."
+    exit 1
+fi
+
 
 set -eu
-virtualenv $venv_dir
+    
 export PS1="Virtualenv activate needs a PS1 (prompt string) to munge."
 . $venv_dir/bin/activate
 # Install these first, because crosscat's setup.py fails if these aren't
