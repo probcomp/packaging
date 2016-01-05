@@ -37,7 +37,7 @@ pip install --no-cache-dir bdbcontrib
 # Requirements for testing.
 pip --no-cache-dir install mock pytest # tests_require
 pip --no-cache-dir install pillow --global-option="build_ext" --global-option="--disable-jpeg" # tests_require
-pip --no-cache-dir install jupyter ipython[notebook]
+pip --no-cache-dir install jupyter ipython[notebook] runipy
 
 echo "Installed into $venv_dir!"
 echo ""
