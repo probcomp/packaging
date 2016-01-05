@@ -1,42 +1,20 @@
 #!/bin/bash
 
-# Usage: $0 build-venv [dir]
-#   Create a venv that others can rely on with the documented prereqs.
 # Usage: $0 bayeslite bdbcontrib ./check.sh args
 #   Use vanilla crosscat and bayeslite-apsw because they are not listed,
 #   but use bayeslite and bdbcontrib at HEAD when running ./check.sh args
+#   Include a venv directory before your command to use that venv.
 HOME=/var/lib/jenkins
 venv_dir="$HOME/0.1.3-prereqs-venv"
 
-export PS1="Needed for venv activate."
 set -eux
 
-if [ "build-venv" == "$1" ]; then
-  echo "Building a virtual env at [$1]"
-  echo "NOTE that this venv cannot be made relocatable (.so files), "
-  echo "so be sure to build it in its final resting place."
-  if [ -n "$2" ]; then
-    venv_dir=$2
-  fi
-  virtualenv $venv_dir
-  . $venv_dir/bin/activate
-  # Install these first, because crosscat's setup.py fails if these aren't
-  # present beforehand:
-  pip install --no-cache-dir cython numpy==1.8.2 matplotlib==1.4.3 scipy
-  pip install --no-cache-dir bayeslite-apsw --install-option="fetch" --install-option="--sqlite" --install-option="--version=3.9.2"
-  pip install --no-cache-dir bdbcontrib
-
-  pip --no-cache-dir install mock pytest # tests_require
-  pip --no-cache-dir install pillow --global-option="build_ext" --global-option="--disable-jpeg" # tests_require
-  exit 0
-fi
-
-. $venv_dir/bin/activate
 WORKSPACE=$HOME/workspace
-
 pythenvs=
 while [ -n "$1" ]; do
-    if [ "crosscat" == "$1" ]; then
+    if [ -d "$1" -a -e "$1/bin/activate" ]; then
+	venv_dir=$1
+    elif [ "crosscat" == "$1" ]; then
 	pythenvs="$pythenvs $WORKSPACE/crosscat-tests/pythenv.sh"
     elif [ "bayeslite-apsw" == "$1" ]; then
 	pythenvs="$pythenvs $WORKSPACE/bayeslite-apsw-master/pythenv.sh"
@@ -49,6 +27,9 @@ while [ -n "$1" ]; do
     fi
     shift
 done
+
+export PS1="Needed for venv activate."
+. $venv_dir/bin/activate
 
 eval $pythenvs $*
 
