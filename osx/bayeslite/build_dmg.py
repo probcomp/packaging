@@ -156,6 +156,23 @@ def do_post_installs(unused_build_dir, venv_dir):
            os.stat(gitfile).st_mode | stat.S_IXUSR | stat.S_IXGRP |
            stat.S_IXOTH)
 
+def fix_python_and_its_path(venv_dir):
+  # By default, venv hard links to the python that it was built with,
+  # which may be different than the python that we want the client to
+  # execute. Let's just assume that on the client, we want to use the
+  # generic /System/Library py2.7, rather than a special one.
+  sys_python = "/System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+  python_dylib_link = os.path.join(venv_dir, ".Python")
+  run("ln -fs %s %s" % (shellquote(sys_python), shellquote(python_dylib_link)))
+
+  bin_python = os.path.join(venv_dir, "bin", "python")
+  run("rm -f %s" % (shellquote(bin_python),))
+  #with open(bin_python, "w") as bp:
+  #  bp.write("""#!/bin/bash\nexec -a "$0" /usr/bin/python2.7 ${1+"$@"}\n""")
+  #run("chmod a+x %s" % (shellquote(bin_python),))
+  run("ln -s /usr/bin/python2.7 %s" % (shellquote(bin_python),))
+  os.environ["PYTHONPATH"] = os.path.join(
+      venv_dir, "lib/python2.7/site-packages")
 
 def make_venv_truly_relocatable(venv_dir):
   relocable = '''VIRTUAL_ENV=$(dirname -- "$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" && pwd )")\n'''
@@ -170,31 +187,6 @@ def make_venv_truly_relocatable(venv_dir):
   new_activate.close()
   run("mv %s %s" %
       (shellquote(new_activate.name), shellquote(old_activate_path)))
-  # Also, we are hard linking to the python that we were built with,
-  # which may be different than the python that we want the client to
-  # execute. Let's just assume that on the client, we want to use the
-  # generic /System/Library py2.7, rather than a special one.
-  sys_python = "/System/Library/Frameworks/Python.framework/Versions/2.7/Python"
-  python_dylib_link = os.path.join(venv_dir, ".Python")
-  run("ln -fs %s %s" % (shellquote(sys_python), shellquote(python_dylib_link)))
-
-  # And we still have a copy of python that my otherwise reference its
-  # own dependencies, rather than relying on the built-in python. So
-  # remove that.
-  #
-  # XXX Actually, this doesn't work at all -- it altogether defeats the
-  # mechanism by which Python discovers what should be in sys.path for a
-  # virtualenv.
-  #
-  # If it really turns out to be necessary to do this, we can replace
-  # the $VENV_DIR/bin/python by the following two-line shell script:
-  #
-  #       #!/bin/bash
-  #       exec -a "$0" /usr/bin/python2.7 ${1+"$@"}
-  #
-  #run("rm -f %s" % (shellquote(os.path.join(venv_dir, "bin", "python")),))
-  #run("ln -s /usr/bin/python2.7 %s" %
-  #    (shellquote(os.path.join(venv_dir, "bin", "python")),))
 
 def make_starter_script(macos_path):
   starter_script = '''#!/bin/bash
@@ -211,6 +203,7 @@ ldpath="$wd/lib"
 # Clear any user's PYTHONPATH setting, which may interfere with what
 # we need.
 unset PYTHONPATH
+export PYTHONPATH="$wd/venv/lib/python2.7/site-packages"
 
 source "$activate"
 export DYLD_LIBRARY_PATH="$ldpath"
@@ -266,8 +259,11 @@ def basic_sanity_check(venv_dir):
     venv_run(venv_dir,
              "cd -- %s && bayesdb-demo fetch" % (shellquote(test_dir),))
     venv_run(venv_dir,
-             "cd -- %s && MPLBACKEND=pdf runipy Satellites.ipynb" %
-             (shellquote(test_dir),))
+             "cd -- %s && "
+             "MPLBACKEND=pdf PYTHONPATH=%s runipy Satellites.ipynb" %
+             (shellquote(test_dir),
+              shellquote(os.path.join(venv_dir,
+                                      "lib/python2.7/site-packages"))))
   finally:
     run("rm -rf -- %s" % (shellquote(test_dir),))
 
@@ -304,6 +300,7 @@ def main():
   do_pre_installs(build_dir, venv_dir)
   do_main_installs(build_dir, venv_dir)
   do_post_installs(build_dir, venv_dir)
+  fix_python_and_its_path(venv_dir)
   make_venv_truly_relocatable(venv_dir)
 
   name="Bayeslite%s" % (version,)
