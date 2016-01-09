@@ -36,6 +36,9 @@ GIT_REPOS = ['crosscat', 'bayeslite', 'bdbcontrib']
 
 # Usually None; if specified, use it instead of version strings for components.
 NAMED_VERSION = None
+import sys
+if len(sys.argv) > 1:
+    NAMED_VERSION = sys.argv[1]
 
 PEG = {  # None means head.
   'crosscat': None,
