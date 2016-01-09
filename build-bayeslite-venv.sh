@@ -34,12 +34,13 @@ export PS1="Virtualenv activate needs a PS1 (prompt string) to munge."
 . $venv_dir/bin/activate
 # Install these first, because crosscat's setup.py fails if these aren't
 # present beforehand:
-pip install --no-cache-dir cython numpy==1.8.2 matplotlib==1.4.3 scipy
+pip install --no-cache-dir cython numpy==1.8.2 matplotlib==1.4.3 scipy pandas
+pip install ipython==3.2.1
 pip install --no-cache-dir bayeslite-apsw --install-option="fetch" --install-option="--sqlite" --install-option="--version=3.9.2"
 pip install --no-cache-dir bdbcontrib
 
 # Requirements for testing.
-pip --no-cache-dir install mock pytest # tests_require
+pip --no-cache-dir install mock pytest flaky # tests_require
 pip --no-cache-dir install pillow --global-option="build_ext" --global-option="--disable-jpeg" # tests_require
 pip --no-cache-dir install jupyter ipython[notebook] runipy
 
