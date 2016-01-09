@@ -119,10 +119,11 @@ def do_pre_installs(unused_build_dir, venv_dir):
   os.environ["BOOST_ROOT"] = boost_dir
   # If we don't install cython and numpy, crosscat's setup tries and fails:
   venv_run(venv_dir, "pip install --no-cache-dir "
-           "cython numpy==1.8.2 matplotlib==1.4.3 scipy")
+           "cython numpy==1.8.2 matplotlib==1.4.3 scipy pandas")
   venv_run(venv_dir, "pip install --no-cache-dir bayeslite-apsw "
            "--install-option=\"fetch\" --install-option=\"--sqlite\" "
            "--install-option=\"--version=3.9.2\"")
+
   # TODO: Auto-sync with packaging/jenkins/prereqs_wrapper.sh or similar.
 
 def do_main_installs(build_dir, venv_dir):
@@ -139,7 +140,7 @@ def do_main_installs(build_dir, venv_dir):
 
 def do_post_installs(unused_build_dir, venv_dir):
   # This app's only other dependency:
-  venv_run(venv_dir, "pip install 'ipython[notebook]' runipy")
+  venv_run(venv_dir, "pip install jupyter 'ipython[notebook]==3.2.1' runipy")
   venv_run(venv_dir, 'virtualenv --relocatable %s' % (shellquote(venv_dir),))
   # Sadly, that doesn't actually fix the most critical file, the activate script
 
