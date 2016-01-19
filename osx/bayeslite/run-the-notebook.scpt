@@ -10,7 +10,7 @@ tell application "Safari"
     do shell script "echo osa: Failed to open ipython?"
     return thePage
   end if
-  set theScript to "document.getElementsByClassName('item_link')[0].children[0].click();"
+  set theScript to "$(\".item_name:contains(Satellites.ipynb)\")[0].click();"
   do JavaScript theScript in current tab of first window
   do shell script "echo osa: Waiting for the notebook to open."
   delay 3
