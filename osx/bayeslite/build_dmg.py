@@ -119,7 +119,9 @@ def do_pre_installs(unused_build_dir, venv_dir):
   os.environ["BOOST_ROOT"] = boost_dir
   # If we don't install cython and numpy, crosscat's setup tries and fails:
   venv_run(venv_dir, "pip install --no-cache-dir "
-           "cython numpy==1.8.2 matplotlib==1.4.3 scipy pandas")
+           "cython numpy==1.8.2 matplotlib==1.4.3 scipy")
+  venv_run(venv_dir, "pip install --no-cache-dir pandas "
+           "--install-option=\"build_ext\"")
   venv_run(venv_dir, "pip install --no-cache-dir bayeslite-apsw "
            "--install-option=\"fetch\" --install-option=\"--sqlite\" "
            "--install-option=\"--version=3.9.2\"")
