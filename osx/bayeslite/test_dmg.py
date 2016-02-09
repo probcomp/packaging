@@ -7,7 +7,7 @@ import time
 from shell_utils import run, shellquote, outputof, echo
 
 def clean_for_test():
-  run("osascript -e 'tell application \"Safari\" to close every window' ||true")
+  run("osascript /Users/test/Desktop/close-the-notebook.scpt || true")
   run("killall Safari || true")
   run("killall python2.7 || true")
   run("killall Terminal || true")

@@ -11,7 +11,7 @@ RUN pip install setuptools virtualenv
 # Required Bayeslite dependencies:
 RUN apt-get install -y -qq libboost-dev
 # Nice-to-have (pip would install them, but this is faster):
-RUN apt-get install -y -qq python-matplotlib python-numpy python-scipy python-pandas libboost-dev python-sklearn
+RUN apt-get install -y -qq python-matplotlib python-numpy python-scipy python-pandas python-sklearn
 
 WORKDIR /bayesdb
 RUN     pip -q install ipython[notebook]==3.2.1 cython
