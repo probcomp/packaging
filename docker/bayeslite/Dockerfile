@@ -1,26 +1,24 @@
-FROM        ubuntu:14.04.3
-ENV DEBIAN_FRONTEND noninteractive
+# Dockerfile that builds, installs, and tests bayeslite. It is for development
+# only; users should use the python package.
 
-MAINTAINER  Richard Tibbetts
+FROM        ubuntu:15.10
+RUN         apt-get update -qq
 
-RUN         apt-get update
-RUN         apt-get install -y cython \
-	    	    	    libboost1.54-all-dev \
-	    	    	    python2.7-dev \
-	    	    	    python-matplotlib \
-			    python-pandas \
-			    python-pip
+# Installation dependencies:
+RUN apt-get install -y -qq python2.7-dev python-pip git apt-utils pkg-config
+RUN pip install setuptools virtualenv
 
-# Install scipy from source because sklearn-pandas needs it to come in that way.
-RUN	    apt-get build-dep -y python-scipy
-RUN	    pip install scipy
+# Required Bayeslite dependencies:
+RUN apt-get install -y -qq libboost-dev
+# Nice-to-have (pip would install them, but this is faster):
+RUN apt-get install -y -qq python-matplotlib python-numpy python-scipy python-pandas libboost-dev python-sklearn
 
-RUN	    pip install crosscat
-RUN         pip install bayeslite
-RUN	    pip install bdbcontrib
+WORKDIR /bayesdb
+RUN     pip -q install ipython[notebook]==3.2.1 cython
+RUN     BOOST_ROOT=/usr/include pip -q install crosscat
+RUN     pip -q install bdbcontrib
 
-WORKDIR /baysedb
+WORKDIR /bayesdb/demo
+RUN         bayesdb-demo fetch
 EXPOSE 8888
-
-CMD	bayesdb-demo fetch && ipython notebook --ip=0.0.0.0
-
+CMD	ipython notebook --port=8888 --ip=0.0.0.0 --no-browser
