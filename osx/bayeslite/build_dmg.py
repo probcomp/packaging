@@ -212,12 +212,7 @@ export DYLD_LIBRARY_PATH="$ldpath"
 export MPLBACKEND=pdf
 
 # Download and run the examples in someplace writeable:
-if [ -d "$HOME/Documents/$NAME" ]; then
-    cd -- "$HOME/Documents/$NAME" && "$wd/venv/bin/bayesdb-demo" launch
-else
-    mkdir -- "$HOME/Documents/$NAME"
-    cd -- "$HOME/Documents/$NAME" && "$wd/venv/bin/bayesdb-demo"
-fi
+"$wd/venv/bin/bayesdb-demo" --destination "$HOME/Documents"
 '''
   startsh_path = os.path.join(macos_path, "start.sh")
   with open(startsh_path, "w") as startsh:
@@ -262,10 +257,11 @@ def basic_sanity_check(venv_dir):
              "cd -- %s && bayesdb-demo fetch" % (shellquote(test_dir),))
     venv_run(venv_dir,
              "cd -- %s && "
-             "MPLBACKEND=pdf PYTHONPATH=%s runipy Satellites.ipynb" %
+             "MPLBACKEND=pdf PYTHONPATH=%s runipy %s" %
              (shellquote(test_dir),
               shellquote(os.path.join(venv_dir,
-                                      "lib/python2.7/site-packages"))))
+                                      "lib/python2.7/site-packages")),
+              "Bayeslite-v*/satellites/Satellites.ipynb"))
   finally:
     run("rm -rf -- %s" % (shellquote(test_dir),))
 
