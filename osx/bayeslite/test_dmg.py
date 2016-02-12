@@ -6,29 +6,36 @@ import sys
 import time
 from shell_utils import run, shellquote, outputof, echo
 
+DEBUGGING=False
+HOMEDIR="/Users/test"
+SCRIPTSDIR=os.path.join(HOMEDIR, "Desktop")
+MOUNTDIR=os.path.join(HOMEDIR, "Desktop")
+DOCSDIR=os.path.join(HOMEDIR, "Documents")
+
 def clean_for_test():
-  run("osascript /Users/test/Desktop/close-the-notebook.scpt || true")
-  run("killall Safari || true")
-  run("killall python2.7 || true")
-  run("killall Terminal || true")
-  run("/bin/ls /Users/test/Desktop/")
-  run("/bin/rm -fr /Users/test/Desktop/Apo*y || true")
-  run("/bin/ls /Users/test/Documents/")
-  run("/bin/rm -fr /Users/test/Documents/* || true")
+  run("osascript %s/close-the-notebook.scpt || true" % (SCRIPTSDIR,))
+  if not DEBUGGING:
+    run("killall Safari || true")
+    run("killall python2.7 || true")
+    run("killall Terminal || true")
+    run("/bin/ls %s" % (MOUNTDIR,))
+    run("/bin/rm -fr %s/Apo*y || true" % (MOUNTDIR,))
+    run("/bin/ls %s" % (DOCSDIR,))
+    run("/bin/rm -fr %s/* || true" % (DOCSDIR,))
 
 def check_app(app_location, output_path):
   print "check_app(%r, %r)" % (app_location, output_path)
   run("open %s" % (shellquote(app_location),))
-  time.sleep(45)
+  time.sleep(30)
   run("osascript -e 'tell application \"Safari\" to activate'")
-  run("osascript /Users/test/Desktop/run-the-notebook.scpt")
+  run("osascript %s/run-the-notebook.scpt" % (SCRIPTSDIR,))
   result = None
   count = None
   start_time = time.time()
   while not count:
     time.sleep(20)
     result = outputof(
-      "osascript /Users/test/Desktop/grab-safari-tab-contents.scpt")
+      "osascript %s/grab-safari-tab-contents.scpt" % (SCRIPTSDIR,))
     count = check_result(app_location, result)
     elapsed = time.time() - start_time
     echo("%d seconds elapsed." % (elapsed,))
@@ -43,13 +50,13 @@ def check_app(app_location, output_path):
 def run_tests(name):
   clean_for_test()
   run("hdiutil detach /Volumes/Bayeslite || true")
-  run("hdiutil attach '/Users/test/Desktop/%s'" % (name,))
+  run("hdiutil attach '%s/%s'" % (MOUNTDIR, name,))
   bname = re.sub(r'\.dmg$', '', name)
   assert bname != name
   check_app("/Volumes/Bayeslite/%s.app" % bname,
             os.path.join(name + ".read-only.out"))
   clean_for_test()
-  weirdcharsdir = u"/Users/test/Desktop/Apo\x27s 1\x22 trophy"
+  weirdcharsdir = u"%s/Apo\x27s 1\x22 trophy" % (MOUNTDIR,)
   run("mkdir -p %s" % shellquote(weirdcharsdir))
   run("cp -R /Volumes/Bayeslite/%s.app %s/%s.app" %
            (bname, shellquote(weirdcharsdir), bname))
@@ -57,7 +64,8 @@ def run_tests(name):
   check_app(os.path.join(weirdcharsdir, bname + ".app"),
             os.path.join(name + ".weirdchars.out"))
   run("hdiutil detach /Volumes/Bayeslite || true")
-  run("/bin/rm -f Desktop/Bayeslite*.dmg || true")
+  if not DEBUGGING:
+    run("/bin/rm -f %s/Bayeslite*.dmg || true" % (MOUNTDIR,))
   clean_for_test()
 
 def check_result(name, contents):
