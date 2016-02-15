@@ -1,17 +1,23 @@
 #!/bin/bash
 
-set -ex
+set -Ceux
 
-docker build -t bayeslite .
+# Build it, or open a terminal on it to help debug why it didn't build.
+docker build -t bayeslite . || docker run -it `docker images | head -2 | tail -1 | awk '{print $3}'` /bin/bash -il
+
+: ${BROWSER:=""}
+
 notebook_url="http://`docker-machine ip default`:8888/"
 if [ -n "$BROWSER" ]; then
-    $BROWSER "$notebook_url"
+    $BROWSER "$notebook_url" &
 elif [ "Darwin" == "`uname -s`" ]; then
     open "$notebook_url"
-elif which python > /dev/null; then
-    python -mwebbrowser "$notebook_url"
 else
     echo "The notebook will be available at $notebook_url"
 fi
-# Delete it when it exists, keep it on a terminal and attached.
-docker run --rm -i -t --net=host bayeslite
+
+# Keep it on a terminal and attached.
+# Do not delete because you might've done work there
+#   (or might want to debug a failure).
+
+docker run -it --net=host bayeslite
