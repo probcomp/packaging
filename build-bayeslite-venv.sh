@@ -35,7 +35,7 @@ export PS1="Virtualenv activate needs a PS1 (prompt string) to munge."
 . $venv_dir/bin/activate
 # Install these first, because crosscat's setup.py fails if these aren't
 # present beforehand:
-pip install --no-cache-dir cython numpy==1.8.2 matplotlib==1.4.3 scipy pandas
+pip install --no-cache-dir cython numpy==1.8.2 matplotlib==1.4.3 scipy pandas sklearn
 pip install ipython==3.2.1
 pip install --no-cache-dir bayeslite-apsw --install-option="fetch" --install-option="--sqlite" --install-option="--version=3.9.2"
 if [ "" = "$install_version" -o "latest" = "$install_version" ]; then
