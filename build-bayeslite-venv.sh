@@ -51,7 +51,7 @@ else
 fi
 
 # Requirements for testing.
-pip --no-cache-dir install mock pytest flaky # tests_require
+pip --no-cache-dir install mock pytest flaky pexpect # tests_require
 pip --no-cache-dir install pillow --global-option="build_ext" --global-option="--disable-jpeg" # tests_require
 pip --no-cache-dir install jupyter ipython[notebook] runipy
 
