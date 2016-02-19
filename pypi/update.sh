@@ -98,11 +98,11 @@ function deploy() {
         # There was no colon.
         ver=
     fi
-    test -d $pkg || git clone https://github.com/probcomp/$pkg $pkg
+    test -d "$pkg" || git clone "https://github.com/probcomp/$pkg.git" "$pkg"
     (
         set -Ceu
-        cd $pkg
-        git_destructive_update $ver
+        cd -- "$pkg"
+        git_destructive_update "$ver"
         ensure_current_copyright
         build_package_contents "$pkg" "$ver"
         upload
