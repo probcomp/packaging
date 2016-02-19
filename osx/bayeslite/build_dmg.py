@@ -34,17 +34,12 @@ from __future__ import print_function
 # Requires read access to the listed git repos.
 GIT_REPOS = ['crosscat', 'bayeslite', 'bdbcontrib']
 
-# Usually None; if specified, use it instead of version strings for components.
-NAMED_VERSION = None
+# PKG_VERSIONS may be 'head', 'latest', or a comma-delimited list of
+# package:version pairs.
+PKG_VERSIONS = None
 import sys
 if len(sys.argv) > 1:
-    NAMED_VERSION = sys.argv[1]
-
-PEG = {  # None means head.
-  'crosscat': None,
-  'bayeslite': NAMED_VERSION,
-  'bdbcontrib': NAMED_VERSION,
-  }
+    PKG_VERSIONS = sys.argv[1]
 
 PAUSE_TO_MODIFY = False
 
@@ -90,23 +85,28 @@ def get_project_version(project_dir):
   finally:
     os.chdir(here)
 
+def get_latest_git_annotated_version(project_dir):
+  cmd = ('git for-each-ref --sort=\'*authordate\' '
+         '--format=\'%(tag)\' refs/tags | tail -1')
+  return outputof("cd -- %s && %s" % (shellquote(project_dir), cmd)).rstrip()
+
+def version_dict(build_dir):
+  def dir(proj):
+    return os.path.join(build_dir, proj)
+  if PKG_VERSIONS in (None, 'head', 'HEAD'):
+    return dict([(proj, get_project_version(dir(proj))) for proj in GIT_REPOS])
+  elif PKG_VERSIONS == 'latest':
+    return dict([(proj, get_latest_git_annotated_version(dir(proj)))
+                 for proj in GIT_REPOS])
+  else:
+    return dict([pkg.split(':') for pkg in PKG_VERSIONS.split(',')])
+
 def composite_version(build_dir):
-  composite = ''
-  for project in GIT_REPOS:
-    echo("Checking out", project)
-    run("git clone https://github.com/probcomp/%s.git %s"
-        % (shellquote(project), shellquote(os.path.join(build_dir, project))))
-    if PEG[project]:
-      repodir = os.path.join(build_dir, project)
-      branch = PEG[project]
-      run('cd -- %s && git checkout %s' %
-          (shellquote(repodir), shellquote(branch)))
-    if os.path.exists(os.path.join(project, 'VERSION')):
-      project_version = get_project_version(project)
-      if project_version:
-        composite += "-" + project[:5] + project_version
-        echo("Project", project, "version is", project_version)
-  return composite
+  vdict = version_dict(build_dir)
+  if PKG_VERSIONS in (None, 'head', 'HEAD'):
+    return '-'.join([proj[:5] + vdict[proj] for proj in GIT_REPOS])
+  else:
+    return vdict['bdbcontrib']
 
 def do_pre_installs(unused_build_dir, venv_dir):
   echo("Deps for CrossCat")
@@ -130,14 +130,23 @@ def do_pre_installs(unused_build_dir, venv_dir):
 
 def do_main_installs(build_dir, venv_dir):
   for project in GIT_REPOS:
-    reqfile = os.path.join(build_dir, project, "requirements.txt")
+    echo("Cloning ", project)
+    repodir = os.path.join(build_dir, project)
+    run("git clone https://github.com/probcomp/%s.git %s"
+        % (shellquote(project), shellquote(repodir)))
+  vdict = version_dict(build_dir)
+  for project in GIT_REPOS:
+    echo("Checking out", project, "version", vdict[project])
+    repodir = os.path.join(build_dir, project)
+    run("cd -- %s && git checkout %s" %
+        (shellquote(repodir), shellquote(vdict[project])))
+    reqfile = os.path.join(repodir, "requirements.txt")
     if os.path.exists(reqfile):
       echo("Installing dependencies for", project)
       venv_run(venv_dir, "pip install -r %s" % (shellquote(reqfile),))
-    setupfile = os.path.join(build_dir, project, "setup.py")
+    setupfile = os.path.join(repodir, "setup.py")
     if os.path.exists(setupfile):
-      echo("Installing", project, "into", build_dir)
-      repodir = os.path.join(build_dir, project)
+      echo("Installing", project, "from", build_dir, "into", venv_dir)
       venv_run(venv_dir, "cd -- %s && pip install ." % (shellquote(repodir),))
 
 def do_post_installs(unused_build_dir, venv_dir):
@@ -289,9 +298,6 @@ def main():
   echo("Building in", build_dir)
   echo("PATH is", os.environ["PATH"])
 
-  version = composite_version(build_dir)
-  if NAMED_VERSION is not None:
-      version = "-" + NAMED_VERSION
   venv_dir = os.path.join(build_dir, "venv")
   run('virtualenv %s' % (shellquote(venv_dir),))
 
@@ -301,7 +307,7 @@ def main():
   fix_python_and_its_path(venv_dir)
   make_venv_truly_relocatable(venv_dir)
 
-  name="Bayeslite%s" % (version,)
+  name="Bayeslite-%s" % (composite_version(build_dir),)
   (dist_dir, macos_dir) = wrap_as_macos_dir(build_dir, name)
   run("mv -f %s %s" % (shellquote(venv_dir), shellquote(macos_dir)))
   venv_dir = os.path.join(macos_dir, "venv")
