@@ -46,6 +46,7 @@ PAUSE_TO_MODIFY = False
 import distutils.spawn  # pylint: disable=import-error
 import errno
 import os
+import re
 import sys
 import stat
 import time
@@ -137,9 +138,12 @@ def do_main_installs(build_dir, venv_dir):
   vdict = version_dict(build_dir)
   for project in GIT_REPOS:
     echo("Checking out", project, "version", vdict[project])
+    version = vdict[project]
+    if re.search('post', version):
+      version = 'HEAD'
     repodir = os.path.join(build_dir, project)
     run("cd -- %s && git checkout %s" %
-        (shellquote(repodir), shellquote(vdict[project])))
+        (shellquote(repodir), shellquote(version)))
     reqfile = os.path.join(repodir, "requirements.txt")
     if os.path.exists(reqfile):
       echo("Installing dependencies for", project)
