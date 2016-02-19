@@ -17,6 +17,8 @@ RUN     BOOST_ROOT=/usr/include pip -q install crosscat
 RUN     pip -q install bdbcontrib
 
 WORKDIR /bayesdb/demo
-RUN         bayesdb-demo fetch
+RUN     bayesdb-demo fetch
 EXPOSE 8888
-CMD	ipython notebook --port=8888 --ip=0.0.0.0 --no-browser
+LABEL version="0.1.7"
+CMD	echo 'Notebook URL: http://`docker-machine ip default`:8888/' && \
+    ipython notebook --port=8888 --ip=0.0.0.0 --no-browser
