@@ -3,7 +3,7 @@ Upstream-Name: bayeslite
 Source: <http://probcomp.csail.mit.edu/>
 
 Files: *
-Copyright: 2013-2014 MIT Probabilistic Computing Project
+Copyright: 2013-2016 MIT Probabilistic Computing Project
 License: Apache-2.0
 
 License: Apache-2.0
