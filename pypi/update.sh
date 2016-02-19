@@ -36,18 +36,24 @@ function ensure_current_copyright() {
     fi
 }
 
+function git_get_latest_version() {
+    # Get the list of annotated tags sorted by their dates
+    git for-each-ref --sort='*authordate' --format='%(tag)' refs/tags \
+        | tail -1 | sed 's/^v//'
+    # Take the last one, and chop off the initial v because it is used elsewhere
+    # without it.
+}
+
 function git_destructive_update() {
     set -Ceu
     ver=$1
     git reset --hard
     git checkout master
     git pull
-    if [ -n "$ver" ]; then
-        git checkout v$ver
-    else
-        # latest annotated tag.
-        git checkout `git describe --exact-match --abbrev 0`
+    if [ -z "$ver" ]; then
+        ver=`git_get_latest_version`
     fi
+    git checkout v$ver
 }
 
 function build_package_contents() {
