@@ -65,13 +65,18 @@ function build_package_contents() {
     python setup.py bdist_wheel
 
     gz=dist/$pkg-$ver.tar.gz
+    rm -f $gz.asc || true
     gpg --local-user pypi -a --detach-sign $gz
+    rm -f $gz.PKG-INFO || true
     tar xzOf $gz `basename $gz .tar.gz`/PKG-INFO > $gz.PKG-INFO
+    rm -f $gz.md5 || true
     openssl dgst -md5 < $gz > $gz.md5
 
     wheels=dist/$pkg-$ver-*.whl
     for whl in $wheels; do
+        rm -f $whl.asc || true
         gpg --local-user pypi -a --detach-sign $whl
+        rm -f $whl.md5 || true
         openssl dgst -md5 < $whl > $whl.md5
     done
 
