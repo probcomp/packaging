@@ -93,7 +93,7 @@ function upload() {
     gz=dist/$pkg-$ver.tar.gz
     wheels=dist/$pkg-$ver-*.whl
     twup="twine upload -s -i pypi --config-file $TWINE_CONFIG"
-    test -r $gz.asc -a -s $whl.asc
+    test -r $gz.asc -a -s $gz.asc
     $twup $gz $gz.asc
     for whl in $wheels; do
         test -r $whl.asc -a -s $whl.asc
