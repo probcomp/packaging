@@ -92,7 +92,7 @@ function upload() {
     set -Ceu
     gz=dist/$pkg-$ver.tar.gz
     wheels=dist/$pkg-$ver-*.whl
-    twup='twine upload -s -i pypi --config-file "$TWINE_CONFIG"'
+    twup="twine upload -s -i pypi --config-file $TWINE_CONFIG"
     test -r $gz.asc -a -s $whl.asc
     $twup $gz $gz.asc
     for whl in $wheels; do
