@@ -56,6 +56,26 @@ function git_destructive_update() {
     git checkout v$ver
 }
 
+
+function forced_update_version_patch() {
+    set -Ceu
+    version_patch=$1
+    gz=dist/$pkg-$ver.tar.gz
+    for gzf in $gz.*; do
+        newname=`echo "$gzf" | sed "s/-$ver/-$ver$version_patch/"`
+        mv -f "$gzf" "$newname"
+    done
+    wheels=dist/$pkg-$ver-*.whl
+    mv -f $gz dist/$pkg-$ver$version_patch.tar.gz
+    for whl in $wheels; do
+        for whlf in $whl*; do
+            newname=`echo "$whlf" | sed "s/-$ver/-$ver$version_patch/"`
+            mv -f "$whlf" "$newname"
+        done
+    done
+    ver="$ver$version_patch"
+}
+
 function build_package_contents() {
     set -Ceu
     pkg=$1
@@ -116,6 +136,7 @@ function deploy() {
         git_destructive_update "$ver"
         ensure_current_copyright
         build_package_contents "$pkg" "$ver"
+        # forced_update_version_patch ".1"
         upload
     )
 }
