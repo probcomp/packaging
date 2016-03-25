@@ -10,6 +10,13 @@ fi
 venv_dir=$1
 install_version=$2
 
+if [ -z "$venv_dir" ]; then
+    echo "Usage: $0 path-for-new-venv-dir [version=(latest|head|0.1.4|...)]"
+    echo "     Default version is latest from pypi."
+    echo "     Note: wherever you put the new venv, you cannot later move it."
+    exit 1
+fi
+
 if [ -d "$venv_dir" -a ! -r "$venv_dir/bin/activate" ]; then
     echo "$venv_dir exists, but does not seem to be a virtualenv."
     echo "  Please choose a different path, move it out of the way, or"
