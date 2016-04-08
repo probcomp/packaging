@@ -11,6 +11,7 @@ HOMEDIR="/Users/test"
 SCRIPTSDIR=os.path.join(HOMEDIR, "Desktop")
 MOUNTDIR=os.path.join(HOMEDIR, "Desktop")
 DOCSDIR=os.path.join(HOMEDIR, "Documents")
+OPTFILE=os.path.join(HOMEDIR, "bayesdb-session-capture-opt.txt")
 
 def clean_for_test():
   run("osascript %s/close-the-notebook.scpt || true" % (SCRIPTSDIR,))
@@ -26,6 +27,8 @@ def clean_for_test():
 def check_app(app_location, output_path):
   print "check_app(%r, %r)" % (app_location, output_path)
   run("open %s" % (shellquote(app_location),))
+  with open(OPTFILE, "w") as optfile:
+    optfile.write("False\n")
   time.sleep(30)
   run("osascript -e 'tell application \"Safari\" to activate'")
   run("osascript %s/run-the-notebook.scpt" % (SCRIPTSDIR,))

@@ -59,6 +59,7 @@ except ImportError:
   from distutils.core import setup # pylint: disable=import-error
 
 from shell_utils import run, outputof, venv_run, shellquote, echo
+OPTFILE="bayesdb-session-capture-opt.txt"
 
 def check_python():
   # Do not specify --python to virtualenv, bc eg python27 is a 32-bit version
@@ -268,12 +269,13 @@ def basic_sanity_check(venv_dir):
   try:
     venv_run(venv_dir,
              "cd -- %s && bayesdb-demo fetch" % (shellquote(test_dir),))
+    with open(os.path.join(test_dir, OPTFILE), "w") as optfile:
+      optfile.write("False\n")
     venv_run(venv_dir,
              "cd -- %s && "
              "MPLBACKEND=pdf PYTHONPATH=%s runipy %s" %
              (shellquote(test_dir),
-              shellquote(os.path.join(venv_dir,
-                                      "lib/python2.7/site-packages")),
+              shellquote(os.path.join(venv_dir, "lib/python2.7/site-packages")),
               "Bayeslite-v*/satellites/Satellites.ipynb"))
   finally:
     run("rm -rf -- %s" % (shellquote(test_dir),))
