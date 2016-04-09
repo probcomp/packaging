@@ -20,7 +20,7 @@ tell application "Safari"
     do shell script "echo osa: Failed to open satellites dir?"
     return thePage
   end if
-  set theScript to "$(\".item_name:contains(Satellites.ipynb)\")[0].click();"
+  set theScript to "location.href=$('a[href*="Satellites.ipynb"]')[0].href;"
   do JavaScript theScript in current tab of first window
   do shell script "echo osa: Waiting for the notebook to open."
   delay 3
