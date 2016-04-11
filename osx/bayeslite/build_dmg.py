@@ -58,25 +58,10 @@ try:
 except ImportError:
   from distutils.core import setup # pylint: disable=import-error
 
-from shell_utils import run, outputof, venv_run, shellquote, echo
+up = os.path.dirname
+sys.path.append(os.path.join(up(up(up(__file__))), "src"))
+from shell_utils import run, outputof, venv_run, shellquote, echo, check_python
 OPTFILE="bayesdb-session-capture-opt.txt"
-
-def check_python():
-  # Do not specify --python to virtualenv, bc eg python27 is a 32-bit version
-  # that will produce a .app that osx will not open.
-  # You get errors like:
-  #    You can’t open the application “...” because PowerPC applications are no
-  #    longer supported.
-  # Or less helpfully:
-  #    The application “...” can’t be opened.
-  # and when investigating:
-  #    lipo: can't figure out the architecture type of: ...
-  # Instead, use the built-in python by not specifying anything, and get fine
-  # results.
-  # Rather than merely praying that the built-in python is
-  # language-compatible, let's check.
-  pyver = outputof('python --version 2>&1')
-  assert "Python 2.7" == pyver[:10]
 
 def get_project_version(project_dir):
   here = os.getcwd()
@@ -297,7 +282,7 @@ def make_dmg_on_desktop(dist_dir, name):
 
 def main():
   start_time = time.time()
-  check_python()
+  check_python(outputof("which python").strip())
 
   build_dir = tempfile.mkdtemp(prefix='BayesLite-app-')
   os.chdir(build_dir)
