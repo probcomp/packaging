@@ -21,7 +21,11 @@ import subprocess
 import sys
 import StringIO
 
-SHELL_EXECUTABLE="/bin/bash"
+# For details on the choice to use /bin/sh and `.` rather than `source` below,
+# despite virtualenv suggesting `source` in its user guide:
+# https://virtualenv.pypa.io/en/latest/userguide.html
+# see the comments on https://github.com/probcomp/packaging/commit/607740ba
+SHELL_EXECUTABLE="/bin/sh"
 
 def echo(*args, **kwargs):
   stdout=kwargs['stdout'] if 'stdout' in kwargs else sys.stdout
@@ -44,7 +48,7 @@ def venv_run(venv_dir, cmd, stdout=sys.stdout, stderr=sys.stderr):
   os.chdir(venv_dir)
   echo(cmd)
   subprocess.check_call(
-    'source %s/bin/activate; %s' % (shellquote(venv_dir), cmd),
+    '. %s/bin/activate; %s' % (shellquote(venv_dir), cmd),
     shell=True, stdout=stdout, stderr=stderr, executable=SHELL_EXECUTABLE)
 
 def shellquote(s):
