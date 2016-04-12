@@ -32,7 +32,7 @@ BAYESDB_DISTRIBUTIONS=[
      "crosscat_tests": "./check.sh",
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh tests examples/tests"},
-     
+
     # In chronological order from here, so older versions have lower priority:
     {"bayesdb": "0.1.3",  # 2015 Nov 11
      "crosscat": "tags/v0.1.43",
@@ -80,7 +80,7 @@ PREREQS=["cython",
          "ipython==3.2.1",
          "requests",
          "seaborn",
-         
+
          """bayeslite-apsw --install-option="fetch" --install-option="--sqlite"
                            --install-option="--version=3.9.2" """,
          # For testing:
@@ -109,7 +109,7 @@ def get_options():
     parser.add_option("-q", "--quiet", dest="quiet", action="store_true",
                       help="Only warnings and errors, not progress or info.",
                       default=False)
-    
+
     version_group = OptionGroup(
         parser, "BayesDB Version Options",
         "This script keeps a list of versions that are meant to work together."
@@ -178,7 +178,7 @@ def get_options():
         opts.install_bayesdb = True
     assert opts.install_bayesdb or not opts.run_demo, \
         "Cannot run the demo unless bayesdb gets installed (-i)."
-    
+
     return (opts, venv_dir)
 
 def check_virtualenv():
@@ -187,7 +187,7 @@ def check_virtualenv():
 
 def check_git():
   assert outputof("git --version"), "Need git to continue."
-  
+
 def make_venv_dir(venv_dir, options):
     parent = os.path.dirname(venv_dir)
     if parent and not os.path.exists(parent):
@@ -224,7 +224,7 @@ def install_package(venv_dir, package, options):
     packagename = re.sub(r'\W.*', '', package)
     cmd = " ".join([cmd, package] + [o for o in install_options if o])
     venv_run(venv_dir, cmd, stdout=options.stdout)
-        
+
 def install_prereqs(venv_dir, options):
     for prereq in PREREQS:
         install_package(venv_dir, prereq, options)
@@ -244,7 +244,7 @@ def find_distro_tags(package, version, distros):
     # If the requested version isn't there, assume we want latest for others:
     headdefault[package] = version
     return headdefault
-    
+
 def find_versions(options):
     specified = {}
     distro = BAYESDB_DISTRIBUTIONS[-1].copy()
@@ -300,7 +300,7 @@ def get_bayesdb(venv_dir, options):
         else:
             pass # Not requesting installation is fine.
     return versions
-                     
+
 def requested_testing(venv_dir, options, versions):
     if options.run_tests:
         pythenvs = ""
@@ -356,11 +356,11 @@ def build_venv_by_options(opts, venv_dir):
     versions = get_bayesdb(venv_dir, opts)
     requested_testing(venv_dir, opts, versions)
     success_message(venv_dir, opts)
-    
+
 def main():
     (opts, venv_dir) = get_options()
     build_venv_by_options(opts, venv_dir)
 
-    
+
 if __name__ == "__main__":
     main()
