@@ -21,6 +21,8 @@ import subprocess
 import sys
 import StringIO
 
+SHELL_EXECUTABLE="/bin/bash"
+
 def echo(*args, **kwargs):
   stdout=kwargs['stdout'] if 'stdout' in kwargs else sys.stdout
   # If we were doing unicode: args = map(shell_printf_quote, args)
@@ -28,11 +30,13 @@ def echo(*args, **kwargs):
 
 def run(cmd, stdout=sys.stdout, stderr=sys.stderr):
   echo(cmd, stdout=stdout)
-  subprocess.check_call(cmd, shell=True, stdout=stdout, stderr=stderr)
+  subprocess.check_call(cmd, shell=True, stdout=stdout, stderr=stderr,
+                        executable=SHELL_EXECUTABLE)
 
 def outputof(cmd, stderr=sys.stderr, **kwargs):
   echo(cmd)
-  output = subprocess.check_output(cmd, stderr=stderr, shell=True, **kwargs)
+  output = subprocess.check_output(cmd, stderr=stderr, shell=True,
+                                   executable=SHELL_EXECUTABLE, **kwargs)
   echo("OUTPUT:", output)
   return output
 
@@ -41,7 +45,7 @@ def venv_run(venv_dir, cmd, stdout=sys.stdout, stderr=sys.stderr):
   echo(cmd)
   subprocess.check_call(
     'source %s/bin/activate; %s' % (shellquote(venv_dir), cmd),
-    shell=True, stdout=stdout, stderr=stderr)
+    shell=True, stdout=stdout, stderr=stderr, executable=SHELL_EXECUTABLE)
 
 def shellquote(s):
   """Return `s`, quoted appropriately for execution by a shell."""
