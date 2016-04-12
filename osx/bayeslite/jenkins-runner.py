@@ -53,7 +53,7 @@ def test_run(cmd):
   run("ssh test@%s %s" % (HOST, shellquote(cmd)))
 
 def build_dmg():
-  run("scp build_dmg.py shell_utils.py build@%s:" % (HOST,))
+  run("scp build_dmg.py ../../src/shell_utils.py build@%s:" % (HOST,))
   build_run('PATH="%s:$PATH" python build_dmg.py' % (HPATH,))
   run("scp build@%s:Desktop/Bayeslite*.dmg %s" % (HOST, SCRATCH))
   name = build_outputof("cd Desktop && ls -t Bayeslite*.dmg | tail -1").strip()
@@ -65,7 +65,7 @@ def debug_skip_build():
   return outputof("cd %s && ls -t %s | tail -1" % (SCRATCH, "*.dmg")).strip()
 
 def test_dmg(name):
-  run("scp *.scpt shell_utils.py test_dmg.py %s test@%s:Desktop/" %
+  run("scp *.scpt ../../src/shell_utils.py test_dmg.py %s test@%s:Desktop/" %
       (os.path.join(SCRATCH, name), HOST))
   test_run("python Desktop/test_dmg.py %s" % name)
 
