@@ -65,7 +65,7 @@ BAYESDB_DISTRIBUTIONS=[
     {"bayesdb": "0.1.7",  # 2016 Feb 19
      "crosscat": "tags/v0.1.51",
      "bayeslite": "tags/v0.1.6",
-     "bdbcontrib": "tags/v0.1.7",
+     "bdbcontrib": "tags/v0.1.7.1",
      "crosscat_tests": "./check.sh",
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh"},
