@@ -1,3 +1,9 @@
+venture (0.4.2-1) trusty; urgency=medium
+
+  * New snapshot.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Fri, 04 Dec 2015 16:33:15 +0000
+
 venture (0.4.1~rc-6-1) trusty; urgency=medium
 
   * New snapshot.

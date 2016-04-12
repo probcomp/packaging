@@ -1,4 +1,4 @@
-bayeslite (0.1.4~a20151203) trusty; urgency=medium
+bayeslite (0.1.4~a20151203-1) trusty; urgency=medium
 
   * Switch from Python sqlite3 module to apsw.
 
