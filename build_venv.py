@@ -234,7 +234,7 @@ def find_distro_tags(package, version, distros):
     if version.lower() == "latest":
         return headdefault
     if version.lower() == "head":
-        return dict([(k, "HEAD") for k, v in distros[-1]])
+        return dict([(k, "HEAD") for k, v in distros[-1].iteritems()])
     # Allow /6/ to match "tags/v0.1.6", allow /0.1.6/ to match "tags/v0.1.6",
     # but do not allow /6/ to match "0.1.56".
     versionre = re.compile(r'\bv?%s$' % (version,))
