@@ -253,14 +253,17 @@ def find_versions(options):
         distro = find_distro_tags(
             "crosscat", options.crosscat_version, BAYESDB_DISTRIBUTIONS)
         specified["crosscat"] = distro["crosscat"]
+        specified["crosscat_tests"] = distro["crosscat_tests"]
     if options.bayeslite_version:
         distro = find_distro_tags(
             "bayeslite", options.bayeslite_version, BAYESDB_DISTRIBUTIONS)
         specified["bayeslite"] = distro["bayeslite"]
+        specified["bayeslite_tests"] = distro["bayeslite_tests"]
     if options.bdbcontrib_version:
         distro = find_distro_tags(
             "bdbcontrib", options.bdbcontrib_version, BAYESDB_DISTRIBUTIONS)
         specified["bdbcontrib"] = distro["bdbcontrib"]
+        specified["bdbcontrib_tests"] = distro["bdbcontrib_tests"]
     if options.bayesdb_version:
         distro = find_distro_tags(
             "bayesdb", options.bayesdb_version, BAYESDB_DISTRIBUTIONS)
