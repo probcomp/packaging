@@ -324,6 +324,8 @@ def requested_testing(venv_dir, options, versions):
         venv_run(venv_dir, "bayesdb-demo --help", stdout=options.stdout)
         demodir = os.path.join(venv_dir, "bdb-demo")
         optpath = os.path.join(demodir, "bayesdb-session-capture-opt.txt")
+        if os.path.exists(demodir):
+            shutil.rmtree(demodir)
         os.makedirs(demodir)
         with open(optpath, "w") as optfile:
             optfile.write("False\n")
