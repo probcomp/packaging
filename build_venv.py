@@ -71,7 +71,9 @@ BAYESDB_DISTRIBUTIONS=[
      "bdbcontrib_tests": "./check.sh"},
     ]
 
-PREREQS=["cython",
+PREREQS=["pip --upgrade",
+         "setuptools --upgrade",
+         "cython",
          "numpy==1.8.2 --no-cache-dir --no-binary :all:",
          "matplotlib==1.4.3 --no-cache-dir --no-binary :all:",
          "scipy --no-cache-dir --no-binary :all:",
@@ -198,8 +200,6 @@ def make_venv_dir(venv_dir, options):
         cmd += " --python=%s" % (shellquote(options.python))
     cmd += " " + shellquote(venv_dir)
     run(cmd, stdout=options.stdout)
-    venv_run(venv_dir, "pip install --upgrade setuptools pip",
-             stdout=options.stdout)
 
 def install_package(venv_dir, package, options):
     for skip in options.skip_prereq:
