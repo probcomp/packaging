@@ -120,13 +120,13 @@ def get_options():
         " is unlisted, then you must specify all three of cc, bl, and bc.")
     version_group.add_option(
         "--cc", "--crosscat-version", dest="crosscat_version",
-        help="E.g.: HEAD, latest, 0.1.41, tags/v0.1.41.", default="latest")
+        help="E.g.: HEAD, latest, 0.1.41, tags/v0.1.41.", default=None)
     version_group.add_option(
         "--bl", "--bayeslite-version", dest="bayeslite_version",
-        help="E.g.: HEAD, latest, 0.1.6, tags/v0.1.6", default="latest")
+        help="E.g.: HEAD, latest, 0.1.6, tags/v0.1.6", default=None)
     version_group.add_option(
         "--bc", "--bdbcontrib-version", dest="bdbcontrib_version",
-        help="E.g.: HEAD, latest, 0.1.6, tags/v0.1.6", default="latest")
+        help="E.g.: HEAD, latest, 0.1.6, tags/v0.1.6", default=None)
     version_group.add_option(
         "-v", "--bayesdb-version", dest="bayesdb_version",
         help="E.g.: HEAD, latest, 0.1.6", default="latest")
