@@ -13,7 +13,7 @@ tell application "Safari"
   set theScript to "$(\".item_name:contains(satellites)\")[0].click();"
   do JavaScript theScript in current tab of first window
   do shell script "echo osa: Waiting for the satellites folder to open."
-  delay 3
+  delay 10
 
   set thePage to the text of current tab of the first window
   if thePage does not contain "Satellites" then
@@ -23,7 +23,7 @@ tell application "Safari"
   set theScript to "location.href=$('a[href*=\"Satellites.ipynb\"]')[0].href;"
   do JavaScript theScript in current tab of first window
   do shell script "echo osa: Waiting for the notebook to open."
-  delay 3
+  delay 10
 
   set thePage to the text of current tab of the first window
   if thePage does not contain "Union of Concerned Scientists" then
