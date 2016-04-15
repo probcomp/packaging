@@ -88,7 +88,7 @@ PREREQS=["pip --upgrade",
          # For testing:
          "mock", "pytest", "flaky", "pexpect",
          'pillow --global-option="build_ext" --global-option="--disable-jpeg"',
-         "jupyter", "ipython[notebook]==3.2.1", "runipy",
+         "pyzmq", "jupyter", "ipython[notebook]==3.2.1", "runipy",
          ]
 
 def get_options():
