@@ -2,8 +2,17 @@
 
 set -Ceux
 
+version=${1:-WilyWerewolf}
+file=${2:-Dockerfile}
+name=${3:-bayeslite-on-15-10}
+
+if [ "$version" == "LTS" ]; then
+    name=bayeslite-on-14-04
+    file=LTS-Dockerfile
+fi
+
 # Build it, or open a terminal on it to help debug why it didn't build.
-docker build -t bayeslite . || docker run -it `docker images | head -2 | tail -1 | awk '{print $3}'` /bin/bash -il
+docker build -t $name -f $file . || docker run -it `docker images | head -2 | tail -1 | awk '{print $3}'` /bin/bash -il
 
 : ${BROWSER:=""}
 
@@ -20,4 +29,4 @@ fi
 # Do not delete because you might've done work there
 #   (or might want to debug a failure).
 
-docker run -it --net=host bayeslite
+docker run -it --net=host $name

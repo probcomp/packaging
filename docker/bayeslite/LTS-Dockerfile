@@ -1,8 +1,11 @@
 # Dockerfile that builds, installs, and tests bayeslite. It is for development
 # only; users should use the python package.
 
-FROM        ubuntu:15.10
+FROM        ubuntu:14.04
 RUN         apt-get update -qq --fix-missing
+
+# LTS
+RUN apt-get install -y -qq libpnglite-dev curl
 
 # Installation dependencies:
 RUN apt-get install -y -qq python2.7-dev python-pip git apt-utils pkg-config \
