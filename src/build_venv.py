@@ -20,7 +20,6 @@ import shutil
 import subprocess
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 from shell_utils import echo, run, outputof, venv_run, shellquote, check_python
 
 BAYESDB_DISTRIBUTIONS=[
