@@ -32,16 +32,6 @@ from __future__ import print_function
 # Requires locate to be working, so we can find a pre-installed boost.
 # Requires virtualenv pre-installed.
 # Requires read access to the listed git repos.
-GIT_REPOS = ['crosscat', 'bayeslite', 'bdbcontrib']
-
-# PKG_VERSIONS may be 'head', 'latest', or a comma-delimited list of
-# package:version pairs.
-PKG_VERSIONS = None
-import sys
-if len(sys.argv) > 1:
-    PKG_VERSIONS = sys.argv[1]
-
-PAUSE_TO_MODIFY = False
 
 import distutils.spawn  # pylint: disable=import-error
 import errno
@@ -59,92 +49,22 @@ except ImportError:
   from distutils.core import setup # pylint: disable=import-error
 
 up = os.path.dirname
-sys.path.append(os.path.join(up(up(up(__file__))), "src"))
-from shell_utils import run, outputof, venv_run, shellquote, echo, check_python
-OPTFILE="bayesdb-session-capture-opt.txt"
+PACKAGING_REPO_ROOT = up(up(up(os.path.abspath(__file__))))
 
-def get_project_version(project_dir):
-  here = os.getcwd()
-  try:
-    os.chdir(project_dir)
-    line = outputof('python setup.py --version')
-    return line.rstrip()        # Omit trailing newline.
-  finally:
-    os.chdir(here)
+sys.path.append(os.path.join(PACKAGING_REPO_ROOT, "src"))
+from shell_utils import run, outputof, echo, shellquote, venv_outputof, venv_run
 
-def get_latest_git_annotated_version(project_dir):
-  cmd = ('git for-each-ref --sort=\'*authordate\' '
-         '--format=\'%(tag)\' refs/tags | tail -1')
-  return outputof("cd -- %s && %s" % (shellquote(project_dir), cmd)).rstrip()
-
-def version_dict(build_dir):
-  def dir(proj):
-    return os.path.join(build_dir, proj)
-  if PKG_VERSIONS in (None, 'head', 'HEAD'):
-    return dict([(proj, get_project_version(dir(proj))) for proj in GIT_REPOS])
-  elif PKG_VERSIONS == 'latest':
-    return dict([(proj, get_latest_git_annotated_version(dir(proj)))
-                 for proj in GIT_REPOS])
-  else:
-    return dict([pkg.split(':') for pkg in PKG_VERSIONS.split(',')])
-
-def composite_version(build_dir):
-  vdict = version_dict(build_dir)
-  if PKG_VERSIONS in (None, 'head', 'HEAD'):
-    return '-'.join([proj[:5] + vdict[proj] for proj in GIT_REPOS])
-  else:
-    return vdict['bdbcontrib']
-
-def do_pre_installs(unused_build_dir, venv_dir):
-  echo("Deps for CrossCat")
-  boost_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-    outputof("mdfind -name mersenne_twister.hpp | "  # no -path option.
-             "grep include/boost/random/mersenne_twister.hpp | head -1")))))
-  assert os.path.exists(boost_dir), \
-    ("We need boost headers already installed for CrossCat: %s" % (boost_dir,))
-  echo("BOOST_ROOT=%s" % (shellquote(boost_dir),))
-  os.environ["BOOST_ROOT"] = boost_dir
-  # If we don't install cython and numpy, crosscat's setup tries and fails:
-  venv_run(venv_dir, "pip install --no-cache-dir "
-           "cython numpy==1.8.2 matplotlib==1.4.3 scipy")
-  venv_run(venv_dir, "pip install --no-cache-dir pandas "
-           "--install-option=\"build_ext\"")
-  venv_run(venv_dir, "pip install --no-cache-dir bayeslite-apsw "
-           "--install-option=\"fetch\" --install-option=\"--sqlite\" "
-           "--install-option=\"--version=3.9.2\"")
-
-  # TODO: Auto-sync with packaging/jenkins/prereqs_wrapper.sh or similar.
+PAUSE_TO_MODIFY = "BUILD_DMG_PAUSE_TO_MODIFY" in os.environ
 
 def do_main_installs(build_dir, venv_dir):
-  for project in GIT_REPOS:
-    echo("Cloning ", project)
-    repodir = os.path.join(build_dir, project)
-    run("git clone https://github.com/probcomp/%s.git %s"
-        % (shellquote(project), shellquote(repodir)))
-  vdict = version_dict(build_dir)
-  for project in GIT_REPOS:
-    echo("Checking out", project, "version", vdict[project])
-    version = vdict[project]
-    if re.search('post', version):
-      version = 'HEAD'
-    repodir = os.path.join(build_dir, project)
-    run("cd -- %s && git checkout %s" %
-        (shellquote(repodir), shellquote(version)))
-    reqfile = os.path.join(repodir, "requirements.txt")
-    if os.path.exists(reqfile):
-      echo("Installing dependencies for", project)
-      venv_run(venv_dir, "pip install -r %s" % (shellquote(reqfile),))
-    setupfile = os.path.join(repodir, "setup.py")
-    if os.path.exists(setupfile):
-      echo("Installing", project, "from", build_dir, "into", venv_dir)
-      venv_run(venv_dir, "cd -- %s && pip install ." % (shellquote(repodir),))
+  build_script = os.path.join(PACKAGING_REPO_ROOT, "build-bayeslite-venv.sh")
+  build_args=[build_script, "-t", "-i"]
+  if len(sys.argv) > 1:
+    build_args += sys.argv[1:]
+  build_args.append(venv_dir)
+  run(" ".join(build_args))
 
 def do_post_installs(unused_build_dir, venv_dir):
-  # This app's only other dependency:
-  venv_run(venv_dir, "pip install jupyter 'ipython[notebook]==3.2.1' runipy")
-  venv_run(venv_dir, 'virtualenv --relocatable %s' % (shellquote(venv_dir),))
-  # Sadly, that doesn't actually fix the most critical file, the activate script
-
   # App was prompting people to accept xcode license to use git.
   # No actual need for ipynotebook to check git, so disable it
   # just within the app (per bayeslite/issues/139)
@@ -183,9 +103,30 @@ def make_venv_truly_relocatable(venv_dir):
     for line in old_activate:
       if line[:len("VIRTUAL_ENV=")] == "VIRTUAL_ENV=":
         new_activate.write(relocable)
+        ppath = os.path.join('$VIRTUAL_ENV', "lib",
+                             "python2.7", "site-packages")
+        if 'PYTHONPATH' in os.environ:
+            ppath += ":" + os.environ['PYTHONPATH']
+        new_activate.write('PYTHONPATH=%s\n' % (ppath,))
+        new_activate.write('export PYTHONPATH\n')
       else:
         new_activate.write(line)
   new_activate.close()
+  for scriptname in os.listdir(os.path.join(venv_dir, "bin")):
+    if scriptname in ('python', 'activate'):
+      continue
+    scriptfile = os.path.join(venv_dir, "bin", scriptname)
+    modified_scriptfile = tempfile.NamedTemporaryFile(delete=False)
+    fully_qualified_python = os.path.join(venv_dir, "bin", "python")
+    with open(scriptfile, "r") as source:
+      with open(modified_scriptfile.name, "w") as destin:
+        for line in source.readlines():
+          modded = re.sub(fully_qualified_python,
+                          "/usr/bin/env python", line)
+          destin.write(modded)
+    run("mv -f %s %s" % (shellquote(modified_scriptfile.name),
+                         shellquote(scriptfile)))
+    run("chmod +x %s" % (shellquote(scriptfile),))
   run("mv %s %s" %
       (shellquote(new_activate.name), shellquote(old_activate_path)))
 
@@ -252,16 +193,14 @@ def wrap_as_macos_dir(build_dir, name):
 def basic_sanity_check(venv_dir):
   test_dir = tempfile.mkdtemp('bayeslite-test')
   try:
-    venv_run(venv_dir,
-             "cd -- %s && bayesdb-demo fetch" % (shellquote(test_dir),))
-    with open(os.path.join(test_dir, OPTFILE), "w") as optfile:
+    getoptfile = 'from bdbcontrib.population import OPTFILE; print OPTFILE;'
+    optfilename = venv_outputof(venv_dir, "python -c '%s'" % (getoptfile,))
+    with open(os.path.join(test_dir, optfilename), "w") as optfile:
       optfile.write("False\n")
+    envs = "MPLBACKEND=pdf"
     venv_run(venv_dir,
-             "cd -- %s && "
-             "MPLBACKEND=pdf PYTHONPATH=%s runipy %s" %
-             (shellquote(test_dir),
-              shellquote(os.path.join(venv_dir, "lib/python2.7/site-packages")),
-              "Bayeslite-v*/satellites/Satellites.ipynb"))
+             "cd -- %s && %s bayesdb-demo --runipy" %
+             (shellquote(test_dir), envs))
   finally:
     run("rm -rf -- %s" % (shellquote(test_dir),))
 
@@ -280,25 +219,25 @@ def make_dmg_on_desktop(dist_dir, name):
   run("hdiutil create -volname Bayeslite -format UDBZ -size 1g -srcfolder %s %s"
       % (shellquote(dist_dir), shellquote(dmg_path)))
 
+def composite_version(venv_dir):
+    return re.sub('BayesDB-', '',
+                  venv_outputof(venv_dir, 'bayesdb-demo --short-version 2>&1')
+                  ).strip()
+
 def main():
   start_time = time.time()
-  check_python(outputof("which python").strip())
-
   build_dir = tempfile.mkdtemp(prefix='BayesLite-app-')
   os.chdir(build_dir)
   echo("Building in", build_dir)
   echo("PATH is", os.environ["PATH"])
 
   venv_dir = os.path.join(build_dir, "venv")
-  run('virtualenv %s' % (shellquote(venv_dir),))
-
-  do_pre_installs(build_dir, venv_dir)
   do_main_installs(build_dir, venv_dir)
   do_post_installs(build_dir, venv_dir)
   fix_python_and_its_path(venv_dir)
   make_venv_truly_relocatable(venv_dir)
 
-  name="Bayeslite-%s" % (composite_version(build_dir),)
+  name="Bayeslite-%s" % (composite_version(venv_dir),)
   (dist_dir, macos_dir) = wrap_as_macos_dir(build_dir, name)
   run("mv -f %s %s" % (shellquote(venv_dir), shellquote(macos_dir)))
   venv_dir = os.path.join(macos_dir, "venv")
