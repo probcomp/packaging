@@ -53,7 +53,10 @@ def test_run(cmd):
   run("ssh test@%s %s" % (HOST, shellquote(cmd)))
 
 def build_dmg():
-  run("scp build_dmg.py ../../src/shell_utils.py build@%s:" % (HOST,))
+  needed = ['osx/bayeslite/build_dmg.py',
+            'src/shell_utils.py',
+            'src/build_venv.py']
+  run("scp %s build@%s:" % (" ".join(needed), HOST))
   build_run('PATH="%s:$PATH" python build_dmg.py' % (HPATH,))
   run("scp build@%s:Desktop/Bayeslite*.dmg %s" % (HOST, SCRATCH))
   name = build_outputof("cd Desktop && ls -t Bayeslite*.dmg | tail -1").strip()

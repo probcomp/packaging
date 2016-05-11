@@ -57,12 +57,11 @@ from shell_utils import run, outputof, echo, shellquote, venv_outputof, venv_run
 PAUSE_TO_MODIFY = "BUILD_DMG_PAUSE_TO_MODIFY" in os.environ
 
 def do_main_installs(build_dir, venv_dir):
-  build_script = os.path.join(PACKAGING_REPO_ROOT, "build-bayeslite-venv.sh")
-  build_args=[build_script, "-t", "-i"]
-  if len(sys.argv) > 1:
-    build_args += sys.argv[1:]
-  build_args.append(venv_dir)
-  run(" ".join(build_args))
+  import build_venv
+  (opts, _) = build_venv.get_options()
+  opts.run_tests = True
+  opts.install_bayesdb = True
+  build_venv.build_venv_by_options(opts, venv_dir)
 
 def do_post_installs(unused_build_dir, venv_dir):
   # App was prompting people to accept xcode license to use git.

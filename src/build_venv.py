@@ -176,13 +176,11 @@ def get_options():
         opts.stdout=sys.stdout
     if 'all' in opts.skip_prereq:
         opts.skip_prereq = r'.*'
-    assert args, (str(parser.print_help())[:0] +
-                  "Please specify a destination virtualenv path.")
-    assert 1 == len(args), (str(parser.print_help())[:0] +
-                            "Need exactly one path argument.")
-    venv_dir = args[0]
-    if venv_dir[0] != "/":
-        venv_dir = os.path.join(os.getcwd(), venv_dir)
+    venv_dir = args
+    if 1 == len(args):
+        venv_dir = args[0]
+        if venv_dir[0] != "/":
+            venv_dir = os.path.join(os.getcwd(), venv_dir)
 
     if opts.from_pypi:
         opts.install_bayesdb = True
@@ -374,6 +372,10 @@ Please also subscribe to bayesdb-community@lists.csail.mit.edu. Thanks!
 """ % (venv_dir,)
 
 def build_venv_by_options(opts, venv_dir):
+    assert venv_dir, (str(parser.print_help())[:0] +
+        "Please specify a destination virtualenv path.")
+    assert isinstance(venv_dir, str), (str(parser.print_help())[:0] +
+        "Need exactly one path argument.")
     check_python(opts.python)
     check_virtualenv()
     make_venv_dir(venv_dir, opts)
