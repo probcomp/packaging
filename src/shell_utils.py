@@ -46,10 +46,19 @@ def outputof(cmd, stderr=sys.stderr, **kwargs):
 
 def venv_run(venv_dir, cmd, stdout=sys.stdout, stderr=sys.stderr):
   os.chdir(venv_dir)
-  echo(cmd)
+  echo(cmd, stdout)
   subprocess.check_call(
     '. %s/bin/activate; %s' % (shellquote(venv_dir), cmd),
     shell=True, stdout=stdout, stderr=stderr, executable=SHELL_EXECUTABLE)
+
+def venv_outputof(venv_dir, cmd, stderr=sys.stderr):
+  os.chdir(venv_dir)
+  echo(cmd)
+  output = subprocess.check_output(
+    '. %s/bin/activate; %s' % (shellquote(venv_dir), cmd),
+    shell=True, stderr=stderr, executable=SHELL_EXECUTABLE)
+  echo("OUTPUT:", output)
+  return output
 
 def shellquote(s):
   """Return `s`, quoted appropriately for execution by a shell."""
