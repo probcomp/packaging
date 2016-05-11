@@ -62,7 +62,7 @@ def build_dmg():
             'src/shell_utils.py',
             'src/build_venv.py']
   run("scp %s build@%s:" % (" ".join(needed), HOST))
-  build_run('PATH="%s:$PATH" python build_dmg.py' % (HPATH,))
+  build_run('PATH="%s:$PATH" python build_dmg.py -v HEAD' % (HPATH,))
   run("scp build@%s:Desktop/Bayeslite*.dmg %s" % (HOST, SCRATCH))
   name = build_outputof("cd Desktop && ls -t Bayeslite*.dmg | tail -1").strip()
   echo("NAME:", name)
