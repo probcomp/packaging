@@ -1,3 +1,4 @@
-#!/bin/sh
+#!/bin/sh -Ceux
+args="$@"
 home=`dirname $0`
-exec python $home/build_venv.py $@
+python $home/src/build_venv.py $args
