@@ -20,7 +20,12 @@
 
 import re
 import os
+import sys
 import time
+
+up = os.path.dirname
+PACKAGING_REPO_ROOT = up(up(up(os.path.abspath(__file__))))
+sys.path.append(os.path.join(PACKAGING_REPO_ROOT, "src"))
 from shell_utils import run, shellquote, outputof, echo
 
 HOST = "pcg-osx-test.mit.edu"
