@@ -25,6 +25,11 @@ from shell_utils import echo, run, outputof, venv_run, shellquote, check_python
 BAYESDB_DISTRIBUTIONS=[
     # Keep HEAD at top so it is the lowest priority:
     {"bayesdb": "HEAD",
+     "prereqs": [
+         "numpy==1.11.0 --no-cache-dir",
+         "matplotlib==1.4.3 --no-cache-dir",
+         "pandas==0.18.1",
+         ],
      "crosscat": "HEAD",
      "bayeslite": "HEAD",
      "bdbcontrib": "HEAD",
@@ -62,6 +67,11 @@ BAYESDB_DISTRIBUTIONS=[
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh"},
     {"bayesdb": "0.1.7",  # 2016 Feb 19
+     "prereqs": [
+         "numpy==1.8.0 --no-cache-dir",
+         "pandas==0.17 --no-cache-dir",
+         "matplotlib==1.4.3 --no-cache-dir",
+         ],
      "crosscat": "tags/v0.1.51",
      "bayeslite": "tags/v0.1.6",
      "bdbcontrib": "tags/v0.1.7.1",
@@ -72,16 +82,15 @@ BAYESDB_DISTRIBUTIONS=[
 
 PREREQS=["pip --upgrade",
          "setuptools --upgrade",
-         "cython",
-         "numpy==1.8.2 --no-cache-dir --no-binary :all:",
-         "matplotlib==1.4.3 --no-cache-dir --no-binary :all:",
-         "scipy --no-cache-dir --no-binary :all:",
-         "pandas --no-cache-dir --no-binary :all:",
-         "sklearn --no-cache-dir --no-binary :all:",
+         "cython --no-cache-dir",
+         "numpy --no-cache-dir",
+         "scipy --no-cache-dir",
+         "pandas --no-cache-dir",
+         "sklearn --no-cache-dir",
+         "matplotlib --no-cache-dir",
          "ipython==3.2.1",
          "requests",
          "seaborn",
-
          """bayeslite-apsw --install-option="fetch" --install-option="--sqlite"
                            --install-option="--version=3.9.2" """,
          # For testing:
@@ -208,7 +217,7 @@ def install_package(venv_dir, package, options):
     package = install_options.pop(0)
     cmd="pip install"
     if options.no_cache_dir:
-        cmd += " --no-cache-dir --no-binary :all: --ignore-installed"
+        cmd += " --no-cache-dir --no-binary :all: --force"
     if options.upgrade:
         package = re.sub(r'[^\w-].*', '', package)  # Remove any version spec.
         cmd += " --upgrade"
@@ -223,10 +232,6 @@ def install_package(venv_dir, package, options):
     packagename = re.sub(r'\W.*', '', package)
     cmd = " ".join([cmd, package] + [o for o in install_options if o])
     venv_run(venv_dir, cmd, stdout=options.stdout)
-
-def install_prereqs(venv_dir, options):
-    for prereq in PREREQS:
-        install_package(venv_dir, prereq, options)
 
 def find_distro_tags(package, version, distros):
     headdefault = distros[-1].copy()
@@ -272,8 +277,23 @@ def find_versions(options):
     assert set(["crosscat", "bayeslite", "bdbcontrib"]).issubset(specified)
     return specified
 
-def get_bayesdb(venv_dir, options):
-    versions = find_versions(options)
+def install_prereqs(venv_dir, versions, options):
+    to_install = PREREQS[:]
+    if versions["prereqs"]:
+        for prereq in versions["prereqs"]:
+            found = False
+            for i, prior in enumerate(to_install):
+                package = re.search(r'^([\w-]+)', prior).group(1)
+                if prereq.startswith(package):
+                    to_install[i] = prereq
+                    found = True
+                    break
+            if not found:
+                to_install.append(prereq)
+    for prereq in to_install:
+        install_package(venv_dir, prereq, options)
+
+def get_bayesdb(venv_dir, versions, options):
     for package in ("crosscat", "bayeslite", "bdbcontrib"):
         pdir = os.path.join(venv_dir, package)
         need_repo = (options.run_tests or not options.from_pypi or
@@ -357,8 +377,9 @@ def build_venv_by_options(opts, venv_dir):
     check_python(opts.python)
     check_virtualenv()
     make_venv_dir(venv_dir, opts)
-    install_prereqs(venv_dir, opts)
-    versions = get_bayesdb(venv_dir, opts)
+    versions = find_versions(opts)
+    install_prereqs(venv_dir, versions, opts)
+    versions = get_bayesdb(venv_dir, versions, opts)
     requested_testing(venv_dir, opts, versions)
     success_message(venv_dir, opts)
 
