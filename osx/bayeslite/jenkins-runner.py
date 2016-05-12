@@ -73,8 +73,11 @@ def debug_skip_build():
   return outputof("cd %s && ls -t %s | tail -1" % (SCRATCH, "*.dmg")).strip()
 
 def test_dmg(name):
-  run("scp *.scpt ../../src/shell_utils.py test_dmg.py %s test@%s:Desktop/" %
-      (os.path.join(SCRATCH, name), HOST))
+  needed = ['osx/bayeslite/*.scpt',
+            'src/shell_utils.py',
+            'osx/bayeslite/test_dmg.py']
+  run("scp %s test@%s:Desktop/" %
+      (" ".join(needed), os.path.join(SCRATCH, name), HOST))
   test_run("python Desktop/test_dmg.py %s" % name)
 
 def main():
