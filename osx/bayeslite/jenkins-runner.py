@@ -75,9 +75,10 @@ def debug_skip_build():
 def test_dmg(name):
   needed = ['osx/bayeslite/*.scpt',
             'src/shell_utils.py',
-            'osx/bayeslite/test_dmg.py']
+            'osx/bayeslite/test_dmg.py',
+            os.path.join(SCRATCH, name)]
   run("scp %s test@%s:Desktop/" %
-      (" ".join(needed), os.path.join(SCRATCH, name), HOST))
+      (" ".join(needed), HOST))
   test_run("python Desktop/test_dmg.py %s" % name)
 
 def main():
