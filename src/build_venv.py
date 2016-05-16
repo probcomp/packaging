@@ -46,6 +46,7 @@ BAYESDB_DISTRIBUTIONS=[
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh"},
     {"bayesdb": "0.1.4",  # 2016 Jan 06
+     "prereqs": [ "flaky" ],
      "crosscat": "tags/v0.1.48",
      "bayeslite": "tags/v0.1.4",
      "bdbcontrib": "tags/v0.1.4",
@@ -53,6 +54,7 @@ BAYESDB_DISTRIBUTIONS=[
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh"},
     {"bayesdb": "0.1.5",  # 2016 Jan 14
+     "prereqs": [ "flaky" ],
      "crosscat": "tags/v0.1.50",
      "bayeslite": "tags/v0.1.5",
      "bdbcontrib": "tags/v0.1.5",
@@ -60,6 +62,7 @@ BAYESDB_DISTRIBUTIONS=[
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh"},
     {"bayesdb": "0.1.6",  # 2016 Feb 12
+     "prereqs": [ "flaky" ],
      "crosscat": "tags/v0.1.51",
      "bayeslite": "tags/v0.1.6",
      "bdbcontrib": "tags/v0.1.6",
@@ -71,6 +74,7 @@ BAYESDB_DISTRIBUTIONS=[
          "numpy==1.8.0 --no-cache-dir",
          "pandas==0.17 --no-cache-dir",
          "matplotlib==1.4.3 --no-cache-dir",
+         "flaky",
          ],
      "crosscat": "tags/v0.1.51",
      "bayeslite": "tags/v0.1.6",
@@ -78,6 +82,13 @@ BAYESDB_DISTRIBUTIONS=[
      "crosscat_tests": "./check.sh",
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh"},
+    {"bayesdb": "0.1.8", # 2016 May 16
+     "crosscat": "tags/v0.1.55",
+     "bayeslite": "tags/v0.1.8",
+     "bdbcontrib": "tags/v0.1.8",
+     "crosscat_tests": "./check.sh",
+     "bayeslite_tests": "./check.sh tests shell/tests",
+     "bdbcontrib_tests": "./check.sh tests examples/tests",
     ]
 
 PREREQS=["pip --upgrade",
@@ -94,7 +105,7 @@ PREREQS=["pip --upgrade",
          """bayeslite-apsw --install-option="fetch" --install-option="--sqlite"
                            --install-option="--version=3.9.2" """,
          # For testing:
-         "mock", "pytest", "flaky", "pexpect",
+         "mock", "pytest", "pexpect",
          'pillow --global-option="build_ext" --global-option="--disable-jpeg"',
          "pyzmq", "jupyter", "ipython[notebook]==3.2.1", "runipy",
          ]
