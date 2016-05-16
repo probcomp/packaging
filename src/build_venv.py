@@ -83,6 +83,11 @@ BAYESDB_DISTRIBUTIONS=[
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh"},
     {"bayesdb": "0.1.8", # 2016 May 16
+     "prereqs": [
+         "numpy==1.11.0 --no-cache-dir",
+         "pandas==0.18.1 --no-cache-dir",
+         "matplotlib==1.4.3 --no-cache-dir",
+         ],
      "crosscat": "tags/v0.1.55",
      "bayeslite": "tags/v0.1.8",
      "bdbcontrib": "tags/v0.1.8",

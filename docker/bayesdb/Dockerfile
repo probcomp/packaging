@@ -10,13 +10,13 @@ RUN apt-get install -y -qq python2.7-dev python-pip git apt-utils pkg-config \
 RUN pip install setuptools virtualenv
 
 WORKDIR /bayesdb
-RUN     pip -q install pyzmq ipython[notebook]==3.2.1 cython numpy==1.8.2 \
+RUN     pip -q install pyzmq ipython[notebook]==3.2.1 cython numpy==1.11 \
         matplotlib==1.4.3 scipy pandas
 RUN     BOOST_ROOT=/usr/include pip -q install bdbcontrib
 
 WORKDIR /bayesdb/demo
 RUN     bayesdb-demo fetch
 EXPOSE 8888
-LABEL version="0.1.7"
+LABEL version="0.1.8"
 CMD	echo 'Notebook URL: http://`docker-machine ip default`:8888/' && \
     ipython notebook --port=8888 --ip=0.0.0.0 --no-browser
