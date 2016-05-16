@@ -15,8 +15,9 @@ RUN     pip -q install pyzmq ipython[notebook]==3.2.1 cython numpy==1.11 \
 RUN     BOOST_ROOT=/usr/include pip -q install bdbcontrib
 
 WORKDIR /bayesdb/demo
-RUN     bayesdb-demo fetch
+RUN     bayesdb-demo fetch --source /usr/local/bdbcontrib/examples
 EXPOSE 8888
 LABEL version="0.1.8"
 CMD	echo 'Notebook URL: http://`docker-machine ip default`:8888/' && \
-    ipython notebook --port=8888 --ip=0.0.0.0 --no-browser
+    ipython notebook --port=8888 --ip=0.0.0.0 --no-browser \
+    Bayeslite-v0.1.8/Index.ipynb
