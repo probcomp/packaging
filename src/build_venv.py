@@ -253,7 +253,8 @@ def find_distro_tags(package, version, distros):
     # Allow /6/ to match "tags/v0.1.6", allow /0.1.6/ to match "tags/v0.1.6",
     # but do not allow /6/ to match "0.1.56".
     versionre = re.compile(r'\bv?%s$' % (version,))
-    for distro in distros.reverse():  # Reverse to prefer later versions.
+
+    for distro in reversed(distros):  # Reverse to prefer later versions.
         if package in distro and re.search(versionre, distro[package]):
             return distro
     # If the requested version isn't there, assume we want latest for others:
