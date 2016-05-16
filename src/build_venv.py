@@ -89,6 +89,7 @@ BAYESDB_DISTRIBUTIONS=[
      "crosscat_tests": "./check.sh",
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh tests examples/tests",
+     }
     ]
 
 PREREQS=["pip --upgrade",
@@ -288,7 +289,7 @@ def find_versions(options):
 
 def install_prereqs(venv_dir, versions, options):
     to_install = PREREQS[:]
-    if versions["prereqs"]:
+    if "prereqs" in versions:
         for prereq in versions["prereqs"]:
             found = False
             for i, prior in enumerate(to_install):
