@@ -9,13 +9,13 @@ RUN apt-get install -y -qq libpnglite-dev curl
 
 # Installation dependencies:
 RUN apt-get install -y -qq python2.7-dev python-pip git apt-utils pkg-config \
-    libfreetype6-dev libboost-dev liblapack-dev gfortran
+    libfreetype6-dev liblapack-dev gfortran
 RUN pip install setuptools virtualenv
 
 WORKDIR /bayesdb
 RUN     pip -q install pyzmq ipython[notebook]==3.2.1 cython numpy==1.11 \
         matplotlib==1.4.3 scipy pandas
-RUN     BOOST_ROOT=/usr/include pip -q install bdbcontrib
+RUN     pip -q install bdbcontrib
 
 WORKDIR /bayesdb/demo
 RUN     bayesdb-demo fetch --source /usr/local/bdbcontrib/examples

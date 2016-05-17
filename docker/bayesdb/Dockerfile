@@ -6,7 +6,7 @@ RUN         apt-get update -qq --fix-missing
 
 # Installation dependencies:
 RUN apt-get install -y -qq python2.7-dev python-pip git apt-utils pkg-config \
-    libfreetype6-dev libboost-dev liblapack-dev gfortran
+    libfreetype6-dev liblapack-dev gfortran
 RUN pip install setuptools virtualenv
 
 WORKDIR /bayesdb
