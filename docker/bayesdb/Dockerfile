@@ -20,4 +20,4 @@ EXPOSE 8888
 LABEL version="0.1.8"
 CMD	echo 'Notebook URL: http://`docker-machine ip default`:8888/' && \
     ipython notebook --port=8888 --ip=0.0.0.0 --no-browser \
-    Bayeslite-v0.1.8/Index.ipynb
+    Bayeslite-v0.1.8.1/Index.ipynb

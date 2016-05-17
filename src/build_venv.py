@@ -90,7 +90,7 @@ BAYESDB_DISTRIBUTIONS=[
          ],
      "crosscat": "tags/v0.1.55",
      "bayeslite": "tags/v0.1.8",
-     "bdbcontrib": "tags/v0.1.8",
+     "bdbcontrib": "tags/v0.1.8.1",
      "crosscat_tests": "./check.sh",
      "bayeslite_tests": "./check.sh tests shell/tests",
      "bdbcontrib_tests": "./check.sh tests examples/tests",
