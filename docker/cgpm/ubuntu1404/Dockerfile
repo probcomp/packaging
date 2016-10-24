@@ -9,6 +9,7 @@ RUN             apt-get install -qq python-pandas
 RUN             apt-get install -qq python-pytest
 RUN             apt-get install -qq python-scipy
 RUN             apt-get install -qq python-sklearn
+RUN             apt-get install -qq python-statsmodels
 
 ADD             . /cgpm
 WORKDIR         /cgpm
