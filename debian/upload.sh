@@ -8,6 +8,7 @@ set -Ceu
 : ${SUITE:=trusty}
 : ${DATE:=`date +%Y%m%d`}
 
+ssh "$HOST" mkdir "${WWW}/${OS}/${SUITE}/${DATE}"
 rsync ${1+"$@"} -avzHc --delete --copy-dest=../current . \
     "${HOST}:${WWW}/${OS}/${SUITE}/${DATE}"
 ssh "$HOST" ln -Tfsv "$DATE" "${WWW}/${OS}/${SUITE}/current"
