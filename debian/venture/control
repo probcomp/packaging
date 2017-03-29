@@ -1,4 +1,4 @@
-Source: venture
+Source: python-venture
 Maintainer: Taylor R Campbell <riastradh+probcomp@csail.mit.edu>
 Section: misc
 Priority: optional
@@ -14,7 +14,7 @@ X-Python-Version: >= 2.6
 
 # XXX The Python dependencies should be listed in setup.py, not here.
 
-Package: venture
+Package: python-venture
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
 	ipython (>= 1.2),
