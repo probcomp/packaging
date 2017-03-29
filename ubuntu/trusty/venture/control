@@ -26,7 +26,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
 	python-pandas (>= 0.13),
 	python-requests (>= 1.2),
 	python-scipy (>= 0.13),
-	python-zmq (>= 13)
+	python-zmq (>= 13),
+	probcomp-ubuntu-keyring
 Description: Higher-order probabilistic programming platform.
 	Venture is a higher-order probabilistic programming platform
 	that aims to be sufficiently expressive, extensible, and

@@ -1,3 +1,9 @@
+python-crosscat (0.1.56~rc1-2) trusty; urgency=medium
+
+  * Add dependency on probcomp-ubuntu-keyring.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 14:43:39 +0000
+
 python-crosscat (0.1.56~rc1-1) trusty; urgency=medium
 
   * Upgrade crosscat over the past year and a half.

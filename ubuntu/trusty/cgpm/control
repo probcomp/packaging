@@ -11,5 +11,6 @@ X-Python-Version: >= 2.6
 
 Package: python-cgpm
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+	probcomp-ubuntu-keyring
 Description: Composable generative population models.

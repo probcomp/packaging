@@ -1,3 +1,9 @@
+python-bayeslite (0.2.0~rc1-2) trusty; urgency=medium
+
+  * Add dependency on probcomp-ubuntu-keyring.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 14:30:50 +0000
+
 python-bayeslite (0.2.0~rc1-1) trusty; urgency=medium
 
   * New major release.

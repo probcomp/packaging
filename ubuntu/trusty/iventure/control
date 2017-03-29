@@ -11,5 +11,6 @@ X-Python-Version: >= 2.6
 
 Package: python-iventure
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python:Depends},
+	probcomp-ubuntu-keyring
 Description: Jupyter front end for probabilistic programming platform.

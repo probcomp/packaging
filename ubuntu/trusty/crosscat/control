@@ -14,7 +14,8 @@ X-Python-Version: >= 2.6
 
 Package: python-crosscat
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+	probcomp-ubuntu-keyring
 Description: Bayesian method for analyzing high-dimensional data.
 	CrossCat is a domain-general, Bayesian method for analyzing
 	high-dimensional data tables.
