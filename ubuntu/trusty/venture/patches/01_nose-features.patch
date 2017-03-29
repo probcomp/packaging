@@ -1,0 +1,80 @@
+Index: venture/base.cfg
+===================================================================
+--- venture.orig/base.cfg	2015-07-14 18:13:30.177328268 +0000
++++ venture/base.cfg	2015-07-14 18:13:30.177328268 +0000
+@@ -32,9 +32,9 @@
+ # tc=ignore_inference_quality:true
+ 
+ # Turn on code coverage reports
+-# with-cov=1
+-# cov=venture
+-# cov-report=html
++## with-cov=1
++## cov=venture
++## cov-report=html
+ 
+ # Exclude test directories that do not have statistically-sensitive
+ # tests
+Index: venture/crashes-base.cfg
+===================================================================
+--- venture.orig/crashes-base.cfg	2015-07-14 18:13:30.177328268 +0000
++++ venture/crashes-base.cfg	2015-07-14 18:14:19.701330156 +0000
+@@ -32,6 +32,6 @@
+ # For code coverage with coverage.py and nose-cov:
+ # pip install coverage
+ # pip install nose-cov
+-with-cov=1
+-cov=venture
+-cov-report=html
++#with-cov=1
++#cov=venture
++#cov-report=html
+Index: venture/crashes.cfg
+===================================================================
+--- venture.orig/crashes.cfg	2015-07-14 18:13:30.177328268 +0000
++++ venture/crashes.cfg	2015-07-14 18:13:30.177328268 +0000
+@@ -32,8 +32,8 @@
+ # For code coverage with coverage.py and nose-cov:
+ # sudo pip install coverage
+ # sudo pip install nose-cov
+-with-cov=1
+-cov=venture
+-cov-report=html
++#with-cov=1
++#cov=venture
++#cov-report=html
+ 
+ attr=!slow
+Index: venture/lite-crashes.cfg
+===================================================================
+--- venture.orig/lite-crashes.cfg	2015-07-14 18:13:30.177328268 +0000
++++ venture/lite-crashes.cfg	2015-07-14 18:13:30.177328268 +0000
+@@ -32,9 +32,9 @@
+ # For code coverage with coverage.py and nose-cov:
+ # sudo pip install coverage
+ # sudo pip install nose-cov
+-with-cov=1
+-cov=venture
+-cov-report=html
++#with-cov=1
++#cov=venture
++#cov-report=html
+ 
+ eval-attr=not slow and (not backend or backend in ['lite', 'any', 'all'])
+ 
+Index: venture/puma-crashes.cfg
+===================================================================
+--- venture.orig/puma-crashes.cfg	2015-07-14 18:13:30.177328268 +0000
++++ venture/puma-crashes.cfg	2015-07-14 18:13:30.177328268 +0000
+@@ -32,8 +32,8 @@
+ # For code coverage with coverage.py and nose-cov:
+ # sudo pip install coverage
+ # sudo pip install nose-cov
+-with-cov=1
+-cov=venture
+-cov-report=html
++#with-cov=1
++#cov=venture
++#cov-report=html
+ 
+ eval-attr=not slow and (not backend or backend in ['puma', 'any', 'all'])

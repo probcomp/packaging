@@ -1,4 +1,4 @@
-Source: bayeslite
+Source: python-bayeslite
 Maintainer: Taylor R Campbell <riastradh+probcomp@csail.mit.edu>
 Section: misc
 Priority: optional
@@ -10,10 +10,10 @@ Build-Depends: debhelper (>= 9),
 	python-pytest
 X-Python-Version: >= 2.6
 
-Package: bayeslite
+Package: python-bayeslite
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends}
-Recommends: crosscat
+Depends: ${misc:Depends}, ${python:Depends},
+	probcomp-ubuntu-keyring
 Description: SQL with generative models and Bayesian inference.
 	Bayeslite is a BQL database built on sqlite3.  BQL is SQL
 	extended with generative models and with estimations and

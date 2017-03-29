@@ -1,4 +1,4 @@
-Source: crosscat
+Source: python-crosscat
 Maintainer: Taylor R Campbell <riastradh+probcomp@csail.mit.edu>
 Section: misc
 Priority: optional
@@ -7,13 +7,15 @@ Build-Depends: debhelper (>= 9),
 	ccache,
 	cython (>= 0.17.1),
 	dh-python,
-	python,
+	python-dev,
+	python-numpy,
 	python-setuptools
 X-Python-Version: >= 2.6
 
-Package: crosscat
+Package: python-crosscat
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+	probcomp-ubuntu-keyring
 Description: Bayesian method for analyzing high-dimensional data.
 	CrossCat is a domain-general, Bayesian method for analyzing
 	high-dimensional data tables.

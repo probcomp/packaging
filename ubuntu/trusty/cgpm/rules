@@ -8,4 +8,4 @@
 # idiotic steaming pile.
 clean:
 	-dh $@ --with python2 --buildsystem=python_distutils
-	-rm -f ./crosscat/version.py
+	-rm -f ./src/version.py

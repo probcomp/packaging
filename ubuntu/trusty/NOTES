@@ -1,0 +1,4 @@
+Add to /etc/pbuilderrc:
+
+        COMPONENTS="main universe"
+        export TMPDIR=/tmp

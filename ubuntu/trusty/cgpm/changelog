@@ -1,0 +1,11 @@
+python-cgpm (0.1~rc1-2) trusty; urgency=medium
+
+  * Add dependency on probcomp-ubuntu-keyring.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 14:42:44 +0000
+
+python-cgpm (0.1~rc1-1) trusty; urgency=medium
+
+  * Initial release.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 02:50:21 +0000
