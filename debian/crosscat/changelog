@@ -1,4 +1,4 @@
-python-crosscat (0.1.56~rc1-1) UNRELEASED; urgency=medium
+python-crosscat (0.1.56~rc1-1) trusty; urgency=medium
 
   * Upgrade crosscat over the past year and a half.
 
