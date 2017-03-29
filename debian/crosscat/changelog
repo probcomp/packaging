@@ -1,4 +1,10 @@
-crosscat (0.1.28-1) trusty; urgency=medium
+python-crosscat (0.1.56~rc1-1) UNRELEASED; urgency=medium
+
+  * Upgrade crosscat over the past year and a half.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 02:48:02 +0000
+
+python-crosscat (0.1.28-1) trusty; urgency=medium
 
   * Update package metadata.
   * Note numpy in setup_requires.
@@ -6,7 +12,7 @@ crosscat (0.1.28-1) trusty; urgency=medium
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 15:43:15 +0000
 
-crosscat (0.1.26-1) trusty; urgency=medium
+python-crosscat (0.1.26-1) trusty; urgency=medium
 
   * Fix various minor bugs.
   * Fix automatic tests.
@@ -15,7 +21,7 @@ crosscat (0.1.26-1) trusty; urgency=medium
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 16 Sep 2015 14:29:08 +0000
 
-crosscat (0.1.18-1) trusty; urgency=medium
+python-crosscat (0.1.18-1) trusty; urgency=medium
 
   * Fix draws from categorical samples (Github issue #26).
   * Add check.sh script.
@@ -28,20 +34,20 @@ crosscat (0.1.18-1) trusty; urgency=medium
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 27 Jul 2015 15:19:37 +0000
 
-crosscat (0.1.8-1) trusty; urgency=medium
+python-crosscat (0.1.8-1) trusty; urgency=medium
 
   * Eliminate dependency on scipy outside tests.
   * More build system fixes.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 22 Apr 2015 22:04:46 +0000
 
-crosscat (0.1.6-1) trusty; urgency=medium
+python-crosscat (0.1.6-1) trusty; urgency=medium
 
   * Minor build system fixes.
 
  -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Fri, 17 Apr 2015 21:37:04 +0000
 
-crosscat (0.1.4-1) trusty; urgency=medium
+python-crosscat (0.1.4-1) trusty; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
 
