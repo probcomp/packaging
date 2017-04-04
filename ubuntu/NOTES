@@ -1,0 +1,34 @@
+* dch
+
+export DEBEMAIL='Ronald T Frobnitz <frobnitz+probcomp@csail.mit.edu>
+
+# Create a new changelog.
+dch -c xyz/changelog --create
+
+# Update version to 0.1.2-3.
+# - Be sure to include Debian version suffix -- the `-3' part.
+# - Debian versions start at `-1'.
+# - rc, a, &c., need `~' prefix, e.g. 0.1.2~rc3-1.
+# Editor will pop up; edit and exit when satisfied with changelog message.
+dch -c xyz/changelog -v 0.1.2-3		# be sure to add `-3' debian version
+
+# Commit the changelog entry and set the OS distribution to `trusty'.
+dch -c xyz/changelog --distribution trusty --release
+
+* pbuilder hacks
+
+Add to ~/.pbuilderrc:
+
+    # Work around Debian bug #725434.
+    export TMPDIR=/tmp
+
+    # Enable universe packages too.
+    COMPONENTS="main universe"
+
+    # Implement setting of DIST to OS distribution version.
+    if [ -n "${DIST-}" ]; then
+	BASETGZ="$(dirname "$BASETGZ")/${DIST}-$(basename "$BASETGZ")"
+	DISTRIBUTION="$DIST"
+	BUILDRESULT="/var/cache/pbuilder/${DIST}/result"
+	APTCACHE="/var/cache/pbuilder/${DIST}/aptcache"
+    fi
