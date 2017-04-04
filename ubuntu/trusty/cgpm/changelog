@@ -1,3 +1,9 @@
+python-cgpm (0.1~rc2-2~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add probcomp-private and Ubuntu-codename components to version.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:30:24 +0000
+
 python-cgpm (0.1~rc2-1) trusty; urgency=medium
 
   * Disable broken integration tests for now, owing to upstream pytest lossage.
