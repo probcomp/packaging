@@ -1,6 +1,6 @@
 * dch
 
-export DEBEMAIL='Ronald T Frobnitz <frobnitz+probcomp@csail.mit.edu>
+export DEBEMAIL='Ronald T Frobnitz <frobnitz+probcomp@csail.mit.edu>'
 
 # Create a new changelog.
 dch -c xyz/changelog --create
