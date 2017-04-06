@@ -1,3 +1,9 @@
+python-cgpm (0.1~rc2-2~probcomp2ubuntu16.04) xenial; urgency=medium
+
+  * Explicate dependency on sklearn ---> python-sklearn.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Thu, 06 Apr 2017 21:47:48 +0000
+
 python-cgpm (0.1~rc2-2~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Update to xenial.
