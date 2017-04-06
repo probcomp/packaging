@@ -1,14 +1,12 @@
-Debian packaging for the MIT Probabilistic Computing Project.
+Ubuntu packaging for the MIT Probabilistic Computing Project.
 
-Each subdirectory is the `debian/' directory for a single package.
-There are also scripts to help build packages:
+<dist>/pbuild.sh: build .deb packages with pbuilder
+publish.sh: sign and publish .deb packages to a reprepro repository
+upload.sh: upload a reprepro repository to CSAIL AFS
 
-- build.sh: build .deb packages
-- publish.sh: sign and publish .deb packages to a reprepro repository
+* <dist>/pbuild.sh
 
-* build.sh: build .deb packages
-
-Usage: build.sh [-hn] [-O <objdir>] [-d <debdir>] [-r <repo>] [-t <tag>]
+Usage: pbuild.sh [-hn] [-O <objdir>] [-d <debdir>] [-r <repo>] [-t <tag>]
 
   -h                show help
   -n                dry run
@@ -17,22 +15,21 @@ Usage: build.sh [-hn] [-O <objdir>] [-d <debdir>] [-r <repo>] [-t <tag>]
   -r <repo>         build from Git repository <repo>
   -t <tag>          build from Git tag <tag>
 
-The build.sh script will use sudo to install build dependencies.
-Running in a chroot, e.g. by integrating it with pbuilder, is left as
-an exercise for the reader.
+The pbuild.sh script will use sudo to run pbuilder.
 
 Example:
 
-% ./build.sh -O obj -d venture -r /home/me/venture -t release-0.4.1-rc-6
+% ./trusty/pbuild.sh -O trusty/obj -d trusty/venture -r /home/me/venture \
+    -t release-0.4.1
 
 (The tag is necessary in this case because Venture does not follow the
-`v<version>' pattern, e.g. v0.4.1-rc-6, for naming tags, which the
-other repositories do.)
+`v<version>' pattern, e.g. v0.4.1, for naming tags, which the other
+repositories do.)
 
 The tag must match what is in <debdir>/changelog; if not, update the
-latter before building.
+changelog before building.
 
-The resulting .deb package will go in obj/.
+The resulting .deb package will go in trusty/obj/.
 
 * publish.sh: sign and publish .deb packages to a reprepro repository
 
