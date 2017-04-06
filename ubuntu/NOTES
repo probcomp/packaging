@@ -1,3 +1,42 @@
+* Package version numbering
+
+Our software has version numbers like
+
+1.2.3a20170328 for dated snapshots, then
+1.2.3rc7 for release candidates, then
+1.2.3 for releases,
+
+in that order.  This is the syntax preferred by Python tools like pip.
+
+The Debian syntax requires a ~ to sort before empty, so the
+corresponding Debian versions would be
+
+1.2.3~a20170328
+1.2.3~rc7
+1.2.3
+
+but since packaging of a particular version may change, Debian
+packages have an additional version following a hyphen, e.g. 1.2.3-4
+or 1.2.3~rc7-4, starting at 1.
+
+Since we do not operate the Debian or Ubuntu repositories, but
+conceivably someone might take our packaging and put it in the Debian
+or Ubuntu repository (perhaps with their own tweaks), we add our own
+probcomp-private suffix, again with a ~ to sort before the package
+version, and tagged with the numeric Ubuntu release for which the
+package was built:
+
+1.2.3~a20170328-4~probcomp1ubuntu14.04
+1.2.3~rc7-4~probcomp1ubuntu14.04
+1.2.3-4~probcomp1ubuntu14.04
+
+We tag these with the numeric Ubuntu release for which the package was
+built in order to allow different builds of the same software for
+different Ubuntu versions, in the same package archive.  The program
+that manages package archives, reprepro, refuses to store different
+instances of the same version of the same package in the same package
+archive.
+
 * dch
 
 export DEBEMAIL='Ronald T Frobnitz <frobnitz+probcomp@csail.mit.edu>'
