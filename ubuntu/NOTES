@@ -48,8 +48,9 @@ dch -c xyz/changelog --create
 # - Be sure to include Debian version suffix -- the `-3' part.
 # - Debian versions start at `-1'.
 # - rc, a, &c., need `~' prefix, e.g. 0.1.2~rc3-1.
+# - Include the `~probcomp1ubuntu14.04' tag as well.
 # Editor will pop up; edit and exit when satisfied with changelog message.
-dch -c xyz/changelog -v 0.1.2-3		# be sure to add `-3' debian version
+dch -c xyz/changelog -v 0.1.2-3~probcomp1ubuntu14.04
 
 # Commit the changelog entry and set the OS distribution to `trusty'.
 dch -c xyz/changelog --distribution trusty --release
