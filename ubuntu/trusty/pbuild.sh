@@ -168,7 +168,8 @@ tar -C "$debdir" -c -f - . \
 (
     set -Ceu
     cd -- "${tmpdir}/${pkg_ver}"
-    run pdebuild --debbuildopts -uc --debbuildopts -us \
+    run pdebuild --use-pdebuild-internal \
+	--debbuildopts -uc --debbuildopts -us --debbuildopts -F \
 	--buildresult "$tmpdir" \
 	-- --debug
 )
