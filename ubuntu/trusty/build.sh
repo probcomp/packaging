@@ -193,7 +193,7 @@ cleanpkg builddep
     set -Ceu
     cd -- "$tmpdir"
     cd "./${pkg_ver}"
-    run debuild -uc -us
+    run debuild -uc -us -sa
 )
 
 # And stash it and its build dependencies away.
