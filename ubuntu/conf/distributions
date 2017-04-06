@@ -6,3 +6,12 @@ Components: main
 Description: MIT Probabilistic Computing Project Ubuntu package repository
 SignWith: AE1FFB2E9A593051
 Pull: trusty
+
+Origin: MIT Probabilistic Computing Project
+Label: MIT Probabilistic Computing Project
+Codename: xenial
+Architectures: amd64 i386 source
+Components: main
+Description: MIT Probabilistic Computing Project Ubuntu package repository
+SignWith: AE1FFB2E9A593051
+Pull: xenial
