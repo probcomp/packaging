@@ -1,0 +1,13 @@
+Source: probcomp-ubuntu-keyring
+Maintainer: Taylor R Campbell <riastradh+probcomp@csail.mit.edu>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 9)
+
+Package: probcomp-ubuntu-keyring
+Architecture: any
+Depends: ${misc:Depends}
+Description: MIT Probabilistic Computing Project Ubuntu .deb keyring
+        Public keys for apt signature verification of .deb packages
+        from the MIT Probabilistic Computing Project.

@@ -1,0 +1,120 @@
+python-bayeslite (0.2.0~rc2-2~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Update to xenial.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 04 Apr 2017 21:27:36 +0000
+
+python-bayeslite (0.2.0~rc2-2~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add probcomp-private and Ubuntu-codename components to version.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:27:17 +0000
+
+python-bayeslite (0.2.0~rc2-1) trusty; urgency=medium
+
+  * Merge estprob branch to allow simulated probability estimators.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 15:03:08 +0000
+
+python-bayeslite (0.2.0~rc1-2) trusty; urgency=medium
+
+  * Add dependency on probcomp-ubuntu-keyring.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 14:30:50 +0000
+
+python-bayeslite (0.2.0~rc1-1) trusty; urgency=medium
+
+  * New major release.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 02:51:05 +0000
+
+python-bayeslite (0.1.4~a20151203-1) trusty; urgency=medium
+
+  * Switch from Python sqlite3 module to apsw.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 03 Dec 2015 18:28:12 +0000
+
+python-bayeslite (0.1.3-1) trusty; urgency=medium
+
+  * Foreign predictors allow integration of arbitrary non-crosscat
+       models via logpdf_joint and simulate_joint
+  * Session capture and optional upload for easier and more robust bug reports.
+  * Tracing improved to notify on start, sql-ready, all-fetched, abandoned.
+  * bql_quote_name any name parameters to bql in python.
+  * fetchvalue() instead of .next()[0]
+  * recipes module codifies some common patterns of use, provides quickstart.
+  * Continuous-integration markings on some tests not to run locally.
+  * Auto-upgrade schema versions: not a change, but made more explicit.
+  * Clarify use of WeakPRNG
+  * ieee_exp makes inf on overflow rather than python's default to raise.
+  * Misc i/o, parser, sql, lint, copyright date, doc, and setup fixes.
+
+ -- Gregory A Marton <gremio@acm.org>  Fri, 13 Nov 2015 21:20:25 -0500
+
+python-bayeslite (0.1.1-1) trusty; urgency=medium
+
+  * Math fixes (#241, #175, ENSURE, weakprng)
+  * Checkpointing fixes. (#254)
+  * Moved osx build and test code to the packaging repository.
+  * No longer require boost libraries -- we only need headers at build time.
+  * Implemented O(k) space random subsampling. (#40)
+  * Lint-inspired fixes.
+  * Documentation
+  * Run long-running tests only in continuous integration by default.
+  * Enable multiprocess tests
+
+ -- Gregory A Marton <gremio@acm.org>  Tue, 13 Oct 2015 22:25:36 -0400
+
+python-bayeslite (0.1-1) trusty; urgency=medium
+
+  * First release.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 22:00:27 +0000
+
+python-bayeslite (0.1~rc6-2) trusty; urgency=medium
+
+  * Fix crosscat dependency in Debian packaging.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 19:59:01 +0000
+
+python-bayeslite (0.1~rc6-1) trusty; urgency=medium
+
+  * Fix indexing errors in conditional probability in Crosscat.
+  * Fix analysis iteration accounting in Crosscat.
+  * Minor documentation changes.
+  * Make test suite runnable with `python setup.py test'.
+  * Miscellaneous other bug fixes.
+  * Tweak development versioning scheme.
+  * Fill MANIFEST.in with everything for Python sdists.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 22 Sep 2015 16:21:30 +0000
+
+python-bayeslite (0.1~rc1-1) trusty; urgency=medium
+
+  * Too many changes to list.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 16 Sep 2015 14:41:31 +0000
+
+python-bayeslite (0.1~dev20150727-2) trusty; urgency=medium
+
+  * Add build dependency on python-pytest.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Jul 2015 18:59:14 +0000
+
+python-bayeslite (0.1~dev20150727-1) trusty; urgency=medium
+
+  * Too many changes to list.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 27 Jul 2015 15:12:00 +0000
+
+python-bayeslite (0.1~dev20150422-1) trusty; urgency=medium
+
+  * Eliminate dependency on scipy.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 22 Apr 2015 22:08:41 +0000
+
+python-bayeslite (0.1~dev20150420-1) trusty; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 20 Apr 2015 23:16:17 +0000

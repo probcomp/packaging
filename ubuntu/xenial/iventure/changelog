@@ -1,0 +1,29 @@
+python-iventure (0.1~rc2-2~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Update to xenial.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:33:26 +0000
+
+python-iventure (0.1~rc2-2~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add probcomp-private and Ubuntu-codename components to version.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:33:09 +0000
+
+python-iventure (0.1~rc2-1) trusty; urgency=medium
+
+  * Remove VentureScript dependency.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 15:16:31 +0000
+
+python-iventure (0.1~rc1-2) trusty; urgency=medium
+
+  * Add dependency on probcomp-ubuntu-keyring.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 14:44:02 +0000
+
+python-iventure (0.1~rc1-1) trusty; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 02:40:40 +0000

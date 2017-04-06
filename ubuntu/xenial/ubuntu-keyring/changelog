@@ -1,0 +1,17 @@
+probcomp-ubuntu-keyring (0.1~rc1-2~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Update to xenial.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:39:35 +0000
+
+probcomp-ubuntu-keyring (0.1~rc1-2~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add probcomp-private and Ubuntu-codename components to version.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:39:16 +0000
+
+probcomp-ubuntu-keyring (0.1~rc1-1) trusty; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 13:13:05 +0000

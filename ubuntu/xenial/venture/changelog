@@ -1,0 +1,53 @@
+python-venture (0.5.1~a20170328-3~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Update to xenial.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:41:06 +0000
+
+python-venture (0.5.1~a20170328-3~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add probcomp-private and Ubuntu-codename components to version.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 04 Apr 2017 21:40:32 +0000
+
+python-venture (0.5.1~a20170328-2) trusty; urgency=medium
+
+  * Add dependency on probcomp-ubuntu-keyring.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 29 Mar 2017 14:44:23 +0000
+
+python-venture (0.5.1~a20170328-1) trusty; urgency=medium
+
+  * New snapshot.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 28 Mar 2017 21:31:02 +0000
+
+python-venture (0.4.2-1) trusty; urgency=medium
+
+  * New snapshot.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Fri, 04 Dec 2015 16:33:15 +0000
+
+python-venture (0.4.1~rc-6-1) trusty; urgency=medium
+
+  * New snapshot.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 28 Jul 2015 23:33:58 +0000
+
+python-venture (0.2~~dev20150714-1) trusty; urgency=medium
+
+  * New snapshot.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 14 Jul 2015 18:07:46 +0000
+
+python-venture (0.2~~dev20150420-1) trusty; urgency=medium
+
+  * New snapshot.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 20 Apr 2015 22:24:56 +0000
+
+python-venture (0.2~~dev20141125-1) trusty; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 25 Nov 2014 21:47:07 +0000
