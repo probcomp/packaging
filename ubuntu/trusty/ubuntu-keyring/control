@@ -3,7 +3,7 @@ Maintainer: Taylor R Campbell <riastradh+probcomp@csail.mit.edu>
 Section: misc
 Priority: optional
 Standards-Version: 3.9.5
-Build-depends: debhelper (>= 9)
+Build-Depends: debhelper (>= 9)
 
 Package: probcomp-ubuntu-keyring
 Architecture: any
