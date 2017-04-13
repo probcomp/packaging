@@ -4,7 +4,7 @@ set -Ceux
 
 : ${HOST:=probcomp-1.csail.mit.edu}
 : ${WWW:=/afs/csail/proj/probcomp/www}
-: ${OS:=ubuntu}
+: ${OS:=ubuntu-prerelease}
 : ${DATE:=`date +%Y%m%dT%H%M%SZ`}
 
 if ! [ -f conf/distributions -a -d db -a -d dists -a -d pool ]; then
