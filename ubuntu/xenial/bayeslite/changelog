@@ -1,3 +1,9 @@
+python-bayeslite (0.2.0~rc3-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Minor bug fixes.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Thu, 13 Apr 2017 19:22:56 +0000
+
 python-bayeslite (0.2.0~rc2-2~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Update to xenial.
