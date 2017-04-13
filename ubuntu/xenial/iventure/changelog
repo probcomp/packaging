@@ -1,3 +1,9 @@
+python-iventure (0.1~rc3-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Import seaborn 0.7.1 into iventure.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Thu, 13 Apr 2017 18:50:39 +0000
+
 python-iventure (0.1~rc2-2~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Update to xenial.
