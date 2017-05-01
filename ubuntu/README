@@ -31,6 +31,9 @@ changelog before building.
 
 The resulting .deb package will go in trusty/obj/.
 
+Set the environment variable DIST to the distribution you want to
+build for, if it's not the one you are running.
+
 * publish.sh: sign and publish .deb packages to a reprepro repository
 
 Usage: publish.sh [-hn] [-O <objdir>] [-b <basedir>] [-c <codename>]
