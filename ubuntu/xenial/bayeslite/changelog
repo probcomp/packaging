@@ -1,3 +1,15 @@
+python-bayeslite (0.3.0~rc1-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Add PREDICTIVE RELEVANCE.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 01 May 2017 19:35:44 +0000
+
+python-bayeslite (0.2.0~rc5-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * More minor bug fixes.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 01 May 2017 15:53:22 +0000
+
 python-bayeslite (0.2.0~rc3-1~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Minor bug fixes.
