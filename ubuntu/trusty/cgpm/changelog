@@ -1,3 +1,9 @@
+python-cgpm (0.1~rc3-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add functionality needed for PREDICTIVE RELEVANCE.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 01 May 2017 19:37:49 +0000
+
 python-cgpm (0.1~rc2-2~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add probcomp-private and Ubuntu-codename components to version.

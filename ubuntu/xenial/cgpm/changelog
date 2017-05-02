@@ -1,3 +1,9 @@
+python-cgpm (0.1~rc3-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Add functionality for PREDICTIVE RELEVANCE.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 01 May 2017 19:38:28 +0000
+
 python-cgpm (0.1~rc2-2~probcomp2ubuntu16.04) xenial; urgency=medium
 
   * Explicate dependency on sklearn ---> python-sklearn.
