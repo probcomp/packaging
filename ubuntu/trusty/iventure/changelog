@@ -1,3 +1,9 @@
+python-iventure (0.2~rc1-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add jsviz.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Mon, 01 May 2017 15:47:06 +0000
+
 python-iventure (0.1~rc3-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Import seaborn 0.7.1 into iventure.
