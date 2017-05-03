@@ -1,3 +1,9 @@
+python-cgpm (0.1~rc4-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Reduce needless performance overhead.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 03 May 2017 11:47:57 +0000
+
 python-cgpm (0.1~rc3-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add functionality needed for PREDICTIVE RELEVANCE.
