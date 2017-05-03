@@ -1,3 +1,9 @@
+python-iventure (0.2~rc2-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Cosmetic changes and minor bug fixes.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Wed, 03 May 2017 12:40:07 +0000
+
 python-iventure (0.2~rc1-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add jsviz.
