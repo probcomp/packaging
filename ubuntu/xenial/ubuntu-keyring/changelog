@@ -1,3 +1,9 @@
+probcomp-ubuntu-keyring (0.2~rc1-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * New protocol, new signing keys.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 30 May 2017 16:41:01 +0000
+
 probcomp-ubuntu-keyring (0.1~rc1-2~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Update to xenial.
