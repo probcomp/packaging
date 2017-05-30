@@ -1,3 +1,11 @@
+python-iventure (0.2~rc3-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Add .assert.
+  * Add .regress_sql.
+  * Minor bug fixes.
+
+ -- Taylor R Campbell <riastradh+probcomp@csail.mit.edu>  Tue, 30 May 2017 17:24:15 +0000
+
 python-iventure (0.2~rc2-1~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Cosmetic changes and minor bug fixes.
