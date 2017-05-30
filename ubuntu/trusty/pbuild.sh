@@ -2,6 +2,8 @@
 
 set -Ceu
 
+export DIST=trusty
+
 usage ()
 {
 
