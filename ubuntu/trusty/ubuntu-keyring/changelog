@@ -1,3 +1,9 @@
+probcomp-ubuntu-keyring (0.3-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add axch signing key.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Fri, 23 Jun 2017 21:05:14 +0000
+
 probcomp-ubuntu-keyring (0.2~rc1-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * New protocol, new signing keys.
