@@ -1,3 +1,10 @@
+python-iventure (0.2~rc4-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Fix some bugs.
+  * Add some commands.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Fri, 23 Jun 2017 23:17:55 +0000
+
 python-iventure (0.2~rc3-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add .assert.
