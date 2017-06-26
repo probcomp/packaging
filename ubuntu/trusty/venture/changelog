@@ -1,3 +1,9 @@
+python-venture (0.5.1~a20170623-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * New GP and gradient stuff.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Fri, 23 Jun 2017 23:18:22 +0000
+
 python-venture (0.5.1~a20170328-3~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add probcomp-private and Ubuntu-codename components to version.
