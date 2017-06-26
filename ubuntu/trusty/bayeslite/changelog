@@ -1,3 +1,11 @@
+python-bayeslite (0.3.0~rc6-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Add REGRESS.
+  * Update documentation.
+  * Speed up CORRELATION PVALUE.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Wed, 31 May 2017 02:06:04 +0000
+
 python-bayeslite (0.3.0~rc4-1~probcomp1ubunru14.04) trusty; urgency=medium
 
   * Minor bug and typo fixes.
