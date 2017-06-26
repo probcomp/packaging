@@ -1,3 +1,10 @@
+python-cgpm (0.1~rc7-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Fix some bugs.
+  * Improve plotting.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Fri, 23 Jun 2017 22:28:27 +0000
+
 python-cgpm (0.1~rc5-1~probcomp1ubunru16.04) xenial; urgency=medium
 
   * Revive integration tests.
