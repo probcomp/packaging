@@ -1,3 +1,10 @@
+python-iventure (0.2~rc5-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Log stack traces.
+  * Other minor changes to logging.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Tue, 27 Jun 2017 09:37:46 +0000
+
 python-iventure (0.2~rc4-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Fix some bugs.
