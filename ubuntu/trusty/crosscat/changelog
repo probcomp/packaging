@@ -1,3 +1,9 @@
+python-crosscat (0.1.56-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * No functional change.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Mon, 17 Jul 2017 16:10:54 +0000
+
 python-crosscat (0.1.56~rc1-3~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add probcomp-private and Ubuntu-codename components to version.

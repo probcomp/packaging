@@ -1,3 +1,10 @@
+python-iventure (0.2-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Metaprob syntax support.
+  * Minor tweaks.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Mon, 17 Jul 2017 16:11:54 +0000
+
 python-iventure (0.2~rc5-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Log stack traces.

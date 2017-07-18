@@ -1,3 +1,9 @@
+python-cgpm (0.1-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Support USING MODEL.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Mon, 17 Jul 2017 16:10:01 +0000
+
 python-cgpm (0.1~rc7-1~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Fix some bugs.

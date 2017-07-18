@@ -1,3 +1,17 @@
+python-bayeslite (0.3.1-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Update documentation to reflect syntax changes.
+  * Update random number generation seeding for BQL_RAND function.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Tue, 18 Jul 2017 15:05:51 +0000
+
+python-bayeslite (0.3.0-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Restore USING MODEL.
+  * Minor bug fixes, code cleanups.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Mon, 17 Jul 2017 16:07:11 +0000
+
 python-bayeslite (0.3.0~rc6-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add REGRESS.
