@@ -1,3 +1,9 @@
+probcomp-ubuntu-keyring (0.4-1~probcomp1ubuntu14.04) trusty; urgency=medium
+
+  * Extend my key's expiration date a couple months.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Mon, 31 Jul 2017 21:29:52 +0000
+
 probcomp-ubuntu-keyring (0.3-1~probcomp1ubuntu14.04) trusty; urgency=medium
 
   * Add axch signing key.
