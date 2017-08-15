@@ -1,3 +1,15 @@
+probcomp-ubuntu-keyring (0.6-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Add zshelby signing key.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Tue, 15 Aug 2017 19:13:36 +0000
+
+probcomp-ubuntu-keyring (0.5-1~probcomp1ubuntu16.04) xenial; urgency=medium
+
+  * Add avinson signing key.
+
+ -- Taylor R Campbell <riastradh+probcomp-ubuntu@csail.mit.edu>  Mon, 14 Aug 2017 18:38:40 +0000
+
 probcomp-ubuntu-keyring (0.4-1~probcomp1ubuntu16.04) xenial; urgency=medium
 
   * Extend my key's expiration date a couple months.
