@@ -4,6 +4,14 @@ Ubuntu packaging for the MIT Probabilistic Computing Project.
 publish.sh: sign and publish .deb packages to a reprepro repository
 upload.sh: upload a reprepro repository to CSAIL AFS
 
+* Prereqs
+
+sudo apt install devscripts equivs pbuilder reprepro
+
+Create a base tgz for pbuild.  Example:
+
+sudo pbuilder --create --distribution xenial --basetgz /var/cache/pbuilder/xenial-base.tgz
+
 * <dist>/pbuild.sh
 
 Usage: pbuild.sh [-hn] [-O <objdir>] [-d <debdir>] [-r <repo>] [-t <tag>]
