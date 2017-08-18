@@ -1,8 +1,21 @@
 Ubuntu packaging for the MIT Probabilistic Computing Project.
 
-<dist>/pbuild.sh: build .deb packages with pbuilder
-publish.sh: sign and publish .deb packages to a reprepro repository
-upload.sh: upload a reprepro repository to CSAIL AFS
+Components:
+- <dist>/pbuild.sh: build .deb packages with pbuilder
+- publish.sh: sign and publish .deb packages to a reprepro repository
+- upload.sh: upload a reprepro repository to CSAIL AFS
+
+Workflow:
+- Install and set up prerequisites
+- Use <dist>/pbuild.sh to create the package
+- Use rsync (or such) to sync the current reprepro repository from
+  /afs/csail.mit.edu/proj/probcomp/www/ubuntu-prerelease/current/
+  to some local place
+- Use publish.sh to sign the package and add it to your local mirror
+  of the reprepro repository
+- Use upload.sh to upload the updated reprepro repository (upload.sh
+  uses symlinks to update repositories atomically and to maintain a
+  history of snapshots thereof)
 
 * Prereqs
 
@@ -42,6 +55,17 @@ The resulting .deb package will go in trusty/obj/.
 Set the environment variable DIST to the distribution you want to
 build for, if it's not the one you are running.
 
+* rsync
+
+Our reprepro repository lives in
+/afs/csail.mit.edu/proj/probcomp/www/ubuntu-prerelease/current/.  A
+local copy is necessary to update some package versions while
+retaining the others.  `current` is a symbolic link.
+
+The following incantation has been observed working:
+
+% rsync -avzHc probcomp-4.csail.mit.edu:/afs/csail.mit.edu/proj/probcomp/www/ubuntu-prerelease/current/. playpen/
+
 * publish.sh: sign and publish .deb packages to a reprepro repository
 
 Usage: publish.sh [-hn] [-O <objdir>] [-b <basedir>] [-c <codename>]
@@ -57,9 +81,38 @@ Example:
 % ./publish.sh -O obj -b /var/www/data/ubuntu -c trusty
 
 The publish.sh script will sign packages using the GnuPG key specified
-in the reprepro repository's conf/distributions file.
+in the reprepro repository's conf/distributions file.  (So far we have
+implemented multiple signers by manually editing the SignWith field of
+this file.)
 
 As a note for novice users of GnuPG: it looks for keys in the path
 given by the `GNUPGHOME` environment variable, and knows how to find a
 key by its key id.  To obtain the key id (so as to make sure the
-conf/distributions file has it), one can `gpg --list-keys`
+conf/distributions file has it), one can `gpg --list-keys --keyid-format long`
+
+Gotchas noted:
+
+- If the key is on external storage, it may be necessary to mount it
+  so your user can write files there, because `gpg` may wish to.
+
+- It may also be necessary to set permissions on the GNUPGHOME
+  directory to make gpg shut up about them.
+
+- Also, apparently, gpg2 (but not gpg) tries to make sure there is a
+  gpg-agent running whose home directory is GNUPGHOME; but I have
+  failed to get gpg-agent to run on a vfat file system, which is a
+  common file system for USB sticks to be formatted with.
+
+  - Workaround 1: Format your USB stick with ext4 or something like that.
+
+  - Workaround 2: Copy the content into a tmpfs and point GNUPGHOME
+    there: `sudo mount -t tmpfs tmpfs <some-location>`
+
+* upload.sh
+
+Enter the repository directory and run
+% upload.sh
+
+This will attempt to log in to probcomp-1.csail.mit.edu, so you need
+an appropriate Kerberos principal that has permissions to write to the
+appropriate directory.
