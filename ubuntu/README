@@ -58,3 +58,8 @@ Example:
 
 The publish.sh script will sign packages using the GnuPG key specified
 in the reprepro repository's conf/distributions file.
+
+As a note for novice users of GnuPG: it looks for keys in the path
+given by the `GNUPGHOME` environment variable, and knows how to find a
+key by its key id.  To obtain the key id (so as to make sure the
+conf/distributions file has it), one can `gpg --list-keys`
