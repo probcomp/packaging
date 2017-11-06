@@ -111,7 +111,7 @@ Gotchas noted:
 * upload.sh
 
 Enter the repository directory and run
-% upload.sh
+% ../upload.sh
 
 This will attempt to log in to probcomp-1.csail.mit.edu, so you need
 an appropriate Kerberos principal that has permissions to write to the
